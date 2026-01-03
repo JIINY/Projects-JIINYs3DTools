@@ -100,19 +100,43 @@ namespace EnvConfig
 
         ImGui::Separator();
 
-        if (ImGui::CollapsingHeader("AmbientLight", ImGuiTreeNodeFlags_DefaultOpen)) 
+        if (ImGui::CollapsingHeader("AmbientLight", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            bool ambChanged = false;
-
-            ambChanged |= ImGui::ColorEdit3("Sky", ambientTop_);
-            ambChanged |= ImGui::ColorEdit3("Horizon", ambientMid_);
-            ambChanged |= ImGui::ColorEdit3("Ground", ambientBot_);
-
-            if (ambChanged) 
+            if (ImGui::BeginTable("SunTable", 2, flags))
             {
-                manager_->setAmbientTop({ ambientTop_[0], ambientTop_[1], ambientTop_[2] });
-                manager_->setAmbientMid({ ambientMid_[0], ambientMid_[1], ambientMid_[2] });
-                manager_->setAmbientBot({ ambientBot_[0], ambientBot_[1], ambientBot_[2] });
+                ImGui::TableSetupColumn("Label", ImGuiTableColumnFlags_WidthStretch, 0.3f);
+                ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthStretch, 0.7f);
+
+                bool ambChanged = false;
+
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Sky");
+                ImGui::TableNextColumn();
+                ImGui::SetNextItemWidth(-FLT_MIN);
+                ambChanged |= ImGui::ColorEdit3("##Sky", ambientTop_);
+
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Horizon");
+                ImGui::TableNextColumn();
+                ImGui::SetNextItemWidth(-FLT_MIN);
+                ambChanged |= ImGui::ColorEdit3("##Horizon", ambientMid_);
+
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ground");
+                ImGui::TableNextColumn();
+                ImGui::SetNextItemWidth(-FLT_MIN);
+                ambChanged |= ImGui::ColorEdit3("##Ground", ambientBot_);
+
+                ImGui::EndTable();
+                if (ambChanged)
+                {
+                    manager_->setAmbientTop({ ambientTop_[0], ambientTop_[1], ambientTop_[2] });
+                    manager_->setAmbientMid({ ambientMid_[0], ambientMid_[1], ambientMid_[2] });
+                    manager_->setAmbientBot({ ambientBot_[0], ambientBot_[1], ambientBot_[2] });
+                }
             }
         }
     }
