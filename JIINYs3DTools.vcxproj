@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="lib\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="lib\imgui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="lib\imgui\imgui.cpp" />
+    <ClCompile Include="lib\imgui\imgui_demo.cpp" />
+    <ClCompile Include="lib\imgui\imgui_draw.cpp" />
+    <ClCompile Include="lib\imgui\imgui_tables.cpp" />
+    <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="lib\imgui\misc\freetype\imgui_freetype.cpp" />
+    <ClCompile Include="shaders\Lit_BlinnPhong\BlinnPhongMaterial.cpp" />
+    <ClCompile Include="shaders\Unlit_MaterialColor\UnlitMaterial.cpp" />
+    <ClCompile Include="src\common\DebugLog.cpp" />
+    <ClCompile Include="src\common\Fonts.cpp" />
+    <ClCompile Include="src\common\Math.cpp" />
+    <ClCompile Include="src\core\App.cpp" />
+    <ClCompile Include="src\core\coordinator\CameraCoordinator.cpp" />
+    <ClCompile Include="src\core\coordinator\RenderCoordinator.cpp" />
+    <ClCompile Include="src\core\coordinator\ViewStateCoordinator.cpp" />
+    <ClCompile Include="src\core\manager\scene\LightManager.cpp" />
+    <ClCompile Include="src\core\manager\system\AppUIManager.cpp" />
+    <ClCompile Include="src\core\manager\resources\MaterialManager.cpp" />
+    <ClCompile Include="src\core\coordinator\ResourceCoordinator.cpp" />
+    <ClCompile Include="src\core\manager\scene\BaseObjectManager.cpp" />
+    <ClCompile Include="src\core\manager\resources\ShaderManager.cpp" />
+    <ClCompile Include="src\core\manager\system\FloatingWindowManager.cpp" />
+    <ClCompile Include="src\core\manager\system\ShortcutManager.cpp" />
+    <ClCompile Include="src\core\manager\editor\ToolObjectManager.cpp" />
+    <ClCompile Include="src\core\manager\editor\ViewportCameraManager.cpp" />
+    <ClCompile Include="src\event\appEvent\AppEventPublisher.cpp" />
+    <ClCompile Include="src\event\appEvent\AppEventQueue.cpp" />
+    <ClCompile Include="src\event\appEvent\AppEventSubscriber.cpp" />
+    <ClCompile Include="src\event\uiEvent\UIEventPublisher.cpp" />
+    <ClCompile Include="src\event\uiEvent\UIEventQueue.cpp" />
+    <ClCompile Include="src\event\uiEvent\UIEventSubscriber.cpp" />
+    <ClCompile Include="src\io\InputEventQueue.cpp" />
+    <ClCompile Include="src\io\InputHandler.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\object\Entity.cpp" />
+    <ClCompile Include="src\renderer\dx11\DX11Renderer.cpp" />
+    <ClCompile Include="src\render\ConstantBuffer.cpp" />
+    <ClCompile Include="src\render\Material.cpp" />
+    <ClCompile Include="src\render\Mesh.cpp" />
+    <ClCompile Include="src\render\PixelShader.cpp" />
+    <ClCompile Include="src\render\primitives\Cube.cpp" />
+    <ClCompile Include="src\render\RenderCommandQueue.cpp" />
+    <ClCompile Include="src\render\RenderObject.cpp" />
+    <ClCompile Include="src\render\ShaderInclude.cpp" />
+    <ClCompile Include="src\render\tools\GridMesh.cpp" />
+    <ClCompile Include="src\render\VertexShader.cpp" />
+    <ClCompile Include="src\ui\appUI\AppUI.cpp" />
+    <ClCompile Include="src\ui\mainBarUI\MainMenuBarUI.cpp" />
+    <ClCompile Include="src\ui\window\environmentConfig\EnvironmentConfig.cpp" />
+    <ClCompile Include="src\ui\window\environmentConfig\LightConfig.cpp" />
+    <ClCompile Include="src\viewport\camera\ArmCameraController.cpp" />
+    <ClCompile Include="src\viewport\camera\Camera.cpp" />
+    <ClCompile Include="src\viewport\camera\FixedAngleCameraController.cpp" />
+    <ClCompile Include="src\viewport\camera\FreeCameraController.cpp" />
+    <ClCompile Include="src\viewport\camera\TargetCameraController.cpp" />
+    <ClCompile Include="src\ui\preference\CameraInfoUI.cpp" />
+    <ClCompile Include="src\viewport\ui\Grid.cpp" />
+    <ClCompile Include="src\viewport\ui\ViewportCamUI.cpp" />
+    <ClCompile Include="src\viewport\ui\WorldPivot.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lib\imgui\imgui.h" />
+    <ClInclude Include="shaders\Lit_BlinnPhong\BlinnPhongMaterial.hpp" />
+    <ClInclude Include="shaders\Unlit_MaterialColor\UnlitMaterial.hpp" />
+    <ClInclude Include="shaders\Unlit_VertexColor\VertexColorMaterial.hpp" />
+    <ClInclude Include="src\common\DebugLog.hpp" />
+    <ClInclude Include="src\common\Fonts.hpp" />
+    <ClInclude Include="src\common\Math.hpp" />
+    <ClInclude Include="src\common\Mode.hpp" />
+    <ClInclude Include="src\common\ElementID.hpp" />
+    <ClInclude Include="src\core\App.hpp" />
+    <ClInclude Include="src\core\AppConfig.hpp" />
+    <ClInclude Include="src\core\coordinator\CameraCoordinator.hpp" />
+    <ClInclude Include="src\core\coordinator\RenderCoordinator.hpp" />
+    <ClInclude Include="src\core\coordinator\ViewStateCoordinator.hpp" />
+    <ClInclude Include="src\core\ManagerInclude.hpp" />
+    <ClInclude Include="src\core\manager\scene\LightManager.hpp" />
+    <ClInclude Include="src\core\manager\system\AppUIManager.hpp" />
+    <ClInclude Include="src\core\manager\resources\MaterialManager.hpp" />
+    <ClInclude Include="src\core\coordinator\ResourceCoordinator.hpp" />
+    <ClInclude Include="src\core\manager\scene\BaseObjectManager.hpp" />
+    <ClInclude Include="src\core\manager\resources\ShaderManager.hpp" />
+    <ClInclude Include="src\core\manager\system\FloatingWindowManager.hpp" />
+    <ClInclude Include="src\core\manager\system\ShortcutManager.hpp" />
+    <ClInclude Include="src\core\manager\editor\ToolObjectManager.hpp" />
+    <ClInclude Include="src\core\manager\editor\ViewportCameraManager.hpp" />
+    <ClInclude Include="src\event\appEvent\AppEventPublisher.hpp" />
+    <ClInclude Include="src\event\appEvent\AppEventQueue.hpp" />
+    <ClInclude Include="src\event\appEvent\AppEventSubscriber.hpp" />
+    <ClInclude Include="src\event\appEvent\AppEventVariant.hpp" />
+    <ClInclude Include="src\event\appEvent\state\AppModeChangedEvent.hpp" />
+    <ClInclude Include="src\event\appEvent\state\AppModeCycleRequestedEvent.hpp" />
+    <ClInclude Include="src\event\appEvent\state\AppModeSetRequestedEvent.hpp" />
+    <ClInclude Include="src\event\appEvent\state\CameraModeChangedEvent.hpp" />
+    <ClInclude Include="src\event\appEvent\state\WindowSizeChangedEvent.hpp" />
+    <ClInclude Include="src\event\appEvent\ui\EnvironmentConfigChangedEvent.hpp" />
+    <ClInclude Include="src\event\appEvent\ui\EnvironmentConfigRequestedEvent.hpp" />
+    <ClInclude Include="src\event\InputEventType.hpp" />
+    <ClInclude Include="src\event\uiEvent\UIEventPublisher.hpp" />
+    <ClInclude Include="src\event\uiEvent\UIEventQueue.hpp" />
+    <ClInclude Include="src\event\uiEvent\UIEventSubscriber.hpp" />
+    <ClInclude Include="src\event\uiEvent\UIEventVariant.hpp" />
+    <ClInclude Include="src\event\uiEvent\viewport\CameraInfoRequestedEvent.hpp" />
+    <ClInclude Include="src\event\uiEvent\viewport\CameraInfoChangedEvent.hpp" />
+    <ClInclude Include="src\event\uiEvent\viewport\GridRequestedEvent.hpp" />
+    <ClInclude Include="src\event\uiEvent\viewport\GridChangedEvent.hpp" />
+    <ClInclude Include="src\event\uiEvent\viewport\SolidChangedEvent.hpp" />
+    <ClInclude Include="src\event\uiEvent\viewport\WireframeChangedEvent.hpp" />
+    <ClInclude Include="src\io\InputEventQueue.hpp" />
+    <ClInclude Include="src\io\InputHandler.hpp" />
+    <ClInclude Include="src\object\Entity.hpp" />
+    <ClInclude Include="src\object\ObjectLabel.hpp" />
+    <ClInclude Include="src\renderer\dx11\DX11Renderer.hpp" />
+    <ClInclude Include="src\renderer\Renderer.hpp" />
+    <ClInclude Include="src\render\ConstantBuffer.hpp" />
+    <ClInclude Include="src\render\ShaderInclude.hpp" />
+    <ClInclude Include="src\render\structures\SceneConstantBufferData.hpp" />
+    <ClInclude Include="src\render\IMaterial.hpp" />
+    <ClInclude Include="src\render\lights\DirectionalLight.hpp" />
+    <ClInclude Include="src\render\lights\Light.hpp" />
+    <ClInclude Include="src\render\lights\PointLight.hpp" />
+    <ClInclude Include="src\render\lights\SpotLight.hpp" />
+    <ClInclude Include="src\render\Material.hpp" />
+    <ClInclude Include="src\render\IMesh.hpp" />
+    <ClInclude Include="src\render\Mesh.hpp" />
+    <ClInclude Include="src\render\PixelShader.hpp" />
+    <ClInclude Include="src\render\primitives\Cube.hpp" />
+    <ClInclude Include="src\render\RenderCommand.hpp" />
+    <ClInclude Include="src\render\RenderCommandQueue.hpp" />
+    <ClInclude Include="src\render\IShader.hpp" />
+    <ClInclude Include="src\render\RenderObject.hpp" />
+    <ClInclude Include="src\render\structures\WorldMatConstantBufferData.hpp" />
+    <ClInclude Include="src\render\tools\GridMesh.hpp" />
+    <ClInclude Include="src\render\VertexShader.hpp" />
+    <ClInclude Include="src\ui\appUI\AppUI.hpp" />
+    <ClInclude Include="src\ui\mainBarUI\MainMenuBarUI.hpp" />
+    <ClInclude Include="src\ui\UIInclude.hpp" />
+    <ClInclude Include="src\ui\window\environmentConfig\EnvironmentConfig.hpp" />
+    <ClInclude Include="src\ui\window\environmentConfig\LightConfig.hpp" />
+    <ClInclude Include="src\viewport\camera\ArmCameraController.hpp" />
+    <ClInclude Include="src\viewport\camera\Camera.hpp" />
+    <ClInclude Include="src\viewport\camera\CameraController.hpp" />
+    <ClInclude Include="src\viewport\camera\CameraInclude.hpp" />
+    <ClInclude Include="src\viewport\camera\FixedAngleCameraController.hpp" />
+    <ClInclude Include="src\viewport\camera\FreeCameraController.hpp" />
+    <ClInclude Include="src\viewport\camera\TargetCameraController.hpp" />
+    <ClInclude Include="src\ui\preference\CameraInfoUI.hpp" />
+    <ClInclude Include="src\viewport\ui\Grid.hpp" />
+    <ClInclude Include="src\viewport\ui\ViewportCamUI.hpp" />
+    <ClInclude Include="src\viewport\ui\WorldPivot.hpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{083eb42f-6ecb-4c0d-94af-4ed4d72491cf}</ProjectGuid>
+    <RootNamespace>JIINYs3DTools</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;IMGUI_ENABLE_FREETYPE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)lib\imgui;$(ProjectDir)src;D:\Git\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/wd4819 /wd4309 /wd4244 /wd4267 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Git\vcpkg\installed\x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

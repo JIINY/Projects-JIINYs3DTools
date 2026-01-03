@@ -1,0 +1,17 @@
+	DebugLog(L"[SetCam] crtCam: %s, last: %s", ToString(currentCam), ToString(lastCam));
+
+
+이벤트 헤더 로그
+#include "common/DebugLog.hpp"
+#include <cstring>
+#include <cstdio> // vsnprintf_s/swprintf_s 등을 위해 필요한 헤더 (혹시 모르니 추가)
+
+struct CameraInfoVisibilityChangedEvent
+{
+	bool isVisible; 
+    
+    void log() const
+    {
+        DebugLog(L"CamInfo 발행: %d", isVisible);
+    }
+};

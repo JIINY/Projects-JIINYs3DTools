@@ -1,0 +1,17 @@
+.vs/
+out/
+build/
+x64/
+x86/
+Debug/
+Release/
+*.iobj
+*.ipdb
+*.pdb
+*.tlog
+*.obj
+*.log
+*.idb
+*.ilk
+*.aps
+*.user

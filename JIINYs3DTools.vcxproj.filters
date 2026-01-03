@@ -1,0 +1,606 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{f63738c0-e987-45aa-8821-dc7340b3a0cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{d1edf0dd-c7c4-4401-84af-1bfb52302676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\imgui">
+      <UniqueIdentifier>{19521981-0c49-4e1e-b190-8baee2a28886}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\imgui\backends">
+      <UniqueIdentifier>{be51d505-e742-447e-b157-ba897e7240dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{376ab593-8562-4f4a-98dd-e18556cd0f17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\renderer">
+      <UniqueIdentifier>{871d140d-0788-43c8-b333-8dffd897dd3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\renderer\dx11">
+      <UniqueIdentifier>{a85034ce-aee9-4b00-aea7-b640d2d181ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common">
+      <UniqueIdentifier>{2bbf53ca-38e3-4a7a-b896-68b384991c12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\io">
+      <UniqueIdentifier>{c4a0799d-0526-45a1-a29e-216d2710c598}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event">
+      <UniqueIdentifier>{c680789a-3eca-4ea4-ba43-a5a87dd3e205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\viewport">
+      <UniqueIdentifier>{410746b2-72bf-48fc-b77a-1a024bc727ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\structure">
+      <UniqueIdentifier>{ac8a5bd0-ae0a-44bf-b8c2-2c7f875e5dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\viewport\camera">
+      <UniqueIdentifier>{9c9e40cc-64e8-46f3-8034-bad884642b70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui">
+      <UniqueIdentifier>{4172866e-bc26-4707-a7a5-df12874d867e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\appUI">
+      <UniqueIdentifier>{522b79e3-8142-4d62-81e1-325b718b0b03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\viewport\ui">
+      <UniqueIdentifier>{a62d899c-16c3-4b64-b44d-00a47f41795f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\manager">
+      <UniqueIdentifier>{22aaf1b5-8499-4d55-b709-635638470b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\mainBarUI">
+      <UniqueIdentifier>{f41c916f-ccbe-438b-8c6d-e8f55c8737d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\misc">
+      <UniqueIdentifier>{062497d7-9568-4ec9-b600-c011db15b0ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\misc\freetype">
+      <UniqueIdentifier>{3a9b5b73-0df5-445d-bfde-c43cc2b89a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render">
+      <UniqueIdentifier>{f3d5a511-4c01-48e8-bc36-87a3615396a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\appEvent">
+      <UniqueIdentifier>{cfbd3b81-fb34-4eba-a3ed-732ddc7290a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\appEvent\data">
+      <UniqueIdentifier>{4b411976-2eaf-42a3-84ab-27d9e9aaebe8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\appEvent\flow">
+      <UniqueIdentifier>{d682a5ff-3c8d-4240-b753-25e10d965573}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\appEvent\state">
+      <UniqueIdentifier>{4606fa75-c1fd-4e8c-87cd-d0c4d58b76c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\coordinator">
+      <UniqueIdentifier>{ce143dc9-6605-434b-8bba-19e1e7fedf92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{bc5157fb-8204-4091-8350-e322913ffb06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\preference">
+      <UniqueIdentifier>{70c78630-a42f-4f3c-968c-0c983fbabf81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\uiEvent">
+      <UniqueIdentifier>{eb793476-a0c4-4a6b-b4a1-634a3d75a25f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\appEvent\ui">
+      <UniqueIdentifier>{8368a701-0f0f-484b-b95e-b68812fb174b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\shortcut">
+      <UniqueIdentifier>{a64956ca-b237-4572-96cd-25647a670f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\uiEvent\viewport">
+      <UniqueIdentifier>{802ae670-c720-4531-8116-8d683c70ce6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render\primitives">
+      <UniqueIdentifier>{5e071db4-59cd-4880-a758-bcde89b59c49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\object">
+      <UniqueIdentifier>{fc62c38d-6b6f-4802-bfef-9beb168f3286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Unlit_VertexColor">
+      <UniqueIdentifier>{ea2f7216-3857-49ef-a42f-0dece32bbf9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Unlit_MaterialColor">
+      <UniqueIdentifier>{db415cb9-11c4-4e36-a2ae-7461c76b77b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Unlit_ErrorColor">
+      <UniqueIdentifier>{84f798e8-cf50-4740-ae62-3d7992e9a17f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render\tools">
+      <UniqueIdentifier>{389a1ebe-b55d-404a-a2f0-fc68db9f0330}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render\lights">
+      <UniqueIdentifier>{ca4ba559-7df0-43e0-a991-13307da69106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Common">
+      <UniqueIdentifier>{63b46cd8-c8fa-4abe-97df-5916e0f8bf8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Lit_BlinnPhong">
+      <UniqueIdentifier>{101f28d1-69e5-482c-9f0b-2fd60e2273f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\Lit_HalfLambert">
+      <UniqueIdentifier>{ac91cc29-1c67-4ca9-bfe6-eeff5faea139}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\manager\system">
+      <UniqueIdentifier>{6a912c6d-f690-4eed-8bf6-33aad4842e13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\manager\editor">
+      <UniqueIdentifier>{4d9c06db-d980-496e-871f-19679930a8b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\manager\scene">
+      <UniqueIdentifier>{0b85a250-1fea-4079-ad36-a7afa8d52a37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\manager\resources">
+      <UniqueIdentifier>{076c0abe-824b-483e-b2b8-f64c882813cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render\structures">
+      <UniqueIdentifier>{5e6cbed4-e3a7-43de-acaa-8e65fea44e31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\window">
+      <UniqueIdentifier>{3505c294-56eb-4c34-8edd-ee2546bcc3e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\window\environmentConfig">
+      <UniqueIdentifier>{7c79dabd-766f-4372-a3d8-bd019ac3c134}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui.cpp">
+      <Filter>lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui_demo.cpp">
+      <Filter>lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui_draw.cpp">
+      <Filter>lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui_tables.cpp">
+      <Filter>lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui_widgets.cpp">
+      <Filter>lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\backends\imgui_impl_win32.cpp">
+      <Filter>lib\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\backends\imgui_impl_dx11.cpp">
+      <Filter>lib\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\App.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\dx11\DX11Renderer.cpp">
+      <Filter>src\renderer\dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\viewport\camera\Camera.cpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\viewport\camera\ArmCameraController.cpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\viewport\camera\FreeCameraController.cpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\viewport\camera\TargetCameraController.cpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\viewport\camera\FixedAngleCameraController.cpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\InputHandler.cpp">
+      <Filter>src\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common\Math.cpp">
+      <Filter>src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\appUI\AppUI.cpp">
+      <Filter>src\ui\appUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\mainBarUI\MainMenuBarUI.cpp">
+      <Filter>src\ui\mainBarUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common\DebugLog.cpp">
+      <Filter>src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\misc\freetype\imgui_freetype.cpp">
+      <Filter>lib\misc\freetype</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common\Fonts.cpp">
+      <Filter>src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\appEvent\AppEventQueue.cpp">
+      <Filter>src\event\appEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\InputEventQueue.cpp">
+      <Filter>src\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\RenderCommandQueue.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\appEvent\AppEventPublisher.cpp">
+      <Filter>src\event\appEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\appEvent\AppEventSubscriber.cpp">
+      <Filter>src\event\appEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\coordinator\CameraCoordinator.cpp">
+      <Filter>src\core\coordinator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\viewport\ui\ViewportCamUI.cpp">
+      <Filter>src\viewport\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\viewport\ui\Grid.cpp">
+      <Filter>src\viewport\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\viewport\ui\WorldPivot.cpp">
+      <Filter>src\viewport\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\Material.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\ConstantBuffer.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\coordinator\RenderCoordinator.cpp">
+      <Filter>src\core\coordinator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\preference\CameraInfoUI.cpp">
+      <Filter>src\ui\preference</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\coordinator\ViewStateCoordinator.cpp">
+      <Filter>src\core\coordinator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\uiEvent\UIEventPublisher.cpp">
+      <Filter>src\event\uiEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\uiEvent\UIEventQueue.cpp">
+      <Filter>src\event\uiEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\uiEvent\UIEventSubscriber.cpp">
+      <Filter>src\event\uiEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\primitives\Cube.cpp">
+      <Filter>src\render\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\coordinator\ResourceCoordinator.cpp">
+      <Filter>src\core\coordinator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\Mesh.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\VertexShader.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\PixelShader.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\RenderObject.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\tools\GridMesh.cpp">
+      <Filter>src\render\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="shaders\Unlit_MaterialColor\UnlitMaterial.cpp">
+      <Filter>shaders\Unlit_MaterialColor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\object\Entity.cpp">
+      <Filter>src\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\manager\system\AppUIManager.cpp">
+      <Filter>src\core\manager\system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\manager\scene\BaseObjectManager.cpp">
+      <Filter>src\core\manager\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\manager\editor\ToolObjectManager.cpp">
+      <Filter>src\core\manager\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\manager\system\ShortcutManager.cpp">
+      <Filter>src\core\manager\system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\manager\resources\MaterialManager.cpp">
+      <Filter>src\core\manager\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\manager\resources\ShaderManager.cpp">
+      <Filter>src\core\manager\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\manager\editor\ViewportCameraManager.cpp">
+      <Filter>src\core\manager\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\manager\scene\LightManager.cpp">
+      <Filter>src\core\manager\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="shaders\Lit_BlinnPhong\BlinnPhongMaterial.cpp">
+      <Filter>shaders\Lit_BlinnPhong</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\ShaderInclude.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\window\environmentConfig\LightConfig.cpp">
+      <Filter>src\ui\window\environmentConfig</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\manager\system\FloatingWindowManager.cpp">
+      <Filter>src\core\manager\system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\window\environmentConfig\EnvironmentConfig.cpp">
+      <Filter>src\ui\window\environmentConfig</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\renderer\Renderer.hpp">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\dx11\DX11Renderer.hpp">
+      <Filter>src\renderer\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\App.hpp">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\Mode.hpp">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\io\InputEventQueue.hpp">
+      <Filter>src\io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\ElementID.hpp">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\InputEventType.hpp">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\camera\ArmCameraController.hpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\camera\Camera.hpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\camera\CameraController.hpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\camera\FreeCameraController.hpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\camera\TargetCameraController.hpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\camera\FixedAngleCameraController.hpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\Math.hpp">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\io\InputHandler.hpp">
+      <Filter>src\io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\UIInclude.hpp">
+      <Filter>src\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\appUI\AppUI.hpp">
+      <Filter>src\ui\appUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\camera\CameraInclude.hpp">
+      <Filter>src\viewport\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\ManagerInclude.hpp">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\mainBarUI\MainMenuBarUI.hpp">
+      <Filter>src\ui\mainBarUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\DebugLog.hpp">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\imgui.h">
+      <Filter>lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\Fonts.hpp">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\RenderCommand.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\state\AppModeChangedEvent.hpp">
+      <Filter>src\event\appEvent\state</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\AppEventQueue.hpp">
+      <Filter>src\event\appEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\RenderCommandQueue.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\AppEventVariant.hpp">
+      <Filter>src\event\appEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\AppEventPublisher.hpp">
+      <Filter>src\event\appEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\state\CameraModeChangedEvent.hpp">
+      <Filter>src\event\appEvent\state</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\AppEventSubscriber.hpp">
+      <Filter>src\event\appEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\CameraCoordinator.hpp">
+      <Filter>src\core\coordinator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\ui\ViewportCamUI.hpp">
+      <Filter>src\viewport\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\ui\Grid.hpp">
+      <Filter>src\viewport\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\ui\WorldPivot.hpp">
+      <Filter>src\viewport\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\IShader.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\Material.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\ConstantBuffer.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\IMesh.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\RenderCoordinator.hpp">
+      <Filter>src\core\coordinator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\preference\CameraInfoUI.hpp">
+      <Filter>src\ui\preference</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\ViewStateCoordinator.hpp">
+      <Filter>src\core\coordinator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\uiEvent\UIEventQueue.hpp">
+      <Filter>src\event\uiEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\uiEvent\UIEventVariant.hpp">
+      <Filter>src\event\uiEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\uiEvent\UIEventSubscriber.hpp">
+      <Filter>src\event\uiEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\uiEvent\UIEventPublisher.hpp">
+      <Filter>src\event\uiEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\state\AppModeCycleRequestedEvent.hpp">
+      <Filter>src\event\appEvent\state</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\state\AppModeSetRequestedEvent.hpp">
+      <Filter>src\event\appEvent\state</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\uiEvent\viewport\GridChangedEvent.hpp">
+      <Filter>src\event\uiEvent\viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\uiEvent\viewport\CameraInfoRequestedEvent.hpp">
+      <Filter>src\event\uiEvent\viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\uiEvent\viewport\GridRequestedEvent.hpp">
+      <Filter>src\event\uiEvent\viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\uiEvent\viewport\CameraInfoChangedEvent.hpp">
+      <Filter>src\event\uiEvent\viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\primitives\Cube.hpp">
+      <Filter>src\render\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\object\ObjectLabel.hpp">
+      <Filter>src\object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\ResourceCoordinator.hpp">
+      <Filter>src\core\coordinator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\Mesh.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\VertexShader.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\IMaterial.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\PixelShader.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\object\Entity.hpp">
+      <Filter>src\object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\RenderObject.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\tools\GridMesh.hpp">
+      <Filter>src\render\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Unlit_VertexColor\VertexColorMaterial.hpp">
+      <Filter>shaders\Unlit_VertexColor</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Unlit_MaterialColor\UnlitMaterial.hpp">
+      <Filter>shaders\Unlit_MaterialColor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\state\WindowSizeChangedEvent.hpp">
+      <Filter>src\event\appEvent\state</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\uiEvent\viewport\WireframeChangedEvent.hpp">
+      <Filter>src\event\uiEvent\viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\uiEvent\viewport\SolidChangedEvent.hpp">
+      <Filter>src\event\uiEvent\viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\lights\Light.hpp">
+      <Filter>src\render\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\lights\DirectionalLight.hpp">
+      <Filter>src\render\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\lights\PointLight.hpp">
+      <Filter>src\render\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\lights\SpotLight.hpp">
+      <Filter>src\render\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Lit_BlinnPhong\BlinnPhongMaterial.hpp">
+      <Filter>shaders\Lit_BlinnPhong</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\system\AppUIManager.hpp">
+      <Filter>src\core\manager\system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\scene\BaseObjectManager.hpp">
+      <Filter>src\core\manager\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\editor\ToolObjectManager.hpp">
+      <Filter>src\core\manager\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\system\ShortcutManager.hpp">
+      <Filter>src\core\manager\system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\resources\MaterialManager.hpp">
+      <Filter>src\core\manager\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\resources\ShaderManager.hpp">
+      <Filter>src\core\manager\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\editor\ViewportCameraManager.hpp">
+      <Filter>src\core\manager\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\scene\LightManager.hpp">
+      <Filter>src\core\manager\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\structures\SceneConstantBufferData.hpp">
+      <Filter>src\render\structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\structures\WorldMatConstantBufferData.hpp">
+      <Filter>src\render\structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\ShaderInclude.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\ui\EnvironmentConfigRequestedEvent.hpp">
+      <Filter>src\event\appEvent\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\ui\EnvironmentConfigChangedEvent.hpp">
+      <Filter>src\event\appEvent\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\window\environmentConfig\EnvironmentConfig.hpp">
+      <Filter>src\ui\window\environmentConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\window\environmentConfig\LightConfig.hpp">
+      <Filter>src\ui\window\environmentConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\system\FloatingWindowManager.hpp">
+      <Filter>src\core\manager\system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\AppConfig.hpp">
+      <Filter>src\core</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

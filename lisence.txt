@@ -1,0 +1,3 @@
+- ImGui: MIT License
+- FreeType: FreeType License (BSD 스타일)
+- stb_truetype (via ImGui): Public Domain or MIT
