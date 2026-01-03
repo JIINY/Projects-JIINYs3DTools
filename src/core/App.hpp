@@ -13,6 +13,14 @@ class RenderCoordinator;
 class ViewStateCoordinator;
 class ResourceCoordinator;
 
+namespace Scene 
+{
+	class SceneSerializer;
+}
+namespace EnvConfig
+{
+	class EnvironmentConfigSerializer;
+}
 class AppEventQueue;
 class AppEventSubscriber;
 class DX11Renderer;
@@ -55,6 +63,7 @@ private:
 	std::unique_ptr<ResourceCoordinator> resourceCoordinator_;
 
 	std::unique_ptr<MainMenuBarUI> mainMenuBarUI_;
-
+	std::unique_ptr<EnvConfig::EnvironmentConfigSerializer> environmentConfigSerializer_;
+	std::unique_ptr<Scene::SceneSerializer> sceneSerializer_;
 	std::unique_ptr<DX11Renderer> renderer_;
 };

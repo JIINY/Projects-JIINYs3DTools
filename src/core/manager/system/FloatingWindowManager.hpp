@@ -12,11 +12,16 @@
 
 class ViewportCameraManager;
 class LightManager;
+namespace 
+{
+	class EnvironmentConfigSerializer;
+}
 
 struct FloatingWindowContext 
 {
 	ViewportCameraManager* cameraManager = nullptr;
 	LightManager* lightManager = nullptr;
+	EnvConfig::EnvironmentConfigSerializer* envSerializer = nullptr;
 };
 
 class FloatingWindowManager
@@ -51,6 +56,8 @@ private:
 
 	bool isEnvConfigVisible_ = false;
 	bool isCamInfoVisible_ = false;
+
+	EnvConfig::EnvironmentConfigSerializer* envSerializer_ = nullptr;
 
 	void onEnvironmentConfigChanged(const EnvironmentConfigChangedEvent& event);
 	void onCameraInfoChanged(const CameraInfoChangedEvent& event);

@@ -19,6 +19,8 @@
 #include "event/InputEventType.hpp"
 #include "io/InputEventQueue.hpp"
 #include "io/InputHandler.hpp"
+#include "scene/SceneSerializer.hpp"
+#include "ui/window/environmentConfig/EnvironmentConfigSerializer.hpp"
 #include "renderer/Renderer.hpp"
 #include "renderer/dx11/DX11Renderer.hpp"
 
@@ -40,7 +42,8 @@ App::App() :
 	resourceCoordinator_(std::make_unique<ResourceCoordinator>()),
 	viewStateCoordinator_(std::make_unique<ViewStateCoordinator>()),
 
-
+	environmentConfigSerializer_(std::make_unique<EnvConfig::EnvironmentConfigSerializer>()),
+	sceneSerializer_(std::make_unique<Scene::SceneSerializer>()),
 	renderer_(std::make_unique<DX11Renderer>()),
 	mainMenuBarUI_(std::make_unique<MainMenuBarUI>()) {}
 
@@ -49,7 +52,7 @@ App::~App() {}
 
 bool App::initialize(void* hwnd) 
 {
-	AppConfigData data = AppConfig::load();
+	AppConfigData appData = AppConfig::load();
 
 	if (!renderer_->initialize(hwnd)) { return false; }
 
@@ -89,6 +92,19 @@ bool App::initialize(void* hwnd)
 		assert(false && "[에러] RenderCoordinator 초기화 실패\n");
 		return false;
 	}
+
+	if (environmentConfigSerializer_)
+	{
+		EnvConfig::EnvConfigContext envContext;
+		envContext.lightManager = renderCoordinator_->getLightManager();
+
+		environmentConfigSerializer_->initialize(envContext);
+		environmentConfigSerializer_->deserialize("assets/environments/DefaultConfig.json");
+	}
+	if (sceneSerializer_)
+	{
+
+	}
 	if (floatingWindowManager_)
 	{
 		LightManager* lightManager = renderCoordinator_->getLightManager();
@@ -97,9 +113,10 @@ bool App::initialize(void* hwnd)
 		FloatingWindowContext context;
 		context.lightManager = lightManager;
 		context.cameraManager = camManager;
+		context.envSerializer = environmentConfigSerializer_.get();
 
 		FloatingConfigData floatingData;
-		floatingData = data.floatingConfig;
+		floatingData = appData.floatingConfig;
 
 		floatingWindowManager_->initialize(context, floatingData);
 	}
@@ -111,6 +128,7 @@ bool App::initialize(void* hwnd)
 	{
 		mainMenuBarUI_->initialize();
 	}
+
 
 	//초기 상태를 강제 동기화(첫 프레임 버그용)
 	cameraCoordinator_->getViewportCameraManager()->setCameraModeForAppMode(AppMode::Edit);

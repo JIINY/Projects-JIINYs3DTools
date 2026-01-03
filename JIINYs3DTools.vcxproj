@@ -67,6 +67,8 @@
     <ClCompile Include="src\render\ShaderInclude.cpp" />
     <ClCompile Include="src\render\tools\GridMesh.cpp" />
     <ClCompile Include="src\render\VertexShader.cpp" />
+    <ClCompile Include="src\scene\SceneSerializer.cpp" />
+    <ClCompile Include="src\ui\window\environmentConfig\EnvironmentConfigSerializer.cpp" />
     <ClCompile Include="src\ui\appUI\AppUI.cpp" />
     <ClCompile Include="src\ui\mainBarUI\MainMenuBarUI.cpp" />
     <ClCompile Include="src\ui\window\environmentConfig\EnvironmentConfig.cpp" />
@@ -155,6 +157,8 @@
     <ClInclude Include="src\render\structures\WorldMatConstantBufferData.hpp" />
     <ClInclude Include="src\render\tools\GridMesh.hpp" />
     <ClInclude Include="src\render\VertexShader.hpp" />
+    <ClInclude Include="src\scene\SceneSerializer.hpp" />
+    <ClInclude Include="src\ui\window\environmentConfig\EnvironmentConfigSerializer.hpp" />
     <ClInclude Include="src\ui\appUI\AppUI.hpp" />
     <ClInclude Include="src\ui\mainBarUI\MainMenuBarUI.hpp" />
     <ClInclude Include="src\ui\UIInclude.hpp" />
@@ -171,6 +175,9 @@
     <ClInclude Include="src\viewport\ui\Grid.hpp" />
     <ClInclude Include="src\viewport\ui\ViewportCamUI.hpp" />
     <ClInclude Include="src\viewport\ui\WorldPivot.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\environments\DefaultConfig.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

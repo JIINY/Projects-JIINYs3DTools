@@ -148,6 +148,21 @@
     <Filter Include="src\ui\window\environmentConfig">
       <UniqueIdentifier>{7c79dabd-766f-4372-a3d8-bd019ac3c134}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\scene">
+      <UniqueIdentifier>{296d8fa3-604c-494e-b718-bc92a8a2a6f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{9df95953-178c-4b06-8739-46f40f86e006}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\fonts">
+      <UniqueIdentifier>{714fe04b-272b-4dc1-b456-d62f82f6d65d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\scenes">
+      <UniqueIdentifier>{a43a08ac-4947-45f7-b066-ca13691067c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\environments">
+      <UniqueIdentifier>{fd2cd00c-ceba-42eb-91ea-f86e30acef34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -333,6 +348,10 @@
     <ClCompile Include="src\ui\window\environmentConfig\EnvironmentConfig.cpp">
       <Filter>src\ui\window\environmentConfig</Filter>
     </ClCompile>
+    <ClCompile Include="src\ui\window\environmentConfig\EnvironmentConfigSerializer.cpp">
+      <Filter>src\ui\window\environmentConfig</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\SceneSerializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\renderer\Renderer.hpp">
@@ -602,5 +621,16 @@
     <ClInclude Include="src\core\AppConfig.hpp">
       <Filter>src\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\ui\window\environmentConfig\EnvironmentConfigSerializer.hpp">
+      <Filter>src\ui\window\environmentConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\SceneSerializer.hpp">
+      <Filter>src\scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\environments\DefaultConfig.json">
+      <Filter>assets\environments</Filter>
+    </None>
   </ItemGroup>
 </Project>

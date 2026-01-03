@@ -51,7 +51,7 @@ void FloatingWindowManager::draw()
 {
 	if (isEnvConfigVisible_) 
 	{
-		envConfig_.draw(isEnvConfigVisible_);
+		envConfig_.draw(isEnvConfigVisible_, envSerializer_);
 	}
 
 	if (isCamInfoVisible_)
