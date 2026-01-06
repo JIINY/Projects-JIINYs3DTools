@@ -87,19 +87,19 @@ namespace EnvConfig
         {
             auto& sun = loadfile["SunLight"];
 
-            if (sun.contains("SunDirection"))
+            if (sun.contains("Direction"))
             {
-                auto& dir = sun["SunDirection"];
+                auto& dir = sun["Direction"];
                 lightManager_->setDirectionalLightDir({ dir[0], dir[1], dir[2] });
             }
-            if (sun.contains("SunColor"))
+            if (sun.contains("Color"))
             {
-                auto& color = sun["SunColor"];
+                auto& color = sun["Color"];
                 lightManager_->setDirectionalLightColor({ color[0], color[1], color[2] });
             }
-            if (sun.contains("SunIntensity"))
+            if (sun.contains("Intensity"))
             {
-                lightManager_->setDirectionalLightIntensity(sun["SunIntensity"]);
+                lightManager_->setDirectionalLightIntensity(sun["Intensity"]);
             }
         }
 
