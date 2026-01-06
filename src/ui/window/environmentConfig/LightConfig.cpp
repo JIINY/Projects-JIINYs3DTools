@@ -44,13 +44,13 @@ namespace EnvConfig
     {
         if (!manager_) { return; }
 
-        static ImGuiTableFlags flags = ImGuiTableFlags_Resizable | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp;
+        static ImGuiTableFlags flags = ImGuiTableFlags_None;
         if (ImGui::CollapsingHeader("SunLight", ImGuiTreeNodeFlags_DefaultOpen)) 
         {
             if (ImGui::BeginTable("SunTable", 2, flags)) 
             {
-                ImGui::TableSetupColumn("Label", ImGuiTableColumnFlags_WidthStretch, 0.3f);
-                ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthStretch, 0.7f);
+                ImGui::TableSetupColumn("Label", ImGuiTableColumnFlags_WidthStretch, 0.28f);
+                ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthStretch, 0.72f);
 
                 bool sunChanged = false;
 
@@ -98,7 +98,6 @@ namespace EnvConfig
             }
         }
 
-        ImGui::Separator();
 
         if (ImGui::CollapsingHeader("AmbientLight", ImGuiTreeNodeFlags_DefaultOpen))
         {
