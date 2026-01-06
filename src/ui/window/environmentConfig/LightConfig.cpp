@@ -59,21 +59,45 @@ namespace EnvConfig
                 ImGui::Text("Rotation");
                 ImGui::TableNextColumn();
                 ImGui::SetNextItemWidth(-FLT_MIN);
-                sunChanged |= ImGui::SliderFloat("##Rotation", &sunTheta_, 0.0f, 360.0f);
+
+                int rotationStep = (int)(sunTheta_ / 5.0f);
+                char rotLabel[32];
+                sprintf_s(rotLabel, sizeof(rotLabel), "%d", rotationStep * 5);
+                if (ImGui::SliderInt("##Rotation", &rotationStep, 0, 72, rotLabel))
+                {
+                    sunTheta_ = (float)rotationStep * 5.0f;
+                    sunChanged = true;
+                }
 
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
                 ImGui::Text("Height");
                 ImGui::TableNextColumn();
                 ImGui::SetNextItemWidth(-FLT_MIN);
-                sunChanged |= ImGui::SliderFloat("##Height", &sunPhi_, 0.0f, 90.0f);
+
+                int heightStep = (int)(sunPhi_ / 2.5f);
+                char heightLabel[32];
+                sprintf_s(heightLabel, sizeof(heightLabel), "%.1f", heightStep * 2.5f);
+                if (ImGui::SliderInt("##Height", &heightStep, 0, 36, heightLabel))
+                {
+                    sunPhi_ = (float)heightStep * 2.5f;
+                    sunChanged = true;
+                }
 
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
                 ImGui::Text("Intensity");
                 ImGui::TableNextColumn();
                 ImGui::SetNextItemWidth(-FLT_MIN);
-                sunChanged |= ImGui::SliderFloat("##Intensity", &sunIntensity_, 0.01f, 5.0f);
+
+                int intensityStep = (int)(sunIntensity_ / 0.2f);
+                char intensityLabel[32];
+                sprintf_s(intensityLabel, sizeof(intensityLabel), "%.1f", intensityStep * 0.2f);
+                if (ImGui::SliderInt("##Intensity", &intensityStep, 0, 25, intensityLabel))
+                {
+                    sunIntensity_ = (float)intensityStep * 0.2f;
+                    sunChanged = true;
+                }
 
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
