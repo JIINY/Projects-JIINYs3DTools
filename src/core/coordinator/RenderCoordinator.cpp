@@ -54,7 +54,7 @@ bool RenderCoordinator::initialize(DX11Renderer* renderer, CameraCoordinator* ca
 	}
 	else 
 	{
-		assert(false && "[에러] 그리드 초기화 실패");
+		assert(0 && "[에러] 그리드 초기화 실패");
 		return false;
 	}
 	
@@ -66,7 +66,7 @@ void RenderCoordinator::render()
 {
 	if (!renderer_ || !cameraCoordinator_) 
 	{
-		assert(false && "[에러] 렌더링 준비 실패");
+		assert(0 && "[에러] 렌더링 준비 실패");
 		return;
 	}
 

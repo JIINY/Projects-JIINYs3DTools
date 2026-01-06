@@ -17,7 +17,7 @@ namespace EnvConfig
     {
         if (!lightManager_)
         {
-            assert(false && "[에러] 저장: lightManager_가 비었습니다.");
+            assert(0 && "[에러] 저장: lightManager_가 비었습니다.");
             return;
         }
 
@@ -52,7 +52,7 @@ namespace EnvConfig
         }
         else
         {
-            assert(false && "[에러] Scene파일 저장 실패\n");
+            assert(0 && "[에러] Scene파일 저장 실패\n");
         }
     }
 
@@ -60,7 +60,7 @@ namespace EnvConfig
     {
         if (!lightManager_)
         {
-            assert(false && "[에러] 로드: lightManager_가 비었습니다.\n");
+            assert(0 && "[에러] 로드: lightManager_가 비었습니다.\n");
             return false;
         }
 
@@ -78,7 +78,7 @@ namespace EnvConfig
         }
         catch (json::parse_error& e)
         {
-            assert(false && "[에러] 로드: JSON 파싱\n");
+            assert(0 && "[에러] 로드: JSON 파싱\n");
             return false;
         }
         fin.close();

@@ -17,7 +17,7 @@ bool FloatingWindowManager::initialize(FloatingWindowContext context, FloatingCo
 {
 	if (!context.lightManager || !context.cameraManager) 
 	{ 
-		assert(false && "[에러] FloatingWindowManager 초기값이 비었습니다.\n");
+		assert(0 && "[에러] FloatingWindowManager 초기값이 비었습니다.\n");
 		return false; 
 	}
 

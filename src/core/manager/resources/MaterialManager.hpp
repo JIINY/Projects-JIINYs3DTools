@@ -22,7 +22,7 @@ public:
 		auto newMat = std::make_shared<T>();
 		if (!newMat->initialize(device_, vsPath, psPath)) //T클래스는 반드시 초기화 함수를 가져야 함
 		{
-			assert(false && "[에러] 매티리얼 초기화 실패");
+			assert(0 && "[에러] 매티리얼 초기화 실패");
 		}
 
 		//매티리얼이 개별적으로 로드한 쉐이더 인스턴스 대신, 매니저가 관리하는 공유 인스턴스를 사용

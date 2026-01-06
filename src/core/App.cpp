@@ -100,12 +100,12 @@ bool App::initialize(void* hwnd)
 	}
 	if (!resourceCoordinator_->initialize(renderer_->getDevice(), renderer_->getDeviceContext()))
 	{
-		assert(false && "[에러] ResourceCoordinator 초기화 실패\n");
+		assert(0 && "[에러] ResourceCoordinator 초기화 실패\n");
 		return false;
 	}
 	if (!renderCoordinator_->initialize(renderer_.get(), cameraCoordinator_.get()))
 	{
-		assert(false && "[에러] RenderCoordinator 초기화 실패\n");
+		assert(0 && "[에러] RenderCoordinator 초기화 실패\n");
 		return false;
 	}
 
