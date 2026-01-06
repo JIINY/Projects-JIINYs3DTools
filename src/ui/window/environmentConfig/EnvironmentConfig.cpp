@@ -45,7 +45,7 @@ namespace EnvConfig
             ImGui::SameLine();
             if (ImGui::Button("Reset", ImVec2(btnWidth, 0)))
             {
-                if (serializer) { serializer->deserialize("assets/environments/DefaultConfig.json"); }
+                if (serializer) { serializer->deserialize("src/defaults/DefaultEnvironmentConfig.json"); }
             }
 
             ImGui::PopStyleVar();

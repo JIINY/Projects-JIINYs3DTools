@@ -177,7 +177,8 @@
     <ClInclude Include="src\viewport\ui\WorldPivot.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\environments\DefaultConfig.json" />
+    <None Include="assets\environments\test.json" />
+    <None Include="src\defaults\DefaultEnvironmentConfig.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

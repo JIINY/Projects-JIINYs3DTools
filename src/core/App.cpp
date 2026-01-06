@@ -115,7 +115,7 @@ bool App::initialize(void* hwnd)
 		envContext.lightManager = renderCoordinator_->getLightManager();
 
 		environmentConfigSerializer_->initialize(envContext);
-		environmentConfigSerializer_->deserialize("assets/environments/DefaultConfig.json");
+		environmentConfigSerializer_->deserialize("src/defaults/DefaultEnvironmentConfig.json");
 	}
 	if (sceneSerializer_)
 	{

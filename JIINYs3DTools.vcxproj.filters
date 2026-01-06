@@ -34,9 +34,6 @@
     <Filter Include="src\viewport">
       <UniqueIdentifier>{410746b2-72bf-48fc-b77a-1a024bc727ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\structure">
-      <UniqueIdentifier>{ac8a5bd0-ae0a-44bf-b8c2-2c7f875e5dde}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\viewport\camera">
       <UniqueIdentifier>{9c9e40cc-64e8-46f3-8034-bad884642b70}</UniqueIdentifier>
     </Filter>
@@ -162,6 +159,9 @@
     </Filter>
     <Filter Include="assets\environments">
       <UniqueIdentifier>{fd2cd00c-ceba-42eb-91ea-f86e30acef34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\defaults">
+      <UniqueIdentifier>{ac8a5bd0-ae0a-44bf-b8c2-2c7f875e5dde}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -629,8 +629,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\environments\DefaultConfig.json">
+    <None Include="assets\environments\test.json">
       <Filter>assets\environments</Filter>
     </None>
+    <None Include="src\defaults\DefaultEnvironmentConfig.json" />
   </ItemGroup>
 </Project>
