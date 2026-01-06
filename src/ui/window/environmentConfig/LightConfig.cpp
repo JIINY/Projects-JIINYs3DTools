@@ -134,8 +134,8 @@ namespace EnvConfig
         {
             if (ImGui::BeginTable("SunTable", 2, flags))
             {
-                ImGui::TableSetupColumn("Label", ImGuiTableColumnFlags_WidthStretch, 0.3f);
-                ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthStretch, 0.7f);
+                ImGui::TableSetupColumn("Label", ImGuiTableColumnFlags_WidthStretch, 0.28f);
+                ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthStretch, 0.72f);
 
                 bool ambChanged = false;
 
