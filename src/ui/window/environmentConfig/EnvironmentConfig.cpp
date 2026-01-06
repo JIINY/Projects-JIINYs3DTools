@@ -19,9 +19,10 @@ namespace EnvConfig
         if (!isVisible) { return; }
         
         bool isOpen = true;
-        ImGui::SetNextWindowSize(ImVec2(300, 500), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(ImVec2(300, 500), ImGuiCond_Always);
+        ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize;
 
-        if (ImGui::Begin("Environment Config", &isOpen)) 
+        if (ImGui::Begin("Environment Config", &isOpen, window_flags)) 
         {
             lightConfig_.draw();
 
