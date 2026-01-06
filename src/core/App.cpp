@@ -58,13 +58,29 @@ bool App::initialize(void* hwnd)
 
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
-
 	ImGuiStyle& style = ImGui::GetStyle();
-	style.FrameRounding = 6.0f;
-	style.GrabRounding = 6.0f;
+	ImVec4 bgColor = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
+	style.Colors[ImGuiCol_WindowBg] = bgColor;
+	style.Colors[ImGuiCol_ChildBg] = bgColor;
+	style.Colors[ImGuiCol_PopupBg] = bgColor;
+
+	style.FrameRounding = 4.0f;
+	style.GrabRounding = 2.0f;
 
 	style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.8f, 0.8f, 0.8f, 1.0f);
-	style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(1.0f, 0.5f, 0.5f, 1.0f);
+	style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
+
+	style.Colors[ImGuiCol_Button] = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
+	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.4f, 0.4f, 0.4f, 1.0f);
+	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.45f, 0.45f, 0.45f, 1.0f);
+
+	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
+	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.4f, 0.4f, 0.4f, 1.0f);
+	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.45f, 0.45f, 0.45f, 1.0f);
+
+	style.Colors[ImGuiCol_Header] = ImVec4(0.12f, 0.12f, 0.12f, 1.0f);
+	style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
+	style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.35f, 0.35f, 0.35f, 1.0f);
 
 	ImGui_ImplWin32_Init((HWND)hwnd);
 	ImGui_ImplDX11_Init(renderer_->getDevice(), renderer_->getDeviceContext());
