@@ -103,8 +103,15 @@ namespace EnvConfig
                 ImGui::TableNextColumn();
                 ImGui::Text("Color");
                 ImGui::TableNextColumn();
-                ImGui::SetNextItemWidth(-FLT_MIN);
-                sunChanged |= ImGui::ColorEdit3("##Color", sunColor_);
+
+                ImGui::SetNextItemWidth(171);
+                sunChanged |= ImGui::ColorEdit3("##Color", (float*)&sunColor_, ImGuiColorEditFlags_NoSmallPreview);
+                ImGui::SameLine(0, 3.0f);
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+                sunChanged |= ImGui::ColorEdit3("##ColorPreview", (float*)&sunColor_, ImGuiColorEditFlags_NoInputs);
+                ImGui::PopStyleColor();
+                ImGui::PopStyleVar();
 
                 ImGui::EndTable();
                 if (sunChanged)
@@ -136,22 +143,46 @@ namespace EnvConfig
                 ImGui::TableNextColumn();
                 ImGui::Text("Sky");
                 ImGui::TableNextColumn();
-                ImGui::SetNextItemWidth(-FLT_MIN);
-                ambChanged |= ImGui::ColorEdit3("##Sky", ambientTop_);
+
+                ImGui::SetNextItemWidth(171);
+                ambChanged |= ImGui::ColorEdit3("##Sky", (float*)&ambientTop_, ImGuiColorEditFlags_NoSmallPreview);
+                ImGui::SameLine(0, 3.0f);
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                ambChanged |= ImGui::ColorEdit3("##SkyPreview", (float*)&ambientTop_, ImGuiColorEditFlags_NoInputs);
+                ImGui::PopStyleColor();
+                ImGui::PopStyleVar();
+
 
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
                 ImGui::Text("Horizon");
                 ImGui::TableNextColumn();
-                ImGui::SetNextItemWidth(-FLT_MIN);
-                ambChanged |= ImGui::ColorEdit3("##Horizon", ambientMid_);
+
+                ImGui::SetNextItemWidth(171);
+                ambChanged |= ImGui::ColorEdit3("##Horizon", (float*)&ambientMid_, ImGuiColorEditFlags_NoSmallPreview);
+                ImGui::SameLine(0, 3.0f);
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                ambChanged |= ImGui::ColorEdit3("##HorizonPreview", (float*)&ambientMid_, ImGuiColorEditFlags_NoInputs);
+                ImGui::PopStyleColor();
+                ImGui::PopStyleVar();
+
 
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
                 ImGui::Text("Ground");
                 ImGui::TableNextColumn();
-                ImGui::SetNextItemWidth(-FLT_MIN);
-                ambChanged |= ImGui::ColorEdit3("##Ground", ambientBot_);
+
+                ImGui::SetNextItemWidth(171);
+                ambChanged |= ImGui::ColorEdit3("##Ground", (float*)&ambientBot_, ImGuiColorEditFlags_NoSmallPreview);
+                ImGui::SameLine(0, 3.0f);
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                ambChanged |= ImGui::ColorEdit3("##GroundPreview", (float*)&ambientBot_, ImGuiColorEditFlags_NoInputs);
+                ImGui::PopStyleColor();
+                ImGui::PopStyleVar();
+
 
                 ImGui::EndTable();
                 if (ambChanged)
