@@ -9,7 +9,12 @@ namespace EnvConfig
     {
     public:
         void initialize(LightManager* manager);
-        void draw();
+        bool draw();
+        
+        void setFromManager();
+        float getDegreePhiFromRad(float dirY);
+        float getDegreeThetaFromRad(float dirX, float dirZ);
+
 
     private:
         LightManager* manager_ = nullptr;

@@ -13,31 +13,7 @@ namespace EnvConfig
     void LightConfig::initialize(LightManager* manager)
     {
         manager_ = manager;
-        if (!manager_) { return; }
-
-        auto sun = manager_->getDirectionalLight();
-        Math::Vec3 dir = sun->getDirection();
-        float clampY = clamp(dir.y, -1.0f, 1.0f);
-
-        float radPhi = asinf(clampY);
-        sunPhi_ = DirectX::XMConvertToDegrees(radPhi);
-
-        float radTheta = atan2f(dir.x, dir.z);
-        sunTheta_ = DirectX::XMConvertToDegrees(radTheta);
-
-        if (sunTheta_ < 0.0f) { sunTheta_ += 360.0f; }
-
-        auto sunColor = sun->getColor();
-        sunColor_[0] = sunColor.x;
-        sunColor_[1] = sunColor.y;
-        sunColor_[2] = sunColor.z;
-
-        sunIntensity_ = sun->getIntensity();
-
-        auto [top, mid, bot] = manager_->getAmbientColors();
-        ambientTop_[0] = top.x; ambientTop_[1] = top.y; ambientTop_[2] = top.z;
-        ambientMid_[0] = mid.x; ambientMid_[1] = mid.y; ambientMid_[2] = mid.z;
-        ambientBot_[0] = bot.x; ambientBot_[1] = bot.y; ambientBot_[2] = bot.z;
+        setFromManager();
     }
 
     void LightConfig::draw() 
@@ -195,4 +171,41 @@ namespace EnvConfig
         }
     }
 
+    void LightConfig::setFromManager() 
+    {
+        if (!manager_) return;
+        auto sun = manager_->getDirectionalLight();
+
+        Math::Vec3 dir = sun->getDirection();
+        sunTheta_ = getDegreeThetaFromRad(dir.x, dir.z);
+        sunPhi_ = getDegreePhiFromRad(dir.y);
+
+        Math::Vec3 sunColor = sun->getColor();
+        sunColor_[0] = sunColor.x;
+        sunColor_[1] = sunColor.y;
+        sunColor_[2] = sunColor.z;
+
+        sunIntensity_ = sun->getIntensity();
+
+        auto [top, mid, bot] = manager_->getAmbientColors();
+        ambientTop_[0] = top.x; ambientTop_[1] = top.y; ambientTop_[2] = top.z;
+        ambientMid_[0] = mid.x; ambientMid_[1] = mid.y; ambientMid_[2] = mid.z;
+        ambientBot_[0] = bot.x; ambientBot_[1] = bot.y; ambientBot_[2] = bot.z;
+    }
+
+    float LightConfig::getDegreePhiFromRad(float dirY)
+    {
+        float clampY = clamp(dirY, -1.0f, 1.0f);
+        float radPhi = asinf(clampY);
+        return DirectX::XMConvertToDegrees(radPhi);
+    }
+
+    float LightConfig::getDegreeThetaFromRad(float dirX, float dirZ)
+    {
+        float radTheta = atan2f(dirX, dirZ);
+        float degTheta = DirectX::XMConvertToDegrees(radTheta);
+
+        if (degTheta < 0.0f) { degTheta += 360.0f; }
+        return degTheta;
+    }
 }
