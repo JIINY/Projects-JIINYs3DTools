@@ -22,11 +22,11 @@ namespace Fonts
 		io.Fonts->Clear();
 		io.Fonts->FontLoader = ImGuiFreeType::GetFontLoader();
 
-		Regular17 = LoadFontFromMemory("assets/fonts/NanumHumanRegular.ttf", 17.0f, "Regular17");
-		Regular18 = LoadFontFromMemory("assets/fonts/NanumHumanRegular.ttf", 18.0f, "Regular18");
-		Light18 = LoadFontFromMemory("assets/fonts/NanumHumanLight.ttf", 18.0f, "Light18");
-		Heavy17 = LoadFontFromMemory("assets/fonts/NunumHumanHeavy.ttf", 17.0f, "Heavy17");
-		Heavy20 = LoadFontFromMemory("assets/fonts/NanumHumanHeavy.ttf", 20.0f, "Heavy20");
+		Regular17 = LoadFontFromMemory("resources/fonts/NanumHumanRegular.ttf", 17.0f, "Regular17");
+		Regular18 = LoadFontFromMemory("resources/fonts/NanumHumanRegular.ttf", 18.0f, "Regular18");
+		Light18 = LoadFontFromMemory("resources/fonts/NanumHumanLight.ttf", 18.0f, "Light18");
+		Heavy17 = LoadFontFromMemory("resources/fonts/NunumHumanHeavy.ttf", 17.0f, "Heavy17");
+		Heavy20 = LoadFontFromMemory("resources/fonts/NanumHumanHeavy.ttf", 20.0f, "Heavy20");
 
 		io.Fonts->FontLoaderFlags = ImGuiFreeTypeBuilderFlags_LightHinting; //작은 글자를 그릴 때 래스터라이저에 힌팅 가이드라인 제공
 		io.FontDefault = Regular18;
