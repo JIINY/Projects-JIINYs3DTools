@@ -13,12 +13,12 @@ namespace EnvConfig
         lightManager_ = context.lightManager;
     }
 
-    void EnvironmentConfigSerializer::serialize(const std::string& filepath)
+    bool EnvironmentConfigSerializer::serialize(const std::string& filepath)
     {
         if (!lightManager_)
         {
             assert(0 && "[에러] 저장: lightManager_가 비었습니다.");
-            return;
+            return false;
         }
 
         json savefile;
@@ -45,15 +45,22 @@ namespace EnvConfig
 
         //파일 저장
         ofstream fout(filepath);
-        if (fout.is_open())
+        if (!fout.is_open())
         {
-            fout << savefile.dump(4); //들여쓰기 4칸 지정
-            fout.close();
+            assert(0 && "[에러] EnvironmentConfig파일 열기 실패\n");
+            return false;
         }
-        else
+
+        fout << savefile.dump(4); //들여쓰기 4칸 지정
+
+        if (fout.fail()) 
         {
-            assert(0 && "[에러] Scene파일 저장 실패\n");
+            assert(0 && "[에러] EnvironmentConfig파일 쓰기 실패\n");
+            return false;
         }
+
+        fout.close();
+        return true;
     }
 
     bool EnvironmentConfigSerializer::deserialize(const std::string& filepath)

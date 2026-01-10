@@ -18,7 +18,7 @@ namespace EnvConfig
     {
     public:
         void initialize(EnvConfigContext context);
-        void serialize(const std::string& filepath);
+        bool serialize(const std::string& filepath);
         bool deserialize(const std::string& filepath);
 
     private:
