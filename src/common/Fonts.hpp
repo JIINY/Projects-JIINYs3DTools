@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "imgui.h"
 
+#define utf8(text) reinterpret_cast<const char*>(u8##text)
 
 namespace Fonts 
 {
