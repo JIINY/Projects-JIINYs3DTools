@@ -44,12 +44,10 @@ public:
 
 
 private:
-	AppEventSubscriber* appEventSubscriber_ = nullptr;
 	std::vector<AppEventSubscriptionID> AppEventSubID_;
 	EnvConfig::EnvironmentConfig envConfig_;
 	LightManager* lightManager_ = nullptr;
 
-	UIEventSubscriber* uiEventSubscriber_ = nullptr;
 	std::vector<UIEventSubscriptionID> UIEventSubID_;
 	CameraInfoUI cameraInfoUI_;
 	ViewportCameraManager* camManager_ = nullptr;
