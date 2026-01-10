@@ -12,7 +12,7 @@
 
 class ViewportCameraManager;
 class LightManager;
-namespace 
+namespace EnvironmentConfig
 {
 	class EnvironmentConfigSerializer;
 }
