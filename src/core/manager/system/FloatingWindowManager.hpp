@@ -4,6 +4,7 @@
 #include "core/AppConfig.hpp"
 #include "event/appEvent/AppEventSubscriber.hpp"
 #include "event/appEvent/ui/EnvironmentConfigChangedEvent.hpp"
+#include "event/appEvent/ui/EnvironmentDataRequestedEvent.hpp"
 #include "ui/window/environmentConfig/EnvironmentConfig.hpp"
 
 #include "event/uiEvent/UIEventSubscriber.hpp"
@@ -36,6 +37,7 @@ public:
 	}
 
 	void setEnvironmentConfigVisibility(bool isVisible);
+	void setEnvironmentConfigData(const EnvironmentDataRequestedEvent& event);
 
 	void toggleCameraInfo();
 	void setCameraInfoVisibility(bool isVisible);

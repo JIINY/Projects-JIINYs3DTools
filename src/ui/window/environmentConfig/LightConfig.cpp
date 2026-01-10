@@ -5,6 +5,8 @@
 #include "common/Math.hpp"
 #include "core/manager/scene/LightManager.hpp"
 #include "imgui.h"
+
+#include "common/DebugLog.hpp"
 using namespace std;
 
 
@@ -16,9 +18,10 @@ namespace EnvConfig
         setFromManager();
     }
 
-    void LightConfig::draw() 
+    bool LightConfig::draw() 
     {
-        if (!manager_) { return; }
+        bool isChanged = false;
+        if (!manager_) { return false; }
 
         static ImGuiTableFlags flags = ImGuiTableFlags_None;
         if (ImGui::CollapsingHeader("SunLight", ImGuiTreeNodeFlags_DefaultOpen)) 
@@ -101,6 +104,8 @@ namespace EnvConfig
                     manager_->setDirectionalLightDir(dir);
                     manager_->setDirectionalLightColor({ sunColor_[0], sunColor_[1], sunColor_[2] });
                     manager_->setDirectionalLightIntensity(sunIntensity_);
+
+                    isChanged = true;
                 }
             }
         }
@@ -166,9 +171,14 @@ namespace EnvConfig
                     manager_->setAmbientTop({ ambientTop_[0], ambientTop_[1], ambientTop_[2] });
                     manager_->setAmbientMid({ ambientMid_[0], ambientMid_[1], ambientMid_[2] });
                     manager_->setAmbientBot({ ambientBot_[0], ambientBot_[1], ambientBot_[2] });
+
+                    isChanged = true;
                 }
             }
         }
+
+        if (isChanged) { return true; }
+        return false;
     }
 
     void LightConfig::setFromManager() 

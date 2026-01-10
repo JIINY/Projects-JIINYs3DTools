@@ -3,7 +3,10 @@
 #include "event/appEvent/AppEventSubscriber.hpp"
 #include "event/appEvent/ui/EnvironmentConfigRequestedEvent.hpp"
 #include "event/appEvent/ui/EnvironmentConfigChangedEvent.hpp"
+#include "event/appEvent/ui/EnvironmentDataRequestedEvent.hpp"
+#include "event/appEvent/ui/EnvironmentDataChangedEvent.hpp"
 #include "ui/window/environmentConfig/EnvironmentConfig.hpp"
+#include "ui/window/environmentConfig/EnvironmentConfigSerializer.hpp"
 #include "core/manager/scene/LightManager.hpp"
 
 #include "event/uiEvent/UIEventPublisher.hpp"
@@ -23,6 +26,7 @@ bool FloatingWindowManager::initialize(FloatingWindowContext context, FloatingCo
 
 	lightManager_ = context.lightManager;
 	camManager_ = context.cameraManager;
+	envSerializer_ = context.envSerializer;
 
 	isEnvConfigVisible_ = data.showEnvConfig;
 	isCamInfoVisible_ = data.showCameraInfo;
@@ -37,6 +41,12 @@ bool FloatingWindowManager::initialize(FloatingWindowContext context, FloatingCo
 			this->setEnvironmentConfigVisibility(event.isVisible);
 		});
 	AppEventSubID_.push_back(envConfigID);
+
+	auto envDataID = AppEventSubscriber::get().subscribe<EnvironmentDataRequestedEvent>([this](const EnvironmentDataRequestedEvent& event)
+		{
+			this->setEnvironmentConfigData(event);
+		});
+	AppEventSubID_.push_back(envDataID);
 
 	auto camInfoSubID = UIEventSubscriber::get().subscribe<CameraInfoRequestedEvent>([this](const CameraInfoRequestedEvent& event)
 		{
@@ -57,6 +67,47 @@ void FloatingWindowManager::draw()
 	if (isCamInfoVisible_)
 	{
 		cameraInfoUI_.draw(isCamInfoVisible_);
+	}
+}
+
+void FloatingWindowManager::setEnvironmentConfigData(const EnvironmentDataRequestedEvent& event) 
+{
+	if (!envSerializer_) 
+	{
+		assert(0 && "[에러] EnvrionmentSerializer가 없습니다.");
+		return;
+	}
+
+	switch (event.type) 
+	{
+	case EnvDataType::Save: 
+	{
+		break;
+	}
+	case EnvDataType::SaveAs: 
+	{
+		break;
+	}
+	case EnvDataType::Load:
+	{
+		break;
+	}
+	case EnvDataType::Restore:
+	{
+		break;
+	}
+	case EnvDataType::New:
+	{
+		bool result = envSerializer_->deserialize(event.filepath);
+		if (result) 
+		{ 
+			AppEventPublisher::get().publish(EnvironmentDataChangedEvent{}); 
+		}
+		break;
+	}
+	default:
+		assert(0 && "[에러] 초기 EnvDataType이 이벤트로 들어왔습니다.");
+		break;
 	}
 }
 
