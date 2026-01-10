@@ -627,6 +627,12 @@
     <ClInclude Include="src\scene\SceneSerializer.hpp">
       <Filter>src\scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\event\appEvent\ui\EnvironmentDataChangedEvent.hpp">
+      <Filter>src\event\appEvent\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\ui\EnvironmentDataRequestedEvent.hpp">
+      <Filter>src\event\appEvent\ui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\environments\test.json">

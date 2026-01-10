@@ -120,6 +120,8 @@
     <ClInclude Include="src\event\appEvent\state\WindowSizeChangedEvent.hpp" />
     <ClInclude Include="src\event\appEvent\ui\EnvironmentConfigChangedEvent.hpp" />
     <ClInclude Include="src\event\appEvent\ui\EnvironmentConfigRequestedEvent.hpp" />
+    <ClInclude Include="src\event\appEvent\ui\EnvironmentDataChangedEvent.hpp" />
+    <ClInclude Include="src\event\appEvent\ui\EnvironmentDataRequestedEvent.hpp" />
     <ClInclude Include="src\event\InputEventType.hpp" />
     <ClInclude Include="src\event\uiEvent\UIEventPublisher.hpp" />
     <ClInclude Include="src\event\uiEvent\UIEventQueue.hpp" />

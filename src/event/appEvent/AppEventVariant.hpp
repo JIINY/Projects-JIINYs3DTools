@@ -7,6 +7,9 @@
 #include "state/WindowSizeChangedEvent.hpp"
 #include "ui/EnvironmentConfigChangedEvent.hpp"
 #include "ui/EnvironmentConfigRequestedEvent.hpp"
+#include "ui/EnvironmentDataChangedEvent.hpp"
+#include "ui/EnvironmentDataRequestedEvent.hpp"
+
 
 using AppEventVariant = std::variant<
 	//Flow
@@ -21,6 +24,8 @@ using AppEventVariant = std::variant<
 	WindowSizeChangedEvent,
 
 	//ui
-	EnvironmentConfigChangedEvent,
-	EnvironmentConfigRequestedEvent
+	EnvironmentConfigChangedEvent, //창 열기
+	EnvironmentConfigRequestedEvent,
+	EnvironmentDataChangedEvent,
+	EnvironmentDataRequestedEvent
 >;
