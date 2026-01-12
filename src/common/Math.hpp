@@ -27,8 +27,8 @@ namespace Math
 		return result;
 	}
 
-	Vec3 Normalize(const Vec3& v);
-	float Length(const Vec3& v);
+	Vec3 normalize(const Vec3& v);
+	float length(const Vec3& v);
 	std::pair<float, float> DirectionToPitchYaw(const Vec3& dir);
 	Vec3 PitchYawToDirection(float pitch, float yaw);
 

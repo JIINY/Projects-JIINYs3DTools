@@ -13,7 +13,7 @@ namespace Math
 	const XMVECTOR UP = XMVectorSet(0, 1, 0, 0);
 	const XMVECTOR BOTTOM = XMVectorSet(0, -1, 0, 0);
 
-	Vec3 Normalize(const Vec3& v)
+	Vec3 normalize(const Vec3& v)
 	{
 		XMVECTOR vector = XMLoadFloat3(&v);
 		XMVECTOR normalized = XMVector3Normalize(vector);
@@ -22,7 +22,7 @@ namespace Math
 		return result;
 	}
 
-	float Length(const Vec3& v) 
+	float length(const Vec3& v) 
 	{
 		XMVECTOR vector = XMLoadFloat3(&v);
 		XMVECTOR lengthVector = XMVector3Length(vector);
@@ -34,12 +34,12 @@ namespace Math
 		float x = cos(pitch) * sin(yaw);
 		float y = sin(pitch);
 		float z = cos(pitch) * cos(yaw);
-		return Normalize(Vec3(x, y, z));
+		return normalize(Vec3(x, y, z));
 	}
 
 	pair<float, float> DirectionToPitchYaw(const Vec3& dir) 
 	{
-		Vec3 n = Normalize(dir);
+		Vec3 n = normalize(dir);
 		float pitch = asin(n.y); //sin(pitch) = y
 		float yaw = atan2(n.x, n.z); //tan(yaw) = x / z
 		return { pitch, yaw };

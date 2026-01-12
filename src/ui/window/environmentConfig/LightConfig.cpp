@@ -99,7 +99,7 @@ namespace EnvConfig
                     float radPhi = DirectX::XMConvertToRadians(sunPhi_);
 
                     Math::Vec3 dir = { cos(radPhi) * sin(radTheta), sin(radPhi), cos(radPhi) * cos(radTheta) };
-                    dir = Math::Normalize(dir);
+                    dir = Math::normalize(dir);
 
                     manager_->setDirectionalLightDir(dir);
                     manager_->setDirectionalLightColor({ sunColor_[0], sunColor_[1], sunColor_[2] });
