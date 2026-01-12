@@ -34,4 +34,8 @@ namespace Math
 
 	float getPitchFromView(ViewMode view);
 	float getYawFromView(ViewMode view);
+
+	double roundFloat(float val, int digits = 3);
+	int floatToColor255(float val);
+	float color255ToFloat(int val);
 }

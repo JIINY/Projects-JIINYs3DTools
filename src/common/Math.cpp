@@ -1,5 +1,6 @@
 ﻿#include "Math.hpp"
 #include <cmath>
+#include <algorithm>
 #include <DirectXMath.h>
 using namespace std;
 using namespace DirectX;
@@ -63,5 +64,23 @@ namespace Math
 		case ViewMode::RightView: return 90.0f;
 		default: return 0.0f;
 		}
+	}
+
+	double roundFloat(float val, int digits) 
+	{
+		double multi = pow(10.0, digits);
+		return round(static_cast<double>(val) * multi) / multi;
+	}
+
+	int floatToColor255(float val)
+	{
+		val = clamp(val, 0.0f, 1.0f);
+		return static_cast<int>(val * 255.0f + 0.5f);
+	}
+
+	float color255ToFloat(int val) 
+	{
+		val = clamp(val, 0, 255);
+		return static_cast<float>(val) / 255.0f;
 	}
 }
