@@ -1,6 +1,7 @@
 ﻿#include "EnvironmentConfigSerializer.hpp"
 #include <fstream>
 #include <cassert>
+#include "common/Math.hpp"
 #include "core/manager/scene/LightManager.hpp"
 using namespace std;
 using json = nlohmann::json;
@@ -29,17 +30,32 @@ namespace EnvConfig
 
         savefile["SunLight"] =
         {
-            { "SunDirection", {sunDir.x, sunDir.y, sunDir.z}},
-            { "SunColor", {sunColor.x, sunColor.y, sunColor.z}},
-            { "SunIntensity", sun->getIntensity()}
+            { "SunDirection", {
+                Math::roundFloat(sunDir.x, 3),
+                Math::roundFloat(sunDir.y, 3),
+                Math::roundFloat(sunDir.z, 3)}},
+            { "SunColor", {
+                Math::floatToColor255(sunColor.x), 
+                Math::floatToColor255(sunColor.y),
+                Math::floatToColor255(sunColor.z)}},
+            { "SunIntensity", Math::roundFloat(sun->getIntensity(), 3)}
         };
 
         auto [top, mid, bot] = lightManager_->getAmbientColors();
         savefile["AmbientLight"] =
         {
-            {"Sky", {top.x, top.y, top.z}},
-            {"Horizon", {mid.x, mid.y, mid.z}},
-            {"Ground", {bot.x, bot.y, bot.z}}
+            {"Sky", {
+                Math::floatToColor255(top.x),
+                Math::floatToColor255(top.y),
+                Math::floatToColor255(top.z)}},
+            {"Horizon", {
+                Math::floatToColor255(mid.x),
+                Math::floatToColor255(mid.y),
+                Math::floatToColor255(mid.z)}},
+            {"Ground", {
+                Math::floatToColor255(bot.x),
+                Math::floatToColor255(bot.y),
+                Math::floatToColor255(bot.z)}}
         };
 
 
@@ -102,7 +118,10 @@ namespace EnvConfig
             if (sun.contains("Color"))
             {
                 auto& color = sun["Color"];
-                lightManager_->setDirectionalLightColor({ color[0], color[1], color[2] });
+                float r = Math::color255ToFloat(color[0]);
+                float g = Math::color255ToFloat(color[1]);
+                float b = Math::color255ToFloat(color[2]);
+                lightManager_->setDirectionalLightColor({ r, g, b });
             }
             if (sun.contains("Intensity"))
             {
@@ -116,18 +135,27 @@ namespace EnvConfig
 
             if (amb.contains("Sky"))
             {
-                auto& c = amb["Sky"];
-                lightManager_->setAmbientTop({ c[0], c[1], c[2] });
+                auto& color = amb["Sky"];
+                float r = Math::color255ToFloat(color[0]);
+                float g = Math::color255ToFloat(color[1]);
+                float b = Math::color255ToFloat(color[2]);
+                lightManager_->setAmbientTop({ r, g, b });
             }
             if (amb.contains("Horizon"))
             {
-                auto& c = amb["Horizon"];
-                lightManager_->setAmbientMid({ c[0], c[1], c[2] });
+                auto& color = amb["Horizon"];
+                float r = Math::color255ToFloat(color[0]);
+                float g = Math::color255ToFloat(color[1]);
+                float b = Math::color255ToFloat(color[2]);
+                lightManager_->setAmbientMid({ r, g, b });
             }
             if (amb.contains("Ground"))
             {
-                auto& c = amb["Ground"];
-                lightManager_->setAmbientBot({ c[0], c[1], c[2] });
+                auto& color = amb["Ground"];
+                float r = Math::color255ToFloat(color[0]);
+                float g = Math::color255ToFloat(color[1]);
+                float b = Math::color255ToFloat(color[2]);
+                lightManager_->setAmbientBot({ r, g, b });
             }
         }
 

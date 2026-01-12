@@ -1,12 +1,32 @@
-﻿{
-    "SunLight": {
-        "Direction": [ -0.5, -1.0, -0.3 ],
-        "Color": [ 1.0, 0.95, 0.8 ],
-        "Intensity": 1.0
-    },
+{
     "AmbientLight": {
-        "Sky": [ 0.3, 0.4, 0.8 ],
-        "Horizon": [ 0.4, 0.5, 0.6 ],
-        "Ground": [ 0.2, 0.2, 0.2 ]
+        "Ground": [
+            89,
+            82,
+            141
+        ],
+        "Horizon": [
+            128,
+            163,
+            176
+        ],
+        "Sky": [
+            107,
+            182,
+            204
+        ]
+    },
+    "SunLight": {
+        "SunColor": [
+            255,
+            242,
+            204
+        ],
+        "SunDirection": [
+            -0.936,
+            0.342,
+            0.082
+        ],
+        "SunIntensity": 1.0
     }
 }
