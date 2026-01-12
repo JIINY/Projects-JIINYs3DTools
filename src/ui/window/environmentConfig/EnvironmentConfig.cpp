@@ -100,19 +100,19 @@ namespace EnvConfig
             ImGui::SameLine();
             if (ImGui::Button("Restore", ImVec2(btnWidth3, btnHeight + 2.0f)))
             {
-                AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvDataType::Restore, "assets/environments/test.json" });
+                AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::Restore, currentFileName_ });
             }
             ImGui::SameLine();
             if (ImGui::Button("New", ImVec2(btnWidth3, btnHeight + 2.0f)))
             {
                 if (isDirty_)
                 {
-                    pendingRequestType_ = EnvDataType::New;
+                    pendingRequestType_ = EnvActionType::New;
                     openConfirmDiscardTrigger_ = true;
                 }
                 else
                 {
-                    AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvDataType::New, defaultFilePath_ });
+                    AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::New, ""});
                 }
             }
 
@@ -149,17 +149,15 @@ namespace EnvConfig
 
             if (ImGui::Button(utf8("예"), ImVec2(120, 0)))
             {
-                if (pendingRequestType_ == EnvDataType::New)
+                if (pendingRequestType_ == EnvActionType::New)
                 {
-                    AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvDataType::New, defaultFilePath_ });
-                    ImGui::CloseCurrentPopup();
+                    AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::New, ""});
                 }
-                else if (pendingRequestType_ == EnvDataType::Restore)
+                else if (pendingRequestType_ == EnvActionType::Load)
                 {
+                    doLoad();
                 }
-                else if (pendingRequestType_ == EnvDataType::Load)
-                {
-                }
+                ImGui::CloseCurrentPopup();
             }
 
             ImGui::SameLine();
@@ -178,16 +176,25 @@ namespace EnvConfig
         }
     }
 
-    const char* EnvironmentConfig::getPopupTitleFromType(const EnvDataType& type) 
+    const char* EnvironmentConfig::getPopupTitleFromType(const EnvActionType& type) 
     {
         switch (type) 
         {
-        case EnvDataType::Save: return "Save Environment Config";
-        case EnvDataType::SaveAs: return "Save As Environment Config";
-        case EnvDataType::Load: return "Load Environment Config";
-        case EnvDataType::New: return "New Environment Config";
+        case EnvActionType::Save: return "Save Environment Config";
+        case EnvActionType::SaveAs: return "Save As Environment Config";
+        case EnvActionType::Load: return "Load Environment Config";
+        case EnvActionType::New: return "New Environment Config";
         default: return "Notification";
         }
     }
 }
 
+    void EnvironmentConfig::doLoad() 
+    {
+        string filePath = FileDialogUtils::OpenFile("JSON Files (*.json)\0*.json\0All Files (*.*)\0*.*\0");
+        if (!filePath.empty())
+        {
+            AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::Load, filePath });
+        }
+    }
+}

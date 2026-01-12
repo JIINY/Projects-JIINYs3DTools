@@ -2,20 +2,21 @@
 #include <string>
 
 
-enum class EnvDataType 
+enum class EnvActionType 
 {
     Save,
     SaveAs,
     Load,
     Restore,
     New,
+    UIModify,
     Count
 };
 
 struct EnvironmentDataRequestedEvent
 {
-    EnvDataType type;
-    std::string filepath;
+    EnvActionType type = EnvActionType::Count;
+    std::string filepath = "";
 
-    EnvironmentDataRequestedEvent(EnvDataType t, const std::string& p) : type(t), filepath(p) {}
+    EnvironmentDataRequestedEvent(EnvActionType t, const std::string& p) : type(t), filepath(p) {}
 };
