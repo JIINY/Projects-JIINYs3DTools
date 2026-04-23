@@ -10,20 +10,13 @@ using namespace std;
 using namespace Render;
 
 
-ShaderManager* ShaderManager::get() 
+bool ShaderManager::initialize(ID3D11Device* device)
 {
-	static ShaderManager instance;
-	return &instance;
-}
-
-
-void ShaderManager::initialize(ID3D11Device* device) 
-{
-	assert(device && "[에러] ShaderManager 초기화 실패: 디바이스가 null입니다.");
-	if (isInitialized_) { return; }
+	assert(device && "ShaderManager 초기화 실패: 디바이스가 null입니다.");
+	if (!device) { return false; }
 
 	device_ = device;
-	isInitialized_ = true;
+	return true;
 }
 
 void ShaderManager::shutdown() 
@@ -31,13 +24,10 @@ void ShaderManager::shutdown()
 	vsCache_.clear();
 	psCache_.clear();
 	device_ = nullptr;
-	isInitialized_ = false;
 }
 
 shared_ptr<Render::VertexShader> ShaderManager::getVertexShader(const wstring& path, const string& entryPoint)
 {
-	assert(isInitialized_ && "[에러] ShaderManager가 초기화되지 않았는데 getVertexShader가 호출됨");
-
 	//1. 캐시 키 생성
 	wstring wEntry(entryPoint.begin(), entryPoint.end());
 	wstring cacheKey = path + L"|" + wEntry;
@@ -50,7 +40,7 @@ shared_ptr<Render::VertexShader> ShaderManager::getVertexShader(const wstring& p
 	auto newShader = make_shared<VertexShader>();
 	if (!newShader->initialize(device_, path, entryPoint))
 	{
-		assert(0 && "[에러] VertexShader 로드 실패");
+		assert(0 && "VertexShader 로드 실패");
 		vsCache_[cacheKey] = nullptr; //실패시 nullptr를 캐시에 저장해서 중복로드X
 		return nullptr;
 	}
@@ -62,8 +52,6 @@ shared_ptr<Render::VertexShader> ShaderManager::getVertexShader(const wstring& p
 
 shared_ptr<Render::PixelShader> ShaderManager::getPixelShader(const wstring& path, const string& entryPoint) 
 {
-	assert(isInitialized_ && "[에러] ShaderManager가 초기화되지 않았는데 getPixelShader가 호출됨");
-
 	wstring wEntry(entryPoint.begin(), entryPoint.end());
 	wstring cacheKey = path + L"|" + wEntry;
 
@@ -73,7 +61,7 @@ shared_ptr<Render::PixelShader> ShaderManager::getPixelShader(const wstring& pat
 	auto newShader = make_shared<PixelShader>();
 	if (!newShader->initialize(device_, path, entryPoint))
 	{
-		assert(0 && "[에러] PixelShader 로드 실패");
+		assert(0 && "PixelShader 로드 실패");
 		psCache_[cacheKey] = nullptr;
 		return nullptr;
 	}

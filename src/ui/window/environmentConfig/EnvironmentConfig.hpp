@@ -3,12 +3,9 @@
 #include "event/appEvent/AppEventSubscriber.hpp"
 #include "event/appEvent/ui/EnvironmentDataChangedEvent.hpp"
 #include "LightConfig.hpp"
+#include "core/manager/scene/LightManager.hpp"
 
 class LightManager;
-namespace EnvConfig
-{
-    class EnvironmentConfigSerializer;
-}
 
 
 namespace EnvConfig 
@@ -16,21 +13,26 @@ namespace EnvConfig
     class EnvironmentConfig
     {
     public:
-        void initialize(LightManager* manager);
-        void draw(bool isVisible, EnvConfig::EnvironmentConfigSerializer* serializer);
+        bool initialize(LightManager* manager);
+        void draw(bool isVisible);
 
+        EnvConfig::LightConfig* getLightConfig() { return &lightConfig_; }
+        std::string getFileName(const std::string& path);
 
     private:
+        LightManager* lightManager_ = nullptr;
         EnvConfig::LightConfig lightConfig_;
+        EnvActionType pendingRequestType_ = EnvActionType::Count;
+        std::string currentFileName_ = "";
         std::string currentFilePath_ = "";
-        std::string defaultFilePath_ = "src/defaults/DefaultEnvironmentConfig.json";
-        EnvDataType pendingRequestType_ = EnvDataType::Count;
 
-        std::vector<AppEventSubscriptionID> AppEventSubID_;
+        std::vector<AppEventSubscriptionID> appEventSubID_;
         bool isDirty_ = false;
         bool openConfirmDiscardTrigger_ = false;
         
-        void onEnvironmentDataChange();
-        static const char* getPopupTitleFromType(const EnvDataType& type);
+        void onEnvironmentDataChanged(const EnvironmentDataChangedEvent& event);
+        void doSaveAs();
+        void doLoad();
+        static const char* getPopupTitleFromType(const EnvActionType& type);
     };
 }

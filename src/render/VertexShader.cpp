@@ -9,9 +9,6 @@ using namespace std;
 
 namespace Render 
 {
-    VertexShader::VertexShader() {}
-    VertexShader::~VertexShader() {}
-
     bool VertexShader::initialize(ID3D11Device* device, wstring_view filepath, string_view entryPoint)
     {
         //1. VS컴파일
@@ -103,7 +100,7 @@ namespace Render
                 OutputDebugStringA("Shader Comfile Error=====================================\n");
                 OutputDebugStringA(errorMsg.c_str());
                 OutputDebugStringA("=========================================================\n");
-                assert(0 && "[에러] 셰이더 컴파일 실패, [출력]창을 확인하세요");
+                assert(0 && "셰이더 컴파일 실패, [출력]창을 확인하세요");
             }
             return false;
         }

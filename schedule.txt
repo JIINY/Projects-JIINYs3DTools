@@ -1,0 +1,19 @@
+2. 오브젝트 클릭시 선택, 오브젝트 외 배경을 클릭하면 해제
+
+3. 클릭 후 드래그 시 다중 오브젝트 선택
+
+4. 2와 3을 위해서 Selection클래스를 만들거야.
+
+5. projection에서 shift + 드래그시 해당 박스영역에 닿은 오브젝트는 Selection에 추가, alt + drag시 해제
+
+6. 선택한 오브젝트를 Delete버튼 누르면 삭제
+
+7. 이제부터는 Undo/Redo를 어떻게 할지 넣어야 해. 툴의 기본이니까 (아마 리팩토링을 하게되겠지)
+
+8. TransformUI창을 만들고, 거기에 Position, Rotation, Scale을 표시 (Selection의 center로)
+
+(TransformUI로 만들지, SelectionObject창으로 만들지는 아직 조금 고민중이야. -> Transform정보만 보여줄지, 해당 오브젝트가 가지는 성격들을 다 보여줄지)
+
+9. ObjectGizmo를 구현
+
+10. Move, Rotate, Scale 인터페이스 만들기

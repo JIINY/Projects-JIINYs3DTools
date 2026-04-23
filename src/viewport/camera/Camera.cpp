@@ -167,3 +167,39 @@ const DirectX::XMMATRIX& Camera::getViewProjectionMatrixXM() const
 	}
 	return cachedViewProj_;
 }
+
+Math::Ray Camera::convertScreenPointToRay(float screenX, float screenY, float viewportX, float viewportY) const
+{
+	Ray emptyRay;
+	emptyRay.origin = Vec3(0, 0, 0);
+	emptyRay.direction = Vec3(0, 0, 0);
+	if (screenX < 0.0f || screenX > viewportX || screenY < 0.0f || screenY > viewportY)
+	{
+		return emptyRay;
+	}
+
+	//행렬 준비
+	XMMATRIX projMat = getProjectionMatrixXM();
+	XMMATRIX viewMat = getViewMatrixXM();
+	XMMATRIX worldMat = XMMatrixIdentity();
+
+	XMVECTOR nearSrc = XMVectorSet(screenX, screenY, 0.0f, 1.0f);
+	XMVECTOR farSrc = XMVectorSet(screenX, screenY, 1.0f, 1.0f);
+
+	XMVECTOR nearPoint = XMVector3Unproject(nearSrc, 0.0f, 0.0f, viewportX, viewportY, 0.0f, 1.0f, projMat, viewMat, worldMat);
+	XMVECTOR farPoint = XMVector3Unproject(farSrc, 0.0f, 0.0f, viewportX, viewportY, 0.0f, 1.0f, projMat, viewMat, worldMat);
+
+	XMVECTOR dir = farPoint - nearPoint;
+	if (XMVectorGetX(XMVector3LengthSq(dir)) < 0.0001f) { return emptyRay; }
+	dir = XMVector3Normalize(dir);
+
+	//정규화 체크
+	float checkLength = XMVectorGetX(XMVector3Length(dir));
+	if (abs(checkLength - 1.0f) > 0.01f) { return emptyRay;	}
+
+	Ray ray;
+	XMStoreFloat3(&ray.origin, nearPoint);
+	XMStoreFloat3(&ray.direction, dir);
+
+	return ray;
+}

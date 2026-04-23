@@ -40,6 +40,12 @@ public:
 	const float& getNearZ() const { return nearZ_; }
 	const float& getFarZ() const { return farZ_; }
 
+	void setWidth(int width) { width_ = width; }
+	void setHeight(int height) { height_ = height; }
+	int getWidth() const { return width_; }
+	int getHeight() const { return height_; }
+
+	Math::Ray convertScreenPointToRay(float screenX, float screenY, float viewportX, float viewportY) const;
 
 private:
 	Math::Vec3 position_ = { 0, 0, -5 };
@@ -50,6 +56,9 @@ private:
 	float aspect_ = 1.0f;
 	float nearZ_ = 0.1f;
 	float farZ_ = 100.0f;
+
+	int width_ = 1280;
+	int height_ = 800;
 
 	mutable DirectX::XMMATRIX cachedView_ = DirectX::XMMatrixIdentity();
 	mutable DirectX::XMMATRIX cachedProj_ = DirectX::XMMatrixIdentity();

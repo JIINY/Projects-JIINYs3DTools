@@ -40,7 +40,7 @@ bool DX11Renderer::initialize(void* hwnd)
 	depthBufferDesc.MiscFlags = 0;
 
 	HRESULT hr = pd3dDevice_->CreateTexture2D(&depthBufferDesc, nullptr, depthStencilBuffer_.GetAddressOf());
-	assert(SUCCEEDED(hr) && "[에러] 깊이 버퍼 메모리/텍스쳐 생성 실패");
+	assert(SUCCEEDED(hr) && "깊이 버퍼 메모리/텍스쳐 생성 실패");
 	if (FAILED(hr)) { return false; }
 
 
@@ -53,7 +53,7 @@ bool DX11Renderer::initialize(void* hwnd)
 	depthViewDesc.Texture2D.MipSlice = 0;
 
 	hr = pd3dDevice_->CreateDepthStencilView(depthStencilBuffer_.Get(), &depthViewDesc, depthStencilView_.GetAddressOf());
-	assert(SUCCEEDED(hr) && "[에러] 깊이 버퍼 생성 실패");
+	assert(SUCCEEDED(hr) && "깊이 버퍼 생성 실패");
 	if (FAILED(hr)) { return false; }
 
 
@@ -80,13 +80,33 @@ bool DX11Renderer::initialize(void* hwnd)
 	dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 	hr = pd3dDevice_->CreateDepthStencilState(&dsDesc, depthStencilStateOn_.GetAddressOf());
-	assert(SUCCEEDED(hr) && "[에러] 깊이 버퍼 ON 설정 실패");
+	assert(SUCCEEDED(hr) && "깊이 버퍼 ON 설정 실패");
 	if (FAILED(hr)) { return false; }
 
 	dsDesc.DepthEnable = false;
 	hr = pd3dDevice_->CreateDepthStencilState(&dsDesc, depthStencilStateOff_.GetAddressOf());
-	assert(SUCCEEDED(hr) && "[에러] 깊이 버퍼 OFF 설정 실패");
+	assert(SUCCEEDED(hr) && "깊이 버퍼 OFF 설정 실패");
 	if (FAILED(hr)) { return false; }
+
+
+	//상시
+	D3D11_DEPTH_STENCIL_DESC dsDescAlways;
+	ZeroMemory(&dsDescAlways, sizeof(dsDescAlways));
+	dsDescAlways.DepthEnable = true;
+	dsDescAlways.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;  // write 안 함
+	dsDescAlways.DepthFunc = D3D11_COMPARISON_ALWAYS;  // 항상 통과
+
+	dsDescAlways.StencilEnable = true;
+	dsDescAlways.StencilReadMask = 0xFF;
+	dsDescAlways.StencilWriteMask = 0xFF;
+	dsDescAlways.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	dsDescAlways.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+	dsDescAlways.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	dsDescAlways.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	dsDescAlways.BackFace = dsDescAlways.FrontFace;
+
+	hr = pd3dDevice_->CreateDepthStencilState(&dsDescAlways, depthStencilStateAlways_.GetAddressOf());
+	assert(SUCCEEDED(hr) && "Depth Always 상태 생성 실패");
 
 
 	//Rasterizer State 생성 (뒷면 제거 & 와이어 프레임 설정 등)
@@ -99,7 +119,7 @@ bool DX11Renderer::initialize(void* hwnd)
 	rasterDesc.DepthClipEnable = true;
 
 	hr = pd3dDevice_->CreateRasterizerState(&rasterDesc, solidState_.GetAddressOf());
-	assert(SUCCEEDED(hr) && "[에러] solid 레스터라이저 생성 실패");
+	assert(SUCCEEDED(hr) && "solid 레스터라이저 생성 실패");
 	if (FAILED(hr)) { return false; }
 
 	rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
@@ -108,7 +128,7 @@ bool DX11Renderer::initialize(void* hwnd)
 	rasterDesc.DepthBiasClamp = 0.0f;
 
 	hr = pd3dDevice_->CreateRasterizerState(&rasterDesc, wireframeState_.GetAddressOf());
-	assert(SUCCEEDED(hr) && "[에러] wire 레스터라이저 생성 실패");
+	assert(SUCCEEDED(hr) && "wire 레스터라이저 생성 실패");
 	if (FAILED(hr)) { return false; }
 
 
@@ -123,7 +143,7 @@ bool DX11Renderer::initialize(void* hwnd)
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	hr = pd3dDevice_->CreateBlendState(&blendDesc, blendStateOpaque_.GetAddressOf());
-	assert(SUCCEEDED(hr) && "[에러] 블렌드 상태 생성 실패");
+	assert(SUCCEEDED(hr) && "블렌드 상태 생성 실패");
 	if (FAILED(hr)) { return false; }
 
 
@@ -235,7 +255,7 @@ void DX11Renderer::createRenderTarget()
 {
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> pBackBuffer;
 	HRESULT hr = pSwapChain_->GetBuffer(0, IID_PPV_ARGS(pBackBuffer.GetAddressOf()));
-	assert(SUCCEEDED(hr) && "[에러] 렌더타겟 생성에 실패했습니다.");
+	assert(SUCCEEDED(hr) && "렌더타겟 생성에 실패했습니다.");
 	pd3dDevice_->CreateRenderTargetView(pBackBuffer.Get(), nullptr, mainRenderTargetView_.GetAddressOf());
 }
 
@@ -286,8 +306,8 @@ void DX11Renderer::setWireframeMode(bool enable)
 
 void DX11Renderer::updateSceneConstants(const Render::SceneConstantBufferData& data) 
 {
-	assert(sceneBuffer_ && "[에러] sceneBuffer_가 없습니다. initialize가 먼저 호출되야 합니다.");
-	assert(pd3dDeviceContext_ && "[에러] 디바이스 컨텍스트가 유효하지 않습니다.");
+	assert(sceneBuffer_ && "sceneBuffer_가 없습니다. initialize가 먼저 호출되야 합니다.");
+	assert(pd3dDeviceContext_ && "디바이스 컨텍스트가 유효하지 않습니다.");
 	if (!sceneBuffer_ || !pd3dDeviceContext_) { return; }
 
 	sceneBuffer_->update(pd3dDeviceContext_.Get(), data);

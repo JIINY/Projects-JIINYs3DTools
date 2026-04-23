@@ -2,7 +2,7 @@
 #include <string>
 #include <DirectXMath.h>
 #include "common/Math.hpp"
-#include "event\InputEventType.hpp"
+#include "event/editorEvent/EditorEventSubscriber.hpp"
 
 class Camera;
 
@@ -20,9 +20,9 @@ public:
 	};
 
 	virtual void update(float deltaTime) = 0;
-	virtual void handleInput(const InputEvent& event) {}
 	virtual void onActivate(const CameraController* prevController, CameraMode prevMode) {}
-	
+	virtual void onDeactivate() {}
+
 	virtual CameraCoreState getCoreState() const 
 	{
 		CameraCoreState empty = {};
@@ -39,6 +39,7 @@ public:
 
 
 protected:
+	std::vector<EditorEventSubscriptionID> editorEventSubID_;
 	Camera* camera_ = nullptr;
 	using ViewHandlerFunc = void (CameraController::*)();
 };

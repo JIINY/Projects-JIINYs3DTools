@@ -7,9 +7,6 @@ using namespace std;
 
 namespace Render 
 {
-    Mesh::Mesh() {}
-    Mesh::~Mesh() {}
-
     void Mesh::initialize(ID3D11Device* device) 
     {
         if (!vertices_.empty()) 

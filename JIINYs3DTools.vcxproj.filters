@@ -151,9 +151,6 @@
     <Filter Include="assets">
       <UniqueIdentifier>{9df95953-178c-4b06-8739-46f40f86e006}</UniqueIdentifier>
     </Filter>
-    <Filter Include="assets\fonts">
-      <UniqueIdentifier>{714fe04b-272b-4dc1-b456-d62f82f6d65d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="assets\scenes">
       <UniqueIdentifier>{a43a08ac-4947-45f7-b066-ca13691067c6}</UniqueIdentifier>
     </Filter>
@@ -162,6 +159,63 @@
     </Filter>
     <Filter Include="src\defaults">
       <UniqueIdentifier>{ac8a5bd0-ae0a-44bf-b8c2-2c7f875e5dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{1d81d8c0-1307-47ab-a4f0-39835c2ba954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\utils">
+      <UniqueIdentifier>{283ebd14-cd8d-406f-9dc6-3a5984490377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\command">
+      <UniqueIdentifier>{c9f1ea0c-12d5-41b1-8c6a-856636b41ceb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\command\material">
+      <UniqueIdentifier>{ed825718-6fec-4717-a832-0400d8b67950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\command\passiveObject">
+      <UniqueIdentifier>{30598126-ea8e-4fb7-bb95-653e59b0a657}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\command\activeObject">
+      <UniqueIdentifier>{c1cd082e-50be-4641-89b8-29292eb972f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\command\backgroundObject">
+      <UniqueIdentifier>{3bd189fd-570c-4ec3-b58e-36df627b5339}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\coordinator\editor">
+      <UniqueIdentifier>{a82ca0cc-f5aa-4de1-abad-6cf89ddeacdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\coordinator\resources">
+      <UniqueIdentifier>{1fffe117-1500-4d5f-a14a-26ec5eec4dcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\coordinator\scene">
+      <UniqueIdentifier>{026181a7-a97f-4767-b264-58b2637ec939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\coordinator\system">
+      <UniqueIdentifier>{08fdb0f8-ac6d-4e16-be7d-3b3f47cab272}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\window\create">
+      <UniqueIdentifier>{0607aa56-e0cb-4687-a910-280f2918277b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\selection">
+      <UniqueIdentifier>{04ab4a8e-a31d-4915-8f94-2eb55faf65c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\editorEvent">
+      <UniqueIdentifier>{120cd54e-d791-41ab-9038-8f58f0443cb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\editorEvent\selection">
+      <UniqueIdentifier>{6894d7cd-a5f8-453d-bf7f-80f7c59d3b07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\object\action">
+      <UniqueIdentifier>{1882ee50-5f73-48d8-b590-bdfa365b2b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\editorEvent\transform">
+      <UniqueIdentifier>{3abf84ed-76c0-4d5b-8a47-1927360aec4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\command\sceneObject">
+      <UniqueIdentifier>{d2325dff-a4ea-4730-a52e-4cea6d765299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\editorEvent\io">
+      <UniqueIdentifier>{4f75a55b-8995-4622-91dd-dbf478c8226f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -231,23 +285,11 @@
     <ClCompile Include="src\common\Fonts.cpp">
       <Filter>src\common</Filter>
     </ClCompile>
-    <ClCompile Include="src\event\appEvent\AppEventQueue.cpp">
-      <Filter>src\event\appEvent</Filter>
-    </ClCompile>
-    <ClCompile Include="src\io\InputEventQueue.cpp">
-      <Filter>src\io</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\RenderCommandQueue.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
     <ClCompile Include="src\event\appEvent\AppEventPublisher.cpp">
       <Filter>src\event\appEvent</Filter>
     </ClCompile>
     <ClCompile Include="src\event\appEvent\AppEventSubscriber.cpp">
       <Filter>src\event\appEvent</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\coordinator\CameraCoordinator.cpp">
-      <Filter>src\core\coordinator</Filter>
     </ClCompile>
     <ClCompile Include="src\viewport\ui\ViewportCamUI.cpp">
       <Filter>src\viewport\ui</Filter>
@@ -255,7 +297,7 @@
     <ClCompile Include="src\viewport\ui\Grid.cpp">
       <Filter>src\viewport\ui</Filter>
     </ClCompile>
-    <ClCompile Include="src\viewport\ui\WorldPivot.cpp">
+    <ClCompile Include="src\viewport\ui\WorldPivotUI.cpp">
       <Filter>src\viewport\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\render\Material.cpp">
@@ -264,19 +306,10 @@
     <ClCompile Include="src\render\ConstantBuffer.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\coordinator\RenderCoordinator.cpp">
-      <Filter>src\core\coordinator</Filter>
-    </ClCompile>
     <ClCompile Include="src\ui\preference\CameraInfoUI.cpp">
       <Filter>src\ui\preference</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\coordinator\ViewStateCoordinator.cpp">
-      <Filter>src\core\coordinator</Filter>
-    </ClCompile>
     <ClCompile Include="src\event\uiEvent\UIEventPublisher.cpp">
-      <Filter>src\event\uiEvent</Filter>
-    </ClCompile>
-    <ClCompile Include="src\event\uiEvent\UIEventQueue.cpp">
       <Filter>src\event\uiEvent</Filter>
     </ClCompile>
     <ClCompile Include="src\event\uiEvent\UIEventSubscriber.cpp">
@@ -284,9 +317,6 @@
     </ClCompile>
     <ClCompile Include="src\render\primitives\Cube.cpp">
       <Filter>src\render\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\coordinator\ResourceCoordinator.cpp">
-      <Filter>src\core\coordinator</Filter>
     </ClCompile>
     <ClCompile Include="src\render\Mesh.cpp">
       <Filter>src\render</Filter>
@@ -351,7 +381,94 @@
     <ClCompile Include="src\ui\window\environmentConfig\EnvironmentConfigSerializer.cpp">
       <Filter>src\ui\window\environmentConfig</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\SceneSerializer.cpp" />
+    <ClCompile Include="src\scene\SceneSerializer.cpp">
+      <Filter>src\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\window\environmentConfig\EnvironmentConfigController.cpp">
+      <Filter>src\ui\window\environmentConfig</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\FileDialogUtils.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\primitives\Sphere.cpp">
+      <Filter>src\render\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\primitives\Plane.cpp">
+      <Filter>src\render\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\primitives\Cylinder.cpp">
+      <Filter>src\render\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\primitives\Capsule.cpp">
+      <Filter>src\render\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\coordinator\editor\CameraCoordinator.cpp">
+      <Filter>src\core\coordinator\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\coordinator\editor\RenderCoordinator.cpp">
+      <Filter>src\core\coordinator\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\coordinator\resources\ResourceCoordinator.cpp">
+      <Filter>src\core\coordinator\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\coordinator\editor\ViewStateCoordinator.cpp">
+      <Filter>src\core\coordinator\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\coordinator\scene\PassiveObjectCoordinator.cpp">
+      <Filter>src\core\coordinator\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\window\create\CreatePanel.cpp">
+      <Filter>src\ui\window\create</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\window\create\CreatePrimitive.cpp">
+      <Filter>src\ui\window\create</Filter>
+    </ClCompile>
+    <ClCompile Include="src\selection\SelectionList.cpp">
+      <Filter>src\selection</Filter>
+    </ClCompile>
+    <ClCompile Include="src\selection\ObjectSelectionController.cpp">
+      <Filter>src\selection</Filter>
+    </ClCompile>
+    <ClCompile Include="src\object\SceneObject.cpp">
+      <Filter>src\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\manager\editor\ObjectSelectionManager.cpp">
+      <Filter>src\core\manager\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\coordinator\editor\SelectionCoordinator.cpp">
+      <Filter>src\core\coordinator\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\manager\scene\SceneObjectManager.cpp">
+      <Filter>src\core\manager\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\tools\GizmoMesh.cpp">
+      <Filter>src\render\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\viewport\ui\Gizmo.cpp">
+      <Filter>src\viewport\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\primitives\Torus.cpp">
+      <Filter>src\render\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\RenderCommandQueue.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\tools\GizmoObject.cpp">
+      <Filter>src\render\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\viewport\ui\GizmoController.cpp">
+      <Filter>src\viewport\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\editorEvent\EditorEventPublisher.cpp">
+      <Filter>src\event\editorEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\editorEvent\EditorEventSubscriber.cpp">
+      <Filter>src\event\editorEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\object\action\SceneObjectActionHandler.cpp">
+      <Filter>src\object\action</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\InputEventEditorHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\renderer\Renderer.hpp">
@@ -408,9 +525,6 @@
     <ClInclude Include="src\viewport\camera\CameraInclude.hpp">
       <Filter>src\viewport\camera</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\ManagerInclude.hpp">
-      <Filter>src\core</Filter>
-    </ClInclude>
     <ClInclude Include="src\ui\mainBarUI\MainMenuBarUI.hpp">
       <Filter>src\ui\mainBarUI</Filter>
     </ClInclude>
@@ -447,16 +561,13 @@
     <ClInclude Include="src\event\appEvent\AppEventSubscriber.hpp">
       <Filter>src\event\appEvent</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\coordinator\CameraCoordinator.hpp">
-      <Filter>src\core\coordinator</Filter>
-    </ClInclude>
     <ClInclude Include="src\viewport\ui\ViewportCamUI.hpp">
       <Filter>src\viewport\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\viewport\ui\Grid.hpp">
       <Filter>src\viewport\ui</Filter>
     </ClInclude>
-    <ClInclude Include="src\viewport\ui\WorldPivot.hpp">
+    <ClInclude Include="src\viewport\ui\WorldPivotUI.hpp">
       <Filter>src\viewport\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\render\IShader.hpp">
@@ -471,14 +582,8 @@
     <ClInclude Include="src\render\IMesh.hpp">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\coordinator\RenderCoordinator.hpp">
-      <Filter>src\core\coordinator</Filter>
-    </ClInclude>
     <ClInclude Include="src\ui\preference\CameraInfoUI.hpp">
       <Filter>src\ui\preference</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\coordinator\ViewStateCoordinator.hpp">
-      <Filter>src\core\coordinator</Filter>
     </ClInclude>
     <ClInclude Include="src\event\uiEvent\UIEventQueue.hpp">
       <Filter>src\event\uiEvent</Filter>
@@ -513,11 +618,8 @@
     <ClInclude Include="src\render\primitives\Cube.hpp">
       <Filter>src\render\primitives</Filter>
     </ClInclude>
-    <ClInclude Include="src\object\ObjectLabel.hpp">
+    <ClInclude Include="src\object\SceneObjectType.hpp">
       <Filter>src\object</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\coordinator\ResourceCoordinator.hpp">
-      <Filter>src\core\coordinator</Filter>
     </ClInclude>
     <ClInclude Include="src\render\Mesh.hpp">
       <Filter>src\render</Filter>
@@ -603,10 +705,10 @@
     <ClInclude Include="src\render\ShaderInclude.hpp">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="src\event\appEvent\ui\EnvironmentConfigRequestedEvent.hpp">
+    <ClInclude Include="src\event\appEvent\ui\EnvironmentConfigPopupRequestedEvent.hpp">
       <Filter>src\event\appEvent\ui</Filter>
     </ClInclude>
-    <ClInclude Include="src\event\appEvent\ui\EnvironmentConfigChangedEvent.hpp">
+    <ClInclude Include="src\event\appEvent\ui\EnvironmentConfigPopupChangedEvent.hpp">
       <Filter>src\event\appEvent\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\window\environmentConfig\EnvironmentConfig.hpp">
@@ -633,11 +735,199 @@
     <ClInclude Include="src\event\appEvent\ui\EnvironmentDataRequestedEvent.hpp">
       <Filter>src\event\appEvent\ui</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\FileDialogUtils.hpp">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\window\environmentConfig\EnvironmentConfigController.hpp">
+      <Filter>src\ui\window\environmentConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\PathConfig.hpp">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\FontUtils.hpp">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\primitives\PrimitivesType.hpp">
+      <Filter>src\render\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\primitives\Sphere.hpp">
+      <Filter>src\render\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\primitives\Plane.hpp">
+      <Filter>src\render\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\command\ICommand.hpp">
+      <Filter>src\command</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\primitives\Cylinder.hpp">
+      <Filter>src\render\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\primitives\Capsule.hpp">
+      <Filter>src\render\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\command\CommandStack.hpp">
+      <Filter>src\command</Filter>
+    </ClInclude>
+    <ClInclude Include="src\command\passiveObject\CmdCreatePrimitive.hpp">
+      <Filter>src\command\passiveObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\editor\CameraCoordinator.hpp">
+      <Filter>src\core\coordinator\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\editor\RenderCoordinator.hpp">
+      <Filter>src\core\coordinator\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\resources\ResourceCoordinator.hpp">
+      <Filter>src\core\coordinator\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\editor\ViewStateCoordinator.hpp">
+      <Filter>src\core\coordinator\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\ManagerInclude.hpp">
+      <Filter>src\core\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\scene\PassiveObjectCoordinator.hpp">
+      <Filter>src\core\coordinator\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\scene\ActiveObjectCoordinator.hpp">
+      <Filter>src\core\coordinator\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\scene\BackgroundObjectCoordinator.hpp">
+      <Filter>src\core\coordinator\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\command\passiveObject\CmdDeletePrimitive.hpp">
+      <Filter>src\command\passiveObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\window\create\CreatePanel.hpp">
+      <Filter>src\ui\window\create</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\ui\CreatePopupRequestedEvent.hpp">
+      <Filter>src\event\appEvent\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\ui\CreatePopupChangedEvent.hpp">
+      <Filter>src\event\appEvent\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\window\create\CreatePrimitive.hpp">
+      <Filter>src\ui\window\create</Filter>
+    </ClInclude>
+    <ClInclude Include="src\selection\ISelectable.hpp">
+      <Filter>src\selection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\selection\SelectionList.hpp">
+      <Filter>src\selection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\selection\ObjectSelectionController.hpp">
+      <Filter>src\selection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\editorEvent\selection\SelectionEvent.hpp">
+      <Filter>src\event\appEvent\state</Filter>
+    </ClInclude>
+    <ClInclude Include="src\object\SceneObject.hpp">
+      <Filter>src\object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\selection\Selectable.hpp">
+      <Filter>src\selection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\editor\ObjectSelectionManager.hpp">
+      <Filter>src\core\manager\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\object\ColliderMesh.hpp">
+      <Filter>src\object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\editor\SelectionCoordinator.hpp">
+      <Filter>src\core\coordinator\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\editorEvent\selection\SelectionModeEvent.hpp">
+      <Filter>src\event\appEvent\state</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\manager\scene\SceneObjectManager.hpp">
+      <Filter>src\core\manager\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\coordinator\CoordinatorInclude.hpp">
+      <Filter>src\core\coordinator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\EventInclude.hpp">
+      <Filter>src\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\state\SceneObjectChangedEvent.hpp">
+      <Filter>src\event\appEvent\state</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\primitives\PrimitivesInclude.hpp">
+      <Filter>src\render\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\NameGenerator.hpp">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\ui\Gizmo.hpp">
+      <Filter>src\viewport\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\tools\GizmoMesh.hpp">
+      <Filter>src\render\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\lights\LightType.hpp">
+      <Filter>src\render\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\primitives\Torus.hpp">
+      <Filter>src\render\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\IRenderable.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\Renderable.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\tools\GizmoObject.hpp">
+      <Filter>src\render\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\viewport\ui\GizmoController.hpp">
+      <Filter>src\viewport\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\editorEvent\EditorEventVariant.hpp">
+      <Filter>src\event\editorEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\editorEvent\EditorEventQueue.hpp">
+      <Filter>src\event\editorEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\editorEvent\EditorEventPublisher.hpp">
+      <Filter>src\event\editorEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\editorEvent\EditorEventSubscriber.hpp">
+      <Filter>src\event\editorEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\object\action\SceneObjectActionHandler.hpp">
+      <Filter>src\object\action</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\editorEvent\transform\GizmoModeRequestedEvent.hpp">
+      <Filter>src\event\editorEvent\transform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\command\sceneObject\CmdMoveSceneObject.hpp">
+      <Filter>src\command\sceneObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\command\sceneObject\CmdRotateSceneObject.hpp">
+      <Filter>src\command\sceneObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\command\sceneObject\CmdScaleSceneObject.hpp">
+      <Filter>src\command\sceneObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\editorEvent\transform\GizmoDragEvent.hpp">
+      <Filter>src\event\editorEvent\transform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\editorEvent\io\KeyboardEvent.hpp">
+      <Filter>src\event\editorEvent\io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\editorEvent\io\MouseEvent.hpp">
+      <Filter>src\event\editorEvent\io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\io\InputEventEditorHandler.hpp">
+      <Filter>src\io</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\environments\test.json">
       <Filter>assets\environments</Filter>
     </None>
-    <None Include="src\defaults\DefaultEnvironmentConfig.json" />
+    <None Include="src\defaults\DefaultEnvironmentConfig.json">
+      <Filter>src\defaults</Filter>
+    </None>
   </ItemGroup>
 </Project>

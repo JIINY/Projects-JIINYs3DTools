@@ -3,44 +3,46 @@
 #include <memory>
 #include <DirectXMath.h>
 #include <d3d11.h>
-#include <algorithm>
+#include "render/primitives/PrimitivesType.hpp"
+#include "render/RenderCommand.hpp"
+#include "renderer/Renderer.hpp"
 
 namespace Render 
 { 
-	class RenderObject;
-	class PixelShader;
+	class RenderCommandQueue;
+	class PixelShader; 
 }
-class Renderer;
+class SceneObject;
+class MaterialManager;
 
 
 class BaseObjectManager 
 {
 public:
-	static BaseObjectManager* get();
-
-	void initialize(Renderer* renderer);
-	void draw(Renderer* renderer, const DirectX::XMMATRIX& viewMat, const DirectX::XMMATRIX& projMat, std::shared_ptr<Render::PixelShader> overridePS = nullptr);
-	void shutdown();
-
-	std::shared_ptr<Render::RenderObject> createCube(float size);
-	void setDynamicState(std::shared_ptr<Render::RenderObject> obj, bool makeDynamic);
-
-	//TODO: ObjectLabel 필터링용 함수 추가
-	//void setLabelVisibility(ObjectLabel label, bool isVisible);
-
-private:
 	BaseObjectManager() = default;
 	~BaseObjectManager() = default;
-	BaseObjectManager(const BaseObjectManager&) = delete;
-	BaseObjectManager& operator=(const BaseObjectManager&) = delete;
 
-	bool isInitialized_ = false;
+	bool initialize(Renderer* renderer, MaterialManager* matManager);
+	void shutdown();
+
+	void addToRenderQueue(Render::RenderCommandQueue* queue, const DirectX::XMMATRIX& viewMat, const Render::OverridePSType& type = Render::OverridePSType::None);
+	std::shared_ptr<SceneObject> createPrimitive(const Render::Primitives::PrimitiveData& data);
+	void setDynamicState(std::shared_ptr<SceneObject> obj, bool makeDynamic);
+
+	void addObject(std::shared_ptr<SceneObject> obj);
+	void removeObject(std::shared_ptr<SceneObject> obj);
+	void updateTransforms();
+
+	const std::vector<std::shared_ptr<SceneObject>>& getStaticObjects() const { return staticObjects_; }
+	const std::vector<std::shared_ptr<SceneObject>>& getDynamicObjects() const { return dynamicObjects_; }
+
+
+private:
+	std::vector<std::shared_ptr<SceneObject>> staticObjects_;
+	std::vector<std::shared_ptr<SceneObject>> dynamicObjects_;
+
+	Renderer* renderer_ = nullptr;
 	ID3D11Device* device_ = nullptr;
 	ID3D11DeviceContext* context_ = nullptr;
-
-	std::vector<std::shared_ptr<Render::RenderObject>> staticObjects_;
-	std::vector<std::shared_ptr<Render::RenderObject>> dynamicObjects_;
-
-	//TODO: Label 필터링 마스크
-	//uint32_t labelVisibilityMask_ = 0xFFFFFFFF;
+	MaterialManager* materialManager_ = nullptr;
 };

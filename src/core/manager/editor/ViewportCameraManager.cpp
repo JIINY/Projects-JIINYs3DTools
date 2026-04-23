@@ -3,15 +3,21 @@
 #include <optional>
 #include "common/Mode.hpp"
 #include "core/App.hpp"
-#include "event/appEvent/AppEventPublisher.hpp"
-#include "event/appEvent/state/CameraModeChangedEvent.hpp"
 #include "viewport/camera/CameraInclude.hpp"
 #include "viewport/ui/ViewportCamUI.hpp"
+#include "imgui.h"
+
+#include "event/appEvent/AppEventPublisher.hpp"
+#include "event/appEvent/AppEventSubscriber.hpp"
+#include "event/appEvent/state/CameraModeChangedEvent.hpp"
+#include "event/appEvent/state/WindowSizeChangedEvent.hpp"
 
 #include "common/DebugLog.hpp"
+using namespace std;
 
 
-ViewportCameraManager::ViewportCameraManager() : appEventPublisher_(nullptr), viewportCamUI_(std::make_unique<ViewportCamUI>()) 
+ViewportCameraManager::ViewportCameraManager() 
+	: viewportCamUI_(std::make_unique<ViewportCamUI>())
 {
 	camController_[CameraMode::FreeArm] = std::make_unique<ArmCameraController>();
 	camController_[CameraMode::Target] = std::make_unique<TargetCameraController>();
@@ -20,10 +26,16 @@ ViewportCameraManager::ViewportCameraManager() : appEventPublisher_(nullptr), vi
 ViewportCameraManager::~ViewportCameraManager() = default;
 
 
-void ViewportCameraManager::initializer(AppEventPublisher* appEventPublisher)
+void ViewportCameraManager::initializer()
 {
-	appEventPublisher_ = appEventPublisher;
 	viewportCamUI_->initialize(currentCam_, currentView_);
+	activeCamController_->onActivate(nullptr, CameraMode::Count);
+
+	auto sizeChangeID = AppEventSubscriber::get().subscribe<WindowSizeChangedEvent>([this](const WindowSizeChangedEvent& event)
+		{
+			this->onWindowSizeChanged(event);
+		});
+	appEventSubID_.push_back(sizeChangeID);
 }
 
 void ViewportCameraManager::setCameraModeForAppMode(AppMode mode)
@@ -133,6 +145,10 @@ void ViewportCameraManager::setActiveCamController(CameraMode prevMode)
 		activeCamController_ = &(*fixedCamController_);
 	}
 
+	if (prevController)
+	{
+		prevController->onDeactivate();
+	}
 	if (activeCamController_)
 	{
 		activeCamController_->setCamera(&activeCam_);
@@ -142,7 +158,7 @@ void ViewportCameraManager::setActiveCamController(CameraMode prevMode)
 
 void ViewportCameraManager::update(float deltaTime)
 {
-	if (auto* activeCam = getActiveCamController()) 
+	if (auto* activeCam = getActiveCamController())
 	{
 		activeCam->update(deltaTime);
 		viewportCamUI_->setString(currentCam_, currentView_);
@@ -154,18 +170,18 @@ void ViewportCameraManager::draw()
 	viewportCamUI_->draw();
 }
 
-void ViewportCameraManager::updateProjection(float width, float height) 
+void ViewportCameraManager::updateProjection(int width, int height) 
 {
-	if (height <= 0.0f) { return; }
+	if (height <= 0) { return; }
 
-	float aspect = width / height;
+	float aspect = static_cast<float>(width) / static_cast<float>(height);
 	activeCam_.setAspect(aspect);
 }
 
-void ViewportCameraManager::handleInput(const InputEvent& event) 
+void ViewportCameraManager::onWindowSizeChanged(const WindowSizeChangedEvent& event) 
 {
-	if (activeCamController_) 
-	{
-		activeCamController_->handleInput(event);
-	}
+	activeCam_.setWidth(event.width);
+	activeCam_.setHeight(event.height);
+
+	this->updateProjection(event.width, event.height);
 }

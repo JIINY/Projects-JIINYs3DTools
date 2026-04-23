@@ -10,12 +10,12 @@ public:
 	FreeCameraController();
 
 	void update(float deltaTime) override;
-	void handleInput(const InputEvent& event) override;
 	void reset();
 	void resetMovementState();
 
 	void setPosition(const Math::Vec3& pos);
 	void onActivate(const CameraController* prevController, CameraMode prevMode) override;
+	void onDeactivate() override;
 
 	CameraController::CameraCoreState getCoreState() const override;
 	float getPitch() const override { return pitchDeg_; }
@@ -45,4 +45,10 @@ private:
 	bool moveDown_ = false;
 
 	void updateView();
+	void onKeyDowned(const KeyDownEditorEvent& event);
+	void onKeyUpped(const KeyUpEditorEvent& event);
+	void onMouseDowned(const MouseDownEditorEvent& event);
+	void onMouseUpped(const MouseUpEditorEvent& event);
+	void onMouseWheeled(const MouseWheelEditorEvent& event);
+	void onMouseMoved(const MouseMoveEditorEvent& event);
 };

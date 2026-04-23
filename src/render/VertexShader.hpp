@@ -12,8 +12,7 @@ namespace Render
     class VertexShader : public IShader 
     {
     public:
-        VertexShader();
-        virtual ~VertexShader();
+        virtual ~VertexShader() = default;
 
         virtual bool initialize(ID3D11Device* device, std::wstring_view filepath, std::string_view entryPoint = "vsMain");
 

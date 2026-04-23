@@ -1,42 +1,36 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <algorithm>
-#include <mutex>
-#include <cassert>
 #include "RenderCommand.hpp"
+#include "render/IRenderable.hpp"
+#include "render/PixelShader.hpp"
 
 
-class RenderCommandQueue {
-public:
-	static RenderCommandQueue& get();
+namespace Render
+{
+	class RenderCommandQueue {
+	public:
+		RenderCommandQueue() { queue_.reserve(INITIAL_CAPACITY); }
+		RenderCommandQueue(const RenderCommandQueue&) = delete;
+		RenderCommandQueue& operator=(const RenderCommandQueue&) = delete;
 
-	void addCommand(const RenderCommand& cmd) 
-	{ 
-		//lock_guard<std::mutex> lock(mutex_);
-		queue_.push_back(cmd); 
-	}
+		void addCommand(Render::IRenderable* obj, float depth);
+		void addCommand(Render::IRenderable* obj, float depth, OverridePSType psType);
+		void addCommand(Render::IRenderable* obj, float depth, std::shared_ptr<PixelShader> customPS);
 
-	void sort() 
-	{
-		//lock_guard<std::mutex> lock(mutex_);
-		std::sort(queue_.begin(), queue_.end(),
-			[](const RenderCommand& a, const RenderCommand& b)
-			{
-				if (a.layer_ != b.layer_) return a.layer_ < b.layer_;
-				return a.sortKey_ < b.sortKey_;
-			});
-	}
+		void sort();
+		void execute(ID3D11DeviceContext* context, const Math::Mat4& view, const Math::Mat4& proj);
 
-	const std::vector<RenderCommand>& getQueue() const { return queue_; }
-	void clear() { queue_.clear(); }
-	bool isEmpty() const { return queue_.empty(); }
-	std::size_t getSize() const { return queue_.size(); }
+		void clear() { queue_.clear(); }
+		bool isEmpty() const { return queue_.empty(); }
+		std::size_t getSize() const { return queue_.size(); }
 
-private:
-	std::vector<RenderCommand> queue_;
-	//std::mutex mutex_;
+		const std::vector<Render::RenderCommand>& getQueue() const { return queue_; }
 
-	RenderCommandQueue() = default;
-	RenderCommandQueue(const RenderCommandQueue&) = delete;
-	RenderCommandQueue& operator=(const RenderCommandQueue&) = delete;
-};
+	private:
+		std::vector<Render::RenderCommand> queue_;
+		static constexpr size_t INITIAL_CAPACITY = 1000;
+
+		uint64_t calculateSortKey(int renderQueue, float depth);
+	};
+}

@@ -1,114 +1,95 @@
 ﻿#include "FloatingWindowManager.hpp"
+#include "command/CommandStack.hpp"
 #include "event/appEvent/AppEventPublisher.hpp"
 #include "event/appEvent/AppEventSubscriber.hpp"
-#include "event/appEvent/ui/EnvironmentConfigRequestedEvent.hpp"
-#include "event/appEvent/ui/EnvironmentConfigChangedEvent.hpp"
-#include "event/appEvent/ui/EnvironmentDataRequestedEvent.hpp"
-#include "event/appEvent/ui/EnvironmentDataChangedEvent.hpp"
+#include "event/appEvent/ui/CreatePopupChangedEvent.hpp"
+#include "event/appEvent/ui/CreatePopupRequestedEvent.hpp"
+#include "event/appEvent/ui/EnvironmentConfigPopupRequestedEvent.hpp"
+#include "event/appEvent/ui/EnvironmentConfigPopupChangedEvent.hpp"
+#include "ui/window/create/CreatePanel.hpp"
 #include "ui/window/environmentConfig/EnvironmentConfig.hpp"
-#include "ui/window/environmentConfig/EnvironmentConfigSerializer.hpp"
-#include "core/manager/scene/LightManager.hpp"
 
 #include "event/uiEvent/UIEventPublisher.hpp"
 #include "event/uiEvent/UIEventSubscriber.hpp"
 #include "event/uiEvent/viewport/CameraInfoRequestedEvent.hpp"
 #include "event/uiEvent/viewport/CameraInfoChangedEvent.hpp"
 #include "core/manager/editor/ViewportCameraManager.hpp"
+#include "core/coordinator/scene/PassiveObjectCoordinator.hpp"
+#include "ui/preference/CameraInfoUI.hpp"
+using namespace std;
 
 
-bool FloatingWindowManager::initialize(FloatingWindowContext context, FloatingConfigData data)
+FloatingWindowManager::FloatingWindowManager() :
+	create_(make_unique<Create::CreatePanel>()),
+	envConfig_(make_unique<EnvConfig::EnvironmentConfig>()),
+	cameraInfoUI_(make_unique<CameraInfoUI>()) {}
+
+FloatingWindowManager::~FloatingWindowManager() = default;
+
+bool FloatingWindowManager::initialize(const FloatingWindowContext& context, const FloatingConfigData& data)
 {
-	if (!context.lightManager || !context.cameraManager) 
+	assert(context.lightManager && "비었습니다. 초기화 실패");
+	assert(context.cameraManager && "비었습니다. 초기화 실패");
+	assert(context.passiveObjCoordinator && "비었습니다. 초기화 실패");
+	if (!context.lightManager || !context.cameraManager || !context.passiveObjCoordinator)
 	{ 
-		assert(0 && "[에러] FloatingWindowManager 초기값이 비었습니다.\n");
 		return false; 
 	}
 
-	lightManager_ = context.lightManager;
 	camManager_ = context.cameraManager;
-	envSerializer_ = context.envSerializer;
 
+	isCreateVisible_ = data.showCreate;
 	isEnvConfigVisible_ = data.showEnvConfig;
 	isCamInfoVisible_ = data.showCameraInfo;
 
-	envConfig_.initialize(lightManager_);
-	cameraInfoUI_.initialize(camManager_);
-
+	if (!create_->initialize(context.passiveObjCoordinator)) { return false; }
+	if (!envConfig_->initialize(context.lightManager)) { return false; };
+	cameraInfoUI_->initialize(camManager_);
 
 	//콜백 구독 예약
-	auto envConfigID = AppEventSubscriber::get().subscribe<EnvironmentConfigRequestedEvent>([this](const EnvironmentConfigRequestedEvent& event) 
+	auto createID = AppEventSubscriber::get().subscribe<CreatePopupRequestedEvent>([this](const CreatePopupRequestedEvent& event)
+		{
+			this->setCreateVisibility(event.isVisible);
+		});
+	appEventSubID_.push_back(createID);
+
+	auto envConfigID = AppEventSubscriber::get().subscribe<EnvironmentConfigPopupRequestedEvent>([this](const EnvironmentConfigPopupRequestedEvent& event)
 		{
 			this->setEnvironmentConfigVisibility(event.isVisible);
 		});
-	AppEventSubID_.push_back(envConfigID);
-
-	auto envDataID = AppEventSubscriber::get().subscribe<EnvironmentDataRequestedEvent>([this](const EnvironmentDataRequestedEvent& event)
-		{
-			this->setEnvironmentConfigData(event);
-		});
-	AppEventSubID_.push_back(envDataID);
+	appEventSubID_.push_back(envConfigID);
 
 	auto camInfoSubID = UIEventSubscriber::get().subscribe<CameraInfoRequestedEvent>([this](const CameraInfoRequestedEvent& event)
 		{
 			this->setCameraInfoVisibility(event.isVisible);
 		});
-	UIEventSubID_.push_back(camInfoSubID);
+	uiEventSubID_.push_back(camInfoSubID);
 
 	return true;
 }
 
 void FloatingWindowManager::draw()
 {
+	if (isCreateVisible_) 
+	{
+		create_->draw(isCreateVisible_);
+	}
 	if (isEnvConfigVisible_) 
 	{
-		envConfig_.draw(isEnvConfigVisible_, envSerializer_);
+		envConfig_->draw(isEnvConfigVisible_);
 	}
-
 	if (isCamInfoVisible_)
 	{
-		cameraInfoUI_.draw(isCamInfoVisible_);
+		cameraInfoUI_->draw(isCamInfoVisible_);
 	}
 }
 
-void FloatingWindowManager::setEnvironmentConfigData(const EnvironmentDataRequestedEvent& event) 
+void FloatingWindowManager::setCreateVisibility(bool isVisible) 
 {
-	if (!envSerializer_) 
-	{
-		assert(0 && "[에러] EnvrionmentSerializer가 없습니다.");
-		return;
-	}
+	if (isCreateVisible_ == isVisible) { return; }
 
-	switch (event.type) 
-	{
-	case EnvDataType::Save: 
-	{
-		break;
-	}
-	case EnvDataType::SaveAs: 
-	{
-		break;
-	}
-	case EnvDataType::Load:
-	{
-		break;
-	}
-	case EnvDataType::Restore:
-	{
-		break;
-	}
-	case EnvDataType::New:
-	{
-		bool result = envSerializer_->deserialize(event.filepath);
-		if (result) 
-		{ 
-			AppEventPublisher::get().publish(EnvironmentDataChangedEvent{}); 
-		}
-		break;
-	}
-	default:
-		assert(0 && "[에러] 초기 EnvDataType이 이벤트로 들어왔습니다.");
-		break;
-	}
+	isCreateVisible_ = isVisible;
+	AppEventPublisher::get().publish(CreatePopupChangedEvent{ isCreateVisible_ });
 }
 
 void FloatingWindowManager::setEnvironmentConfigVisibility(bool isVisible) 
@@ -116,7 +97,7 @@ void FloatingWindowManager::setEnvironmentConfigVisibility(bool isVisible)
 	if (isEnvConfigVisible_ == isVisible) { return; }
 
 	isEnvConfigVisible_ = isVisible;
-	AppEventPublisher::get().publish(EnvironmentConfigChangedEvent{ isEnvConfigVisible_ });
+	AppEventPublisher::get().publish(EnvironmentConfigPopupChangedEvent{ isEnvConfigVisible_ });
 }
 
 void FloatingWindowManager::setCameraInfoVisibility(bool isVisible)

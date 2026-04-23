@@ -18,6 +18,9 @@ public:
 	ID3D11DeviceContext* getDeviceContext() override { return pd3dDeviceContext_.Get(); }
 
 	virtual void updateSceneConstants(const Render::SceneConstantBufferData& data) override;
+	ID3D11DepthStencilView* getDepthStencilView() const { return depthStencilView_.Get(); }
+	ID3D11DepthStencilState* getDepthStencilStateOff() const { return depthStencilStateOff_.Get(); }
+	ID3D11DepthStencilState* getDepthStencilStateAlways() const { return depthStencilStateAlways_.Get(); }
 
 	void setDepthEnabled(bool enable);
 	void setWireframeMode(bool enable) override;
@@ -36,6 +39,7 @@ private:
 	Microsoft::WRL::ComPtr <ID3D11DepthStencilView> depthStencilView_ = nullptr;
 	Microsoft::WRL::ComPtr <ID3D11DepthStencilState> depthStencilStateOn_ = nullptr;
 	Microsoft::WRL::ComPtr <ID3D11DepthStencilState> depthStencilStateOff_ = nullptr;
+	Microsoft::WRL::ComPtr <ID3D11DepthStencilState> depthStencilStateAlways_ = nullptr;
 
 	std::shared_ptr<Render::ConstantBuffer> sceneBuffer_;
 

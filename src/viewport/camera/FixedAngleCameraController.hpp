@@ -11,8 +11,8 @@ public:
 	FixedAngleCameraController(float pitchDeg, float yawDeg);
 
 	void update(float deltaTime) override;
-	void handleInput(const InputEvent& event) override;
 	void onActivate(const CameraController* prevController, CameraMode prevMode) override;
+	void onDeactivate() override;
 
 	void setTarget(const Math::Vec3& t);
 	void setDistance(float d);
@@ -29,7 +29,12 @@ private:
 	float panSpeed_ = 0.01f;
 
 	bool dragging_ = false;
+	bool wheelDragging_ = false;
 	POINT lastMousePos_ = { 0, 0 };
 
 	void updateView();
+	void onMouseDowned(const MouseDownEditorEvent& event);
+	void onMouseUpped(const MouseUpEditorEvent& event);
+	void onMouseWheeled(const MouseWheelEditorEvent& event);
+	void onMouseMoved(const MouseMoveEditorEvent& event);
 };

@@ -8,10 +8,10 @@
 class ArmCameraController : public CameraController {
 public:
 	void update(float deltaTime) override;	
-	void handleInput(const InputEvent& event) override;
 	void reset();
 
 	void onActivate(const CameraController* prevController, CameraMode prevMode) override;
+	void onDeactivate() override;
 	void setTarget(const Math::Vec3& t);
 	void setDistance(float d);
 	void setPitch(float pitchDeg);
@@ -41,5 +41,10 @@ private:
 
 	bool dragging_ = false;
 	POINT lastMousePos_ = { 0, 0 };
+
 	void updateView();
+	void onMouseDowned(const MouseDownEditorEvent& event);
+	void onMouseUpped(const MouseUpEditorEvent& event);
+	void onMouseWheeled(const MouseWheelEditorEvent& event);
+	void onMouseMoved(const MouseMoveEditorEvent& event);
 };

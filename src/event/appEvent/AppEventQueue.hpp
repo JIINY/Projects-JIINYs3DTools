@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include <queue>
 #include <utility>
-#include <mutex> //Å¥ Á¢±Ù¿¡ ´ëÇÑ ½º·¹µå ¾ÈÁ¤¼º °í·Á
+#include <mutex> //í ì ‘ê·¼ì— ëŒ€í•œ ìŠ¤ë ˆë“œ ì•ˆì •ì„± ê³ ë ¤
 #include <cassert>
 #include "AppEventVariant.hpp"
 
@@ -9,11 +9,15 @@
 class AppEventQueue 
 {
 public:
-	static AppEventQueue& get();
+	static AppEventQueue& get()
+	{
+		static AppEventQueue instance;
+		return instance;
+	}
 
 	void push(const AppEventVariant& event) 
 	{
-		std::lock_guard<std::mutex> lock(mutex_); //¸ÖÆ¼½º·¹µå È¯°æ ´ëºñ: ¶ôÀ» °É¾î ¾ÈÀüÇÏ°Ô Push
+		std::lock_guard<std::mutex> lock(mutex_); //ë©€í‹°ìŠ¤ë ˆë“œ í™˜ê²½ ëŒ€ë¹„: ë½ì„ ê±¸ì–´ ì•ˆì „í•˜ê²Œ Push
 		queue_.push(event);
 	}
 
@@ -25,7 +29,7 @@ public:
 
 	AppEventVariant pop() 
 	{
-		assert(!queue_.empty() && "[¿¡·¯] AppEventÅ¥°¡ ºñ¾îÀÖ¾î popÇÒ ¼ö ¾ø½À´Ï´Ù.");
+		assert(!queue_.empty() && "AppEventíê°€ ë¹„ì–´ìˆì–´ popí•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 
 		std::lock_guard<std::mutex> lock(mutex_);
 		AppEventVariant event = std::move(queue_.front());

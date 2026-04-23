@@ -9,8 +9,7 @@ namespace Render
         class VertexColorMaterial : public Material
         {
         public:
-            VertexColorMaterial() {}
-            virtual ~VertexColorMaterial() {}
+            virtual ~VertexColorMaterial() = default;
 
             bool initialize(ID3D11Device* device, const std::wstring& vsPath, const std::wstring& psPath) 
             {

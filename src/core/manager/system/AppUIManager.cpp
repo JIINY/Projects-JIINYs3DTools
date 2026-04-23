@@ -1,9 +1,12 @@
 ﻿#include "AppUIManager.hpp"
+#include <vector>
+#include <memory>
 #include <variant>
 #include <type_traits>
 #include "common/Mode.hpp"
 #include "common/ElementID.hpp"
 #include "core/App.hpp"
+#include "ui/appUI/AppUI.hpp"
 
 #include "event/appEvent/AppEventPublisher.hpp"
 #include "event/appEvent/AppEventSubscriber.hpp"
@@ -15,18 +18,23 @@
 using namespace std;
 
 
+AppUIManager::AppUIManager() : appUI_(make_unique<AppUI>()) {}
+AppUIManager::~AppUIManager() = default;
+
 void AppUIManager::initialize() 
 {
-	appUI_.initialize(this);
+	appUI_->initialize(this);
 
-	AppEventSubscriber::get().subscribe<AppModeCycleRequestedEvent>([this](const AppModeCycleRequestedEvent& event)
+	auto appModeCycleID = AppEventSubscriber::get().subscribe<AppModeCycleRequestedEvent>([this](const AppModeCycleRequestedEvent& event)
 		{
 			this->onAppModeCycleRequested(event);
 		});
-	AppEventSubscriber::get().subscribe<AppModeSetRequestedEvent>([this](const AppModeSetRequestedEvent& event)
+	appEventSubID_.push_back(appModeCycleID);
+	auto appModeSetID = AppEventSubscriber::get().subscribe<AppModeSetRequestedEvent>([this](const AppModeSetRequestedEvent& event)
 		{
 			this->onAppModeSetRequested(event);
 		});
+	appEventSubID_.push_back(appModeSetID);
 }
 
 void AppUIManager::onAppModeCycleRequested(const AppModeCycleRequestedEvent& event) 
@@ -65,5 +73,5 @@ AppMode AppUIManager::getNextMode(AppMode mode)
 
 void AppUIManager::draw() 
 {
-	appUI_.draw();
+	appUI_->draw();
 }

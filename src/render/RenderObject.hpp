@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "../object/Entity.hpp"
+#include "Renderable.hpp"
 #include <memory>
+#include <vector>
 #include "Mesh.hpp"
 #include "Material.hpp"
 #include "ConstantBuffer.hpp"
@@ -8,31 +10,47 @@
 
 namespace Render 
 {
-    class RenderObject : public Objects::Entity 
+    struct RenderElement 
+    {
+        std::shared_ptr<Mesh> mesh_ = nullptr;
+        std::shared_ptr<Material> material_ = nullptr;
+    };
+
+    class RenderObject : public Objects::Entity, public Renderable
     {
     public:
         virtual ~RenderObject() = default;
 
+        void initialize(ID3D11Device* device);
         void initialize(ID3D11Device* device, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material);
-        void draw(ID3D11DeviceContext* context, const Math::Mat4& viewMat, const Math::Mat4& projMat, std::shared_ptr<PixelShader> overridePS = nullptr); //TODO: isDynamic에 따라 바뀔 수 있음
+        void initialize(ID3D11Device* device, const std::vector<RenderElement>& elements);
+        virtual void draw(ID3D11DeviceContext* context, const Math::Mat4& viewMat, const Math::Mat4& projMat, 
+            std::shared_ptr<PixelShader> overridePS = nullptr) override; //TODO: isDynamic에 따라 바뀔 수 있음
 
-        void setMesh(std::shared_ptr<Mesh> mesh) { mesh_ = mesh; }
-        void setMaterial(std::shared_ptr<Material> material) { material_ = material; }
-        std::shared_ptr<Mesh> getMesh() { return mesh_; }
-        std::shared_ptr<Material> getMaterial() { return material_; }
+        void addElement(std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> mat) { elements_.push_back({ mesh, mat }); }
+        void clearElements() { elements_.clear(); }
 
-        void setVisible(bool visible) { isVisible_ = visible; }
-        bool isVisible() const { return isVisible_; }
+        void setMesh(std::shared_ptr<Mesh> mesh);
+        void setMaterial(std::shared_ptr<Material> mat);
+        void setMaterial(size_t index, std::shared_ptr<Material> mat);
+        std::shared_ptr<Mesh> getMesh(size_t index = 0) const;
+        std::shared_ptr<Material> getMaterial(size_t index = 0) const;
 
         void setDynamic(bool isDynamic) { isDynamic_ = isDynamic; }
         bool isDynamic() const { return isDynamic_; }
 
+
+    protected:
+        void createConstantBuffer(ID3D11Device* device);
+        void drawInternal(ID3D11DeviceContext* context, const Math::Mat4& viewMat, const Math::Mat4& projMat, std::shared_ptr<PixelShader> overridePS);
+
+
     private:
-        std::shared_ptr<Mesh> mesh_ = nullptr;
-        std::shared_ptr<Material> material_ = nullptr;
+        std::vector<RenderElement> elements_;
         std::shared_ptr<ConstantBuffer> worldMatBuffer_ = nullptr;
 
         bool isVisible_ = true;
         bool isDynamic_ = false;
+        int renderQueue_ = 2000;
     };
 }

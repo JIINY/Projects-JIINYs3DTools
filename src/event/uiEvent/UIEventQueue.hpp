@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include <queue>
 #include <utility>
-#include <mutex> //Å¥ Á¢±Ù¿¡ ´ëÇÑ ½º·¹µå ¾ÈÁ¤¼º °í·Á
+#include <mutex> //í ì ‘ê·¼ì— ëŒ€í•œ ìŠ¤ë ˆë“œ ì•ˆì •ì„± ê³ ë ¤
 #include <cassert>
 #include "UIEventVariant.hpp"
 
@@ -9,7 +9,11 @@
 class UIEventQueue
 {
 public:
-	static UIEventQueue& get();
+	static UIEventQueue& get()
+	{
+		static UIEventQueue instance;
+		return instance;
+	}
 
 	void push(const UIEventVariant& event)
 	{
@@ -25,7 +29,7 @@ public:
 
 	UIEventVariant pop()
 	{
-		assert(!queue_.empty() && "[¿¡·¯] UIEventÅ¥°¡ ºñ¾îÀÖ¾î popÇÒ ¼ö ¾ø½À´Ï´Ù.");
+		assert(!queue_.empty() && "UIEventíê°€ ë¹„ì–´ìˆì–´ popí•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 
 		std::lock_guard<std::mutex> lock(mutex_);
 		UIEventVariant event = std::move(queue_.front());

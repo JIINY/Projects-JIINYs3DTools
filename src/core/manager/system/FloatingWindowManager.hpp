@@ -3,62 +3,62 @@
 #include <vector>
 #include "core/AppConfig.hpp"
 #include "event/appEvent/AppEventSubscriber.hpp"
-#include "event/appEvent/ui/EnvironmentConfigChangedEvent.hpp"
-#include "event/appEvent/ui/EnvironmentDataRequestedEvent.hpp"
-#include "ui/window/environmentConfig/EnvironmentConfig.hpp"
-
 #include "event/uiEvent/UIEventSubscriber.hpp"
-#include "event/uiEvent/viewport/CameraInfoChangedEvent.hpp"
-#include "ui/preference/CameraInfoUI.hpp"
 
-class ViewportCameraManager;
+struct CreatePopupChangedEvent;
+struct EnvironmentConfigPopupChangedEvent;
+struct CameraInfoChangedEvent;
+
 class LightManager;
-namespace EnvironmentConfig
-{
-	class EnvironmentConfigSerializer;
-}
+class ViewportCameraManager;
+class PassiveObjectCoordinator;
+class CameraInfoUI;
+namespace Create { class CreatePanel; }
+namespace EnvConfig { class EnvironmentConfig; }
 
 struct FloatingWindowContext 
 {
-	ViewportCameraManager* cameraManager = nullptr;
 	LightManager* lightManager = nullptr;
-	EnvConfig::EnvironmentConfigSerializer* envSerializer = nullptr;
+	ViewportCameraManager* cameraManager = nullptr;
+	PassiveObjectCoordinator* passiveObjCoordinator = nullptr;
 };
+
 
 class FloatingWindowManager
 {
 public:
-	bool initialize(FloatingWindowContext context, FloatingConfigData data);
+	FloatingWindowManager();
+	~FloatingWindowManager();
+
+	bool initialize(const FloatingWindowContext& context, const FloatingConfigData& data);
 	void draw();
 
 	FloatingConfigData getCurrentState() const 
 	{
-		return { isEnvConfigVisible_, isCamInfoVisible_ };
+		return { isCreateVisible_, isEnvConfigVisible_, isCamInfoVisible_ };
 	}
 
+	void setCreateVisibility(bool isVisible);
 	void setEnvironmentConfigVisibility(bool isVisible);
-	void setEnvironmentConfigData(const EnvironmentDataRequestedEvent& event);
+	void setCameraInfoVisibility(bool isVisible);
 
 	void toggleCameraInfo();
-	void setCameraInfoVisibility(bool isVisible);
 	bool isCamInfoVisible() const { return isCamInfoVisible_; }
 
 
-
 private:
-	std::vector<AppEventSubscriptionID> AppEventSubID_;
-	EnvConfig::EnvironmentConfig envConfig_;
-	LightManager* lightManager_ = nullptr;
+	std::vector<AppEventSubscriptionID> appEventSubID_;
+	std::unique_ptr<Create::CreatePanel> create_;
+	bool isCreateVisible_ = false;
+	std::unique_ptr<EnvConfig::EnvironmentConfig> envConfig_;
+	bool isEnvConfigVisible_ = false;
 
-	std::vector<UIEventSubscriptionID> UIEventSubID_;
-	CameraInfoUI cameraInfoUI_;
+	std::vector<UIEventSubscriptionID> uiEventSubID_;
+	std::unique_ptr<CameraInfoUI> cameraInfoUI_;
+	bool isCamInfoVisible_ = false;
 	ViewportCameraManager* camManager_ = nullptr;
 
-	bool isEnvConfigVisible_ = false;
-	bool isCamInfoVisible_ = false;
-
-	EnvConfig::EnvironmentConfigSerializer* envSerializer_ = nullptr;
-
-	void onEnvironmentConfigChanged(const EnvironmentConfigChangedEvent& event);
+	void onCreatePopupChanged(const CreatePopupChangedEvent& event);
+	void onEnvironmentConfigPopupChanged(const EnvironmentConfigPopupChangedEvent& event);
 	void onCameraInfoChanged(const CameraInfoChangedEvent& event);
 };

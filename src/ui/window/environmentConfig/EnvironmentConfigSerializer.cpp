@@ -3,6 +3,8 @@
 #include <cassert>
 #include "common/Math.hpp"
 #include "core/manager/scene/LightManager.hpp"
+#include "render/lights/DirectionalLight.hpp"
+#include "../lib/nlohmann-json/json.hpp"
 using namespace std;
 using json = nlohmann::json;
 
@@ -18,13 +20,13 @@ namespace EnvConfig
     {
         if (!lightManager_)
         {
-            assert(0 && "[에러] 저장: lightManager_가 비었습니다.");
+            assert(0 && "저장: lightManager_가 비었습니다.");
             return false;
         }
 
         json savefile;
 
-        shared_ptr<Render::DirectionLight> sun = lightManager_->getDirectionalLight();
+        Render::DirectionalLight* sun = lightManager_->getDirectionalLight();
         Math::Vec3 sunDir = sun->getDirection();
         Math::Vec3 sunColor = sun->getColor();
 
@@ -63,7 +65,7 @@ namespace EnvConfig
         ofstream fout(filepath);
         if (!fout.is_open())
         {
-            assert(0 && "[에러] EnvironmentConfig파일 열기 실패\n");
+            assert(0 && "EnvironmentConfig파일 열기 실패\n");
             return false;
         }
 
@@ -71,7 +73,7 @@ namespace EnvConfig
 
         if (fout.fail()) 
         {
-            assert(0 && "[에러] EnvironmentConfig파일 쓰기 실패\n");
+            assert(0 && "EnvironmentConfig파일 쓰기 실패\n");
             return false;
         }
 
@@ -83,7 +85,7 @@ namespace EnvConfig
     {
         if (!lightManager_)
         {
-            assert(0 && "[에러] 로드: lightManager_가 비었습니다.\n");
+            assert(0 && "로드: lightManager_가 비었습니다.\n");
             return false;
         }
 
@@ -101,7 +103,7 @@ namespace EnvConfig
         }
         catch (json::parse_error& e)
         {
-            assert(0 && "[에러] 로드: JSON 파싱\n");
+            assert(0 && "로드: JSON 파싱\n");
             return false;
         }
         fin.close();

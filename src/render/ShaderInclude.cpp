@@ -33,7 +33,7 @@ HRESULT __stdcall ShaderInclude::Open(D3D_INCLUDE_TYPE IncludeType, LPCSTR pFile
         wstring wPath = finalPath.wstring();
         wstring errorMsg = L"[에러] 경로: " + wPath + L"\n";
         OutputDebugStringW(errorMsg.c_str());
-        assert(0 && "[에러] Include 파일을 찾을 수 없음, 출력창의 경로를 확인하세요");
+        assert(0 && "Include 파일을 찾을 수 없음, 출력창의 경로를 확인하세요");
 
         return E_FAIL;
     }
@@ -60,14 +60,14 @@ string ShaderInclude::loadSourceCode(const filesystem::path& path)
     {
         string errorMsg = "[에러] 경로: " + path.string() + "\n";
         OutputDebugStringA(errorMsg.c_str());
-        assert(0 && "[에러] 셰이더 파일이 없습니다. 출력창을 확인하세요");
+        assert(0 && "셰이더 파일이 없습니다. 출력창을 확인하세요");
         return "";
     }
 
     ifstream file(path, ios::binary | ios::ate);
     if (!file.is_open()) 
     {
-        assert(0 && "[에러] 셰이더 파일 열기 실패");
+        assert(0 && "셰이더 파일 열기 실패");
         return "";
     }
 

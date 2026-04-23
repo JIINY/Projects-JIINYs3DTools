@@ -83,4 +83,31 @@ namespace Math
 		val = clamp(val, 0, 255);
 		return static_cast<float>(val) / 255.0f;
 	}
+
+	const Vec4 AxisInfo::colorX = { 1.0f, 0.0f, 0.0f, 1.0f };
+	const Vec4 AxisInfo::colorY = { 0.0f, 1.0f, 0.0f, 1.0f };
+	const Vec4 AxisInfo::colorZ = { 0.0f, 0.0f, 1.0f, 1.0f };
+	const Vec4 AxisInfo::colorHover = { 1.0f, 1.0f, 0.0f, 1.0f };
+	const Vec4 AxisInfo::colorLocked = { 0.5f, 0.5f, 0.5f, 1.0f };
+	const Vec4 AxisInfo::colorDefault = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	const XMMATRIX AxisInfo::rotationX = XMMatrixRotationZ(XM_PIDIV2);
+	const XMMATRIX AxisInfo::rotationY = XMMatrixIdentity();
+	const XMMATRIX AxisInfo::rotationZ = XMMatrixRotationX(-XM_PIDIV2);
+
+
+	Ray TransformRay(const Ray& ray, const XMMATRIX& transform) 
+	{
+		XMVECTOR vOrigin = XMLoadFloat3(&ray.origin);
+		XMVECTOR vDir = XMLoadFloat3(&ray.direction);
+
+		XMVECTOR vNewOrigin = XMVector3TransformCoord(vOrigin, transform);
+		XMVECTOR vNewDir = XMVector3TransformNormal(vDir, transform);
+		vNewDir = XMVector3Normalize(vNewDir);
+
+		Ray result;
+		XMStoreFloat3(&result.origin, vNewOrigin);
+		XMStoreFloat3(&result.direction, vNewDir);
+		return result;
+	}
 }

@@ -1,17 +1,35 @@
-#pragma once
+癤�#pragma once
 #include <cstdint>
+#include <memory>
+#include "render/PixelShader.hpp"
 
-enum class RenderCommandType 
-{
-	Grid,
-	WorldAxes,
-	CameraModeUI
-};
 
-struct RenderCommand 
+namespace Render
 {
-	int layer_ = 0; //0=Scene, 100=Overlay, 1000=UI
-	std::uint64_t sortKey_ = 0; //동일 레이어 내에서 정렬
-	RenderCommandType type_{};
-	const void* drawData_ = nullptr; //프레임 한정 데이터
-};
+	class IRenderable;
+
+	enum class OverridePSType
+	{
+		None,
+		Black,
+		Red,
+		Custom
+	};
+
+	struct RenderCommand
+	{
+		std::uint64_t sortKey_ = 0;
+		Render::IRenderable* renderable_ = nullptr;
+		OverridePSType psType_ = OverridePSType::None;
+		std::shared_ptr<PixelShader> customPS_ = nullptr;
+	};
+
+	enum class RenderQueue : int 
+	{
+		Background = 1000,
+		Geometry = 2000,
+		AlphaTest = 2450,
+		Transparent = 3000,
+		Overlay = 4000
+	};
+}

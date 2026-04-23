@@ -48,7 +48,7 @@ VertexOutput vsMain(VertexInput input)
     float4 worldPos = mul(float4(input.position, 1.0f), World);
     float4 viewPos = mul(worldPos, View);
     output.position = mul(viewPos, Projection);
-	
     output.color = input.color;
+
     return output;
 }

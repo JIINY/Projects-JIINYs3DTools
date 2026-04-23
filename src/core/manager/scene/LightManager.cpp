@@ -1,9 +1,17 @@
 ﻿#include "LightManager.hpp"
+#include <memory>
+#include "render/lights/LightType.hpp"
+#include "render/lights/DirectionalLight.hpp"
+#include "render/lights/PointLight.hpp"
+#include "render/lights/SpotLight.hpp"
+using namespace std;
 
+
+LightManager::LightManager() : dirLight_(make_unique<Render::DirectionalLight>()) {}
+LightManager::~LightManager() = default;
 
 bool LightManager::initialize(const GlobalLightConfig& config)
 {
-    dirLight_ = std::make_shared<Render::DirectionLight>();
     dirLight_->setDirection(config.sunDirection);
     dirLight_->setColor(config.sunColor);
     dirLight_->setIntensity(config.sunIntensity);
@@ -13,6 +21,43 @@ bool LightManager::initialize(const GlobalLightConfig& config)
     ambientBot_ = config.ambientBot;
 
     return true;
+}
+
+GlobalLightConfig LightManager::backupCurrentGlobalLightData() const 
+{
+    GlobalLightConfig config;
+    if (dirLight_)
+    {
+        auto sun = getDirectionalLight();
+        config.sunDirection = sun->getDirection();
+        config.sunColor = sun->getColor();
+        config.sunIntensity = sun->getIntensity();
+    }
+
+    auto [top, mid, bot] = this->getAmbientColors();
+    config.ambientTop = top;
+    config.ambientMid = mid;
+    config.ambientBot = bot;
+
+    return config;
+}
+
+void LightManager::restoreCurrentGlobalLightData(const GlobalLightConfig& config) 
+{
+    if (dirLight_) 
+    {
+        setDirectionalLightDir(config.sunDirection);
+        setDirectionalLightColor(config.sunColor);
+        setDirectionalLightIntensity(config.sunIntensity);
+
+        setAmbientTop(config.ambientTop);
+        setAmbientMid(config.ambientMid);
+        setAmbientBot(config.ambientBot);
+    }
+    else 
+    {
+        assert(0);
+    }
 }
 
 Render::LightData LightManager::getDirectionalLightData() const 

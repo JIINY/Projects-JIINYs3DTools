@@ -1,10 +1,96 @@
 ﻿#pragma once
+#include <cmath>
 #include <DirectXMath.h>
 #include <utility>
 #include "Mode.hpp"
 
+
+inline DirectX::XMFLOAT2 operator+(const DirectX::XMFLOAT2& a, const DirectX::XMFLOAT2& b)
+{
+	return { a.x + b.x, a.y + b.y };
+}
+inline DirectX::XMFLOAT2& operator+=(DirectX::XMFLOAT2& a, const DirectX::XMFLOAT2& b)
+{
+	a.x += b.x; a.y += b.y;
+	return a;
+}
+inline DirectX::XMFLOAT2 operator-(const DirectX::XMFLOAT2& a, const DirectX::XMFLOAT2& b)
+{
+	return { a.x - b.x, a.y - b.y };
+}
+inline DirectX::XMFLOAT2& operator-=(DirectX::XMFLOAT2& a, const DirectX::XMFLOAT2& b)
+{
+	a.x -= b.x; a.y -= b.y;
+	return a;
+}
+inline DirectX::XMFLOAT2 operator*(const DirectX::XMFLOAT2& a, float b)
+{
+	return { a.x * b, a.y * b };
+}
+inline DirectX::XMFLOAT2& operator*=(DirectX::XMFLOAT2& a, float b)
+{
+	a.x *= b; a.y *= b;
+	return a;
+}
+inline DirectX::XMFLOAT2 operator/(const DirectX::XMFLOAT2& a, float b)
+{
+	float invB = 1.0f / b;
+	return { a.x * invB, a.y * invB };
+}
+inline DirectX::XMFLOAT2& operator/=(DirectX::XMFLOAT2& a, float b)
+{
+	float invB = 1.0f / b;
+	a.x *= invB; a.y *= invB;
+	return a;
+}
+
+
+inline DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& a, const DirectX::XMFLOAT3& b)
+{
+	return { a.x + b.x, a.y + b.y, a.z + b.z };
+}
+inline DirectX::XMFLOAT3& operator+=(DirectX::XMFLOAT3& a, const DirectX::XMFLOAT3& b) 
+{
+	a.x += b.x; a.y += b.y; a.z += b.z;
+	return a;
+}
+inline DirectX::XMFLOAT3 operator-(const DirectX::XMFLOAT3& a, const DirectX::XMFLOAT3& b)
+{
+	return { a.x - b.x, a.y - b.y, a.z - b.z };
+}
+inline DirectX::XMFLOAT3& operator-=(DirectX::XMFLOAT3& a, const DirectX::XMFLOAT3& b)
+{
+	a.x -= b.x; a.y -= b.y; a.z -= b.z;
+	return a;
+}
+inline DirectX::XMFLOAT3 operator*(const DirectX::XMFLOAT3& a, float b) 
+{
+	return { a.x * b, a.y * b, a.z * b };
+}
+inline DirectX::XMFLOAT3& operator*=(DirectX::XMFLOAT3& a, float b) 
+{
+	a.x *= b; a.y *= b; a.z *= b;
+	return a;
+}
+inline DirectX::XMFLOAT3 operator/(const DirectX::XMFLOAT3& a, float b) 
+{
+	float invB = 1.0f / b;
+	return { a.x * invB, a.y * invB, a.z * invB };
+}
+inline DirectX::XMFLOAT3& operator/=(DirectX::XMFLOAT3& a, float b) 
+{
+	float invB = 1.0f / b;
+	a.x *= invB; a.y *= invB; a.z *= invB;
+	return a;
+}
+
+
 namespace Math 
 {
+	constexpr float PI = 3.14159265359f;
+	constexpr float TWO_PI = 6.28318530718f;
+	constexpr float HALF_PI = 1.57079632679f;
+
 	using Vec2 = DirectX::XMFLOAT2;
 	using Vec3 = DirectX::XMFLOAT3;
 	using Vec4 = DirectX::XMFLOAT4;
@@ -17,16 +103,6 @@ namespace Math
 	extern const DirectX::XMVECTOR UP;
 	extern const DirectX::XMVECTOR BOTTOM;
 
-	inline Vec3 operator+(const Vec3& a, const Vec3& b)
-	{
-		DirectX::XMVECTOR va = DirectX::XMLoadFloat3(&a);
-		DirectX::XMVECTOR vb = DirectX::XMLoadFloat3(&b);
-		DirectX::XMVECTOR vr = DirectX::XMVectorAdd(va, vb);
-		Vec3 result{};
-		DirectX::XMStoreFloat3(&result, vr);
-		return result;
-	}
-
 	Vec3 normalize(const Vec3& v);
 	float length(const Vec3& v);
 	std::pair<float, float> DirectionToPitchYaw(const Vec3& dir);
@@ -38,4 +114,72 @@ namespace Math
 	double roundFloat(float val, int digits = 3);
 	int floatToColor255(float val);
 	float color255ToFloat(int val);
+
+	//구면 좌표계 → 직교 좌표계 변환
+	inline Vec3 getSphericalCoord(float radius, float theta, float phi)
+	{
+		float x = radius * sinf(phi) * cosf(theta);
+		float y = radius * cosf(phi);
+		float z = radius * sinf(phi) * sinf(theta);
+		return Vec3(x, y, z);
+	}
+
+	struct Ray
+	{
+		Math::Vec3 origin;
+		Math::Vec3 direction;
+	};
+
+	Ray TransformRay(const Ray& ray, const DirectX::XMMATRIX& transform);
+
+	enum class Axis
+	{
+		X,
+		Y,
+		Z,
+		Hover,
+		Locked,
+		Default,
+		Count
+	};
+
+	struct AxisInfo 
+	{
+		static const Vec4 colorX;
+		static const Vec4 colorY;
+		static const Vec4 colorZ;
+		static const Vec4 colorHover;
+		static const Vec4 colorLocked;
+		static const Vec4 colorDefault;
+
+		static const DirectX::XMMATRIX rotationX;
+		static const DirectX::XMMATRIX rotationY;
+		static const DirectX::XMMATRIX rotationZ;
+
+		static const Vec4& GetColor(Axis axis) 
+		{
+			switch (axis) 
+			{
+			case Axis::X: return colorX;
+			case Axis::Y: return colorY;
+			case Axis::Z: return colorZ;
+			case Axis::Hover: return colorHover;
+			case Axis::Locked: return colorLocked;
+			case Axis::Default:
+			case Axis::Count:
+			default: return colorDefault;
+			}
+		}
+
+		static const DirectX::XMMATRIX& GetRotationMX(Axis axis)
+		{
+			switch (axis) 
+			{
+			case Axis::X: return rotationX;
+			case Axis::Y: return rotationY;
+			case Axis::Z: return rotationZ;
+			default: return rotationY;
+			}
+		}
+	};
 }

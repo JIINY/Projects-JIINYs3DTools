@@ -1,16 +1,36 @@
 ﻿#include "InputHandler.hpp"
-#include <imgui.h>
 #include <unordered_map>
 #include <variant>
 #include <type_traits>
 #include "InputEventQueue.hpp"
 #include "event/InputEventType.hpp"
+#include "imgui.h"
 
 #include "common/DebugLog.hpp"
 using namespace std;
 
-void InputHandler::update(InputEventQueue& queue)
+void InputHandler::update()
 {
+	ImGuiIO& io = ImGui::GetIO();
+	if (io.WantCaptureKeyboard) { return; }
+
+	for (int i = ImGuiKey_NamedKey_BEGIN; i < ImGuiKey_NamedKey_END; ++i)
+	{
+		ImGuiKey key = static_cast<ImGuiKey>(i);
+
+		//IsKeyPressed는 이번 프레임에 처음 눌렸는가를 확인
+		if (ImGui::IsKeyPressed(key, false))
+		{
+			auto it = keyStates_.find(i);
+			if (it == keyStates_.end() || !it->second)
+			{
+				keyStates_[i] = true;
+				keyDurations_[i] = 0;
+				InputEventQueue::get().push(KeyDownEvent{ i, io.KeyCtrl, io.KeyAlt, io.KeyShift });
+			}
+		}
+	}
+
 	for (auto it = keyStates_.begin(); it != keyStates_.end();)
 	{
 		int key = it->first;
@@ -20,12 +40,12 @@ void InputHandler::update(InputEventQueue& queue)
 		if (wasDown && nowDown) 
 		{
 			keyDurations_[key]++;
-			queue.push(KeyHoldEvent{ key, keyDurations_[key] });
+			InputEventQueue::get().push(KeyHoldEvent{ key, keyDurations_[key], io.KeyCtrl, io.KeyAlt, io.KeyShift });
 			++it;
 		}
 		else if (wasDown && !nowDown) 
 		{
-			queue.push(KeyUpEvent { key });
+			InputEventQueue::get().push(KeyUpEvent { key, io.KeyCtrl, io.KeyAlt, io.KeyShift });
 			keyDurations_.erase(key);
 			it = keyStates_.erase(it);
 		}
@@ -35,62 +55,38 @@ void InputHandler::update(InputEventQueue& queue)
 		}
 	}
 
-	ImGuiIO& io = ImGui::GetIO();
+	if (io.WantCaptureMouse) { return; }
+
 	POINT currentPos = { (long)io.MousePos.x, (long)io.MousePos.y };
 	if (io.MouseDelta.x != 0.0f || io.MouseDelta.y != 0.0f) //마우스 이동
 	{
-		queue.push(MouseMoveEvent{ io.MouseDelta.x, io.MouseDelta.y, currentPos });
+		InputEventQueue::get().push(MouseMoveEvent{ io.MouseDelta.x, io.MouseDelta.y, currentPos, io.KeyCtrl, io.KeyAlt, io.KeyShift });
 	}
 
 	for (int i = 0; i < 3; ++i) //마우스 버튼 클릭
 	{
 		if (ImGui::IsMouseClicked(i)) 
 		{
-			queue.push(MouseDownEvent{ i, currentPos });
+			InputEventQueue::get().push(MouseDownEvent{ i, currentPos, io.KeyCtrl, io.KeyAlt, io.KeyShift });
 		}
-		if (ImGui::IsMouseReleased(i)) 
+		else if (ImGui::IsMouseDown(i))
 		{
-			queue.push(MouseUpEvent{ i, currentPos });
+			InputEventQueue::get().push(MouseHoldEvent{ i, io.MouseDelta.x, io.MouseDelta.y, currentPos, io.KeyCtrl, io.KeyAlt, io.KeyShift });
+		}
+		if (ImGui::IsMouseReleased(i))
+		{
+			InputEventQueue::get().push(MouseUpEvent{ i, currentPos, io.KeyCtrl, io.KeyAlt, io.KeyShift });
 		}
 	}
 
 	if (io.MouseWheel != 0.0f) 
 	{
-		queue.push(MouseWheelEvent{ io.MouseWheel, currentPos });
+		InputEventQueue::get().push(MouseWheelEvent{ io.MouseWheel, currentPos, io.KeyCtrl, io.KeyAlt, io.KeyShift });
 	}
-}
-
-void InputHandler::handleEvent(const InputEvent& event, InputEventQueue& queue) 
-{
-	visit([&](auto&& ev) {
-
-		using T = decay_t<decltype(ev)>;
-		if constexpr (is_same_v<T, KeyPressedEvent>) 
-		{
-			handleKeyPressed(ev, queue);
-		}
-		else //if constexpr
-		{
-			//확장용
-		}
-	}, event);
 }
 
 bool InputHandler::isKeyDown(int key) const 
 {
 	auto it = keyStates_.find(key);
 	return it != keyStates_.end() && it->second;
-}
-
-void InputHandler::handleKeyPressed(const KeyPressedEvent& event, InputEventQueue& queue) 
-{
-	int key = event.keyCode_;
-
-	auto it = keyStates_.find(key);
-	if (it == keyStates_.end() || !it->second)
-	{
-		keyStates_[key] = true;
-		keyDurations_[key] = 0;
-		queue.push(KeyDownEvent{ key });
-	}
 }

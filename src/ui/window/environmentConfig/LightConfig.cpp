@@ -1,9 +1,11 @@
 ﻿#include "LightConfig.hpp"
+#include <string>
 #include <cmath>
 #include <algorithm>
 #include <DirectXMath.h>
 #include "common/Math.hpp"
 #include "core/manager/scene/LightManager.hpp"
+#include "render/lights/DirectionalLight.hpp"
 #include "imgui.h"
 
 #include "common/DebugLog.hpp"

@@ -5,6 +5,9 @@
 #include "common/Math.hpp"
 #include "common/Mode.hpp"
 
+#include "event/editorEvent/EditorEventSubscriber.hpp"
+#include "event/editorEvent/io/MouseEvent.hpp"
+
 #include "common/DebugLog.hpp"
 using namespace std;
 using namespace Math;
@@ -69,7 +72,33 @@ CameraController::CameraCoreState ArmCameraController::getCoreState() const
 
 void ArmCameraController::onActivate(const CameraController* prevController, CameraMode prevMode) 
 {
-	if (!camera_ || !prevController || !prevController->getCamera()) 
+	//이벤트 구독
+	auto mouseDown = EditorEventSubscriber::get().subscribe<MouseDownEditorEvent>([this](const MouseDownEditorEvent& event)
+		{
+			this->onMouseDowned(event);
+		});
+	editorEventSubID_.push_back(mouseDown);
+
+	auto mouseUp = EditorEventSubscriber::get().subscribe<MouseUpEditorEvent>([this](const MouseUpEditorEvent& event)
+		{
+			this->onMouseUpped(event);
+		});
+	editorEventSubID_.push_back(mouseUp);
+
+	auto mouseWheel = EditorEventSubscriber::get().subscribe<MouseWheelEditorEvent>([this](const MouseWheelEditorEvent& event)
+		{
+			this->onMouseWheeled(event);
+		});
+	editorEventSubID_.push_back(mouseWheel);
+
+	auto mouseMove = EditorEventSubscriber::get().subscribe<MouseMoveEditorEvent>([this](const MouseMoveEditorEvent& event)
+		{
+			this->onMouseMoved(event);
+		});
+	editorEventSubID_.push_back(mouseMove);
+
+
+	if (!camera_ || !prevController || !prevController->getCamera())
 	{
 		reset();
 		return;
@@ -117,89 +146,98 @@ void ArmCameraController::onActivate(const CameraController* prevController, Cam
 	updateView();
 }
 
-void ArmCameraController::handleInput(const InputEvent& event) 
+void ArmCameraController::onDeactivate()
 {
-	visit([&](auto&& ev) {
-
-		using T = decay_t<decltype(ev)>;
-
-		if constexpr (is_same_v<T, MouseDownEvent>)
-		{
-			if (ev.button_ == 1)
-			{
-				dragging_ = true;
-				lastMousePos_ = ev.pos_;
-			}
-			else if (ev.button_ == 2) 
-			{
-				panning_ = true;
-				lastMousePos_ = ev.pos_;
-			}
-		}
-		else if constexpr (is_same_v<T, MouseUpEvent>)
-		{
-			if (ev.button_ == 1) { dragging_ = false; }
-			else if (ev.button_ == 2) { panning_ = false; }
-		}
-		else if constexpr (is_same_v<T, MouseMoveEvent>)
-		{
-			if (dragging_)
-			{
-				int dx = ev.pos_.x - lastMousePos_.x;
-				int dy = ev.pos_.y - lastMousePos_.y;
-				lastMousePos_ = ev.pos_;
-
-				yawDeg_ += dx * rotationSpeed_;
-				pitchDeg_ += dy * rotationSpeed_;
-
-				//pitch제한 (짐벌락 방지)
-				if (pitchDeg_ < -89.0f) pitchDeg_ = -89.0f;
-				if (pitchDeg_ > 89.0f) pitchDeg_ = 89.0f;
-				updateView();
-			}
-			else if (panning_) 
-			{
-				int dx = ev.pos_.x - lastMousePos_.x;
-				int dy = ev.pos_.y - lastMousePos_.y;
-				lastMousePos_ = ev.pos_;
-
-				float pitchRad = XMConvertToRadians(pitchDeg_);
-				float yawRad = XMConvertToRadians(yawDeg_);
-
-				XMVECTOR forward = XMVectorSet(cosf(pitchRad) * sinf(yawRad), sinf(pitchRad), cosf(pitchRad) * cosf(yawRad), 0.0f);
-				forward = XMVector3Normalize(forward);
-
-				XMVECTOR right = XMVector3Cross(UP, forward);
-				right = XMVector3Normalize(right);
-
-				XMVECTOR camUp = XMVector3Cross(forward, right);
-				camUp = XMVector3Normalize(camUp);
-
-				float moveSpeed = panSpeed_ * distance_;
-				XMVECTOR translation = (right * (float)dx * moveSpeed) + (camUp * (float)dy * moveSpeed);
-
-				//XMFLOAT3 tPos;
-				//XMStoreFloat3(&tPos, translation);
-				//tPos.y *= 0.5f; //패닝의 y축 이동 보정
-				//translation = XMLoadFloat3(&tPos);
-
-				XMVECTOR currentTarget = XMLoadFloat3(&target_);
-				currentTarget = XMVectorAdd(currentTarget, translation);
-				XMStoreFloat3(&target_, currentTarget);
-				updateView();
-			}
-		}
-		else if constexpr (is_same_v<T, MouseWheelEvent>) 
-		{
-			float zoomAmount = ev.delta_ * zoomSpeed_ * distance_ * 0.1f; //거리 비례 보정
-			distance_ -= zoomAmount;
-
-			if (distance_ < 0.1f) distance_ = 0.1f;
-			updateView();
-		}
-	}, event);
+	for (auto id : editorEventSubID_)
+	{
+		EditorEventSubscriber::get().unsubscribe(id);
+	}
+	editorEventSubID_.clear();
 }
 
+void ArmCameraController::onMouseDowned(const MouseDownEditorEvent& event)
+{
+	switch (event.button_)
+	{
+	case 1:
+	{
+		dragging_ = true;
+		lastMousePos_ = event.pos_;
+		break;
+	}
+	case 2:
+	{
+		panning_ = true;
+		lastMousePos_ = event.pos_;
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void ArmCameraController::onMouseUpped(const MouseUpEditorEvent& event)
+{
+	switch (event.button_)
+	{
+	case 1: dragging_ = false; break;
+	case 2: panning_ = false; break;
+	default: break;
+	}
+}
+
+void ArmCameraController::onMouseMoved(const MouseMoveEditorEvent& event)
+{
+	if (dragging_) 
+	{
+		int dx = event.pos_.x - lastMousePos_.x;
+		int dy = event.pos_.y - lastMousePos_.y;
+		lastMousePos_ = event.pos_;
+
+		yawDeg_ += dx * rotationSpeed_;
+		pitchDeg_ += dy * rotationSpeed_;
+
+		//pitch제한 (짐벌락 방지)
+		if (pitchDeg_ < -89.0f) pitchDeg_ = -89.0f;
+		if (pitchDeg_ > 89.0f) pitchDeg_ = 89.0f;
+		updateView();
+	}
+	else if (panning_)
+	{
+		int dx = event.pos_.x - lastMousePos_.x;
+		int dy = event.pos_.y - lastMousePos_.y;
+		lastMousePos_ = event.pos_;
+
+		float pitchRad = XMConvertToRadians(pitchDeg_);
+		float yawRad = XMConvertToRadians(yawDeg_);
+
+		XMVECTOR forward = XMVectorSet(cosf(pitchRad) * sinf(yawRad), sinf(pitchRad), cosf(pitchRad) * cosf(yawRad), 0.0f);
+		forward = XMVector3Normalize(forward);
+
+		XMVECTOR right = XMVector3Cross(UP, forward);
+		right = XMVector3Normalize(right);
+
+		XMVECTOR camUp = XMVector3Cross(forward, right);
+		camUp = XMVector3Normalize(camUp);
+
+		float moveSpeed = panSpeed_ * distance_;
+		XMVECTOR translation = (right * (float)dx * moveSpeed) + (camUp * (float)dy * moveSpeed);
+
+		XMVECTOR currentTarget = XMLoadFloat3(&target_);
+		currentTarget = XMVectorAdd(currentTarget, translation);
+		XMStoreFloat3(&target_, currentTarget);
+		updateView();
+	}
+}
+
+void ArmCameraController::onMouseWheeled(const MouseWheelEditorEvent& event)
+{
+	float zoomAmount = event.delta_ * zoomSpeed_ * distance_ * 0.1f;
+	distance_ -= zoomAmount;
+
+	if (distance_ < 0.1f) { distance_ = 0.1f; }
+	updateView();
+}
 
 void ArmCameraController::updateView() 
 {

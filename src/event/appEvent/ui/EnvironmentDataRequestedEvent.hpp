@@ -16,7 +16,7 @@ enum class EnvActionType
 struct EnvironmentDataRequestedEvent
 {
     EnvActionType type = EnvActionType::Count;
-    std::string filepath = "";
+    std::string path = "";
 
-    EnvironmentDataRequestedEvent(EnvActionType t, const std::string& p) : type(t), filepath(p) {}
+    EnvironmentDataRequestedEvent(EnvActionType t, const std::string& p) : type(t), path(p) {}
 };

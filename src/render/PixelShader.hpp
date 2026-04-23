@@ -12,8 +12,7 @@ namespace Render
     class PixelShader : public IShader
     {
     public:
-        PixelShader();
-        virtual ~PixelShader();
+        virtual ~PixelShader() = default;
 
         bool initialize(ID3D11Device* device, std::wstring_view filepath, std::string_view entryPoint = "psMain");
 

@@ -1,23 +1,31 @@
 ﻿#pragma once
+#include <vector>
+#include <memory>
 #include "common/Mode.hpp"
-#include "ui/appUI/AppUI.hpp"
-#include "event/appEvent/state/AppModeCycleRequestedEvent.hpp"
-#include "event/appEvent/state/AppModeSetRequestedEvent.hpp"
+#include "event/appEvent/AppEventSubscriber.hpp"
 
+struct AppModeCycleRequestedEvent;
+struct AppModeSetRequestedEvent;
 class App;
+class AppUI;
+
 
 class AppUIManager {
 public:
+	AppUIManager();
+	~AppUIManager();
+
 	void initialize();
 	void draw();
 
 	void setMode(AppMode mode);
 	AppMode getMode() const { return currentMode_; }
-	AppUI* getAppUI() { return &appUI_; }
+	AppUI* getAppUI() { return appUI_.get(); }
 
 
 private:
-	AppUI appUI_;
+	std::vector<AppEventSubscriptionID> appEventSubID_;
+	std::unique_ptr<AppUI> appUI_;
 	AppMode currentMode_ = AppMode::Edit;
 
 	AppMode getNextMode(AppMode mode);

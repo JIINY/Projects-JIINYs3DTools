@@ -3,12 +3,15 @@
 #include <functional>
 #include "common/Mode.hpp"
 #include "common/Fonts.hpp"
+#include "command/CommandStack.hpp"
 
 #include "event/appEvent/AppEventPublisher.hpp"
 #include "event/appEvent/AppEventSubscriber.hpp"
 #include "event/appEvent/state/AppModeChangedEvent.hpp"
 #include "event/appEvent/state/CameraModeChangedEvent.hpp"
-#include "event/appEvent/ui/EnvironmentConfigChangedEvent.hpp"
+#include "event/appEvent/ui/CreatePopupChangedEvent.hpp"
+#include "event/appEvent/ui/EnvironmentConfigPopupChangedEvent.hpp"
+
 #include "event/uiEvent/UIEventPublisher.hpp"
 #include "event/uiEvent/UIEventSubscriber.hpp"
 #include "event/uiEvent/viewport/CameraInfoChangedEvent.hpp"
@@ -30,9 +33,13 @@ void MainMenuBarUI::initialize()
 		{
 			this->onCameraModeChanged(event);
 		});
-	AppEventSubscriber::get().subscribe<EnvironmentConfigChangedEvent>([this](const EnvironmentConfigChangedEvent& event)
+	AppEventSubscriber::get().subscribe<CreatePopupChangedEvent>([this](const CreatePopupChangedEvent& event)
 		{
-			this->onEnvironmentConfigChanged(event);
+			this->onCreatePopupChanged(event);
+		});
+	AppEventSubscriber::get().subscribe<EnvironmentConfigPopupChangedEvent>([this](const EnvironmentConfigPopupChangedEvent& event)
+		{
+			this->onEnvironmentConfigPopupChanged(event);
 		});
 
 	UIEventSubscriber::get().subscribe<CameraInfoChangedEvent>([this](const CameraInfoChangedEvent& event)
@@ -63,7 +70,12 @@ void MainMenuBarUI::onCameraModeChanged(const CameraModeChangedEvent& event)
 	this->updateCamUIState(event.newCam_, event.newView_);
 }
 
-void MainMenuBarUI::onEnvironmentConfigChanged(const EnvironmentConfigChangedEvent& event)
+void MainMenuBarUI::onCreatePopupChanged(const CreatePopupChangedEvent& event) 
+{
+	this->isCreateVisible_ = event.isVisible;
+}
+
+void MainMenuBarUI::onEnvironmentConfigPopupChanged(const EnvironmentConfigPopupChangedEvent& event)
 {
 	this->isEnvironmentConfigVisible_ = event.isVisible;
 }
@@ -127,8 +139,8 @@ void MainMenuBarUI::editMenu()
 {
 	if (ImGui::BeginMenu("Edit"))
 	{
-		if (ImGui::MenuItem("Undo", "Ctrl + Z")) {}
-		if (ImGui::MenuItem("Redo", "Ctrl + Y")) {}
+		if (ImGui::MenuItem("Undo", "Ctrl + Z")) { CommandStack::get().undo(); }
+		if (ImGui::MenuItem("Redo", "Ctrl + Y")) { CommandStack::get().redo(); }
 		ImGui::EndMenu();
 	}
 }
@@ -217,9 +229,13 @@ void MainMenuBarUI::windowMenu()
 {
 	if (ImGui::BeginMenu("Window")) 
 	{
+		if (ImGui::MenuItem("Create", nullptr)) 
+		{
+			AppEventPublisher::get().publish(CreatePopupRequestedEvent{ !isCreateVisible_ });
+		}
 		if (ImGui::MenuItem("Environment Config", nullptr)) 
 		{
-			AppEventPublisher::get().publish(EnvironmentConfigRequestedEvent{ !isEnvironmentConfigVisible_ });
+			AppEventPublisher::get().publish(EnvironmentConfigPopupRequestedEvent{ !isEnvironmentConfigVisible_ });
 		}
 
 		ImGui::EndMenu();

@@ -9,8 +9,7 @@ namespace Render
 	class ConstantBuffer 
 	{
 	public:
-		ConstantBuffer();
-		virtual ~ConstantBuffer();
+		virtual ~ConstantBuffer() = default;
 
 		//GPU에 버퍼공간을 만듬, T: 구조체 타입(e.g. LightBuffer, MatrixBuffer)
 		template <typename T>
@@ -18,6 +17,9 @@ namespace Render
 		{
 			return initializeRaw(device, sizeof(T));
 		}
+
+		bool initializeRaw(ID3D11Device* device, UINT byteWidth);
+		void updateRaw(ID3D11DeviceContext* context, const void* data, UINT byteWidth);
 
 		//업데이트: CPU의 데이터를 GPU로 전송
 		template <typename T>
@@ -35,8 +37,5 @@ namespace Render
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer_;
-
-		bool initializeRaw(ID3D11Device* device, UINT byteWidth);
-		void updateRaw(ID3D11DeviceContext* context, const void* data, UINT byteWidth);
 	};
 }

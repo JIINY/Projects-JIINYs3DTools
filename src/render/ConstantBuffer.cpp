@@ -5,9 +5,6 @@ using namespace std;
 
 namespace Render 
 {
-    ConstantBuffer::ConstantBuffer() {}
-    ConstantBuffer::~ConstantBuffer() {}
-
     bool ConstantBuffer::initializeRaw(ID3D11Device* device, UINT byteWidth) 
     {
         //DirectX의 제약사항: 상수 버퍼 크기는 16byte배수일 것

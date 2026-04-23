@@ -4,25 +4,19 @@
 using namespace std;
 
 
-MaterialManager* MaterialManager::get() 
+bool MaterialManager::initialize(ID3D11Device* device, ShaderManager* shaderManager) 
 {
-	static MaterialManager instance;
-	return &instance;
-}
-
-void MaterialManager::initialize(ID3D11Device* device, ShaderManager* shaderManager) 
-{
-	assert(shaderManager && "[에러] MaterialManager 초기화 실패: device 또는 ShaderManager가 null입니다.");
-	if (isInitialized_) { return; }
+	assert(device && "초기화 실패");
+	assert(shaderManager && "초기화 실패");
+	if (!device || !shaderManager) { return false; }
 
 	device_ = device;
 	shaderManager_ = shaderManager;
-	isInitialized_ = true;
+	return true;
 }
 
 void MaterialManager::shutdown() 
 {
-	shaderManager_ = nullptr;
 	device_ = nullptr;
-	isInitialized_ = false;
+	shaderManager_ = nullptr;
 }

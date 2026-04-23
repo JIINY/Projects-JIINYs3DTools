@@ -3,9 +3,14 @@
 #include <vector>
 #include <tuple>
 #include "common/Math.hpp"
-#include "render/lights/DirectionalLight.hpp"
-#include "render/lights/PointLight.hpp"
-#include "render/lights/SpotLight.hpp"
+#include "render/lights/LightType.hpp"
+
+namespace Render 
+{ 
+    class DirectionalLight; 
+    class PointLight;
+    class SpotLight;
+}
 
 
 struct GlobalLightConfig 
@@ -34,10 +39,16 @@ struct LocalLightConfig
 class LightManager 
 {
 public:
+    LightManager();
+    ~LightManager();
+
     bool initialize(const GlobalLightConfig& config = GlobalLightConfig());
     Render::LightData getDirectionalLightData() const;
     std::tuple<Math::Vec3, Math::Vec3, Math::Vec3> getAmbientColors() const { return { ambientTop_, ambientMid_, ambientBot_ }; }
-        
+    
+    GlobalLightConfig backupCurrentGlobalLightData() const;
+    void restoreCurrentGlobalLightData(const GlobalLightConfig& config);
+
     void setDirectionalLightDir(const Math::Vec3& dir);
     void setDirectionalLightColor(const Math::Vec3& color);
     void setDirectionalLightIntensity(const float intensity);
@@ -46,7 +57,7 @@ public:
     void setAmbientMid(const Math::Vec3& color) { ambientMid_ = color; }
     void setAmbientBot(const Math::Vec3& color) { ambientBot_ = color; }
 
-    std::shared_ptr<Render::DirectionLight> getDirectionalLight() const { return dirLight_; }
+    Render::DirectionalLight* getDirectionalLight() const { return dirLight_.get(); }
     const std::vector<std::shared_ptr<Render::PointLight>>& getPointLights() const { return pointLights_; }
     const std::vector<std::shared_ptr<Render::SpotLight>>& getSpotLights() const { return spotLights_; }
 
@@ -55,7 +66,7 @@ public:
     void removeAllLights();
 
 private:
-    std::shared_ptr<Render::DirectionLight> dirLight_ = nullptr;
+    std::unique_ptr<Render::DirectionalLight> dirLight_;
     Math::Vec3 ambientTop_ = { 0.0f, 0.0f, 0.0f };
     Math::Vec3 ambientMid_ = { 0.0f, 0.0f, 0.0f };
     Math::Vec3 ambientBot_ = { 0.0f, 0.0f, 0.0f };

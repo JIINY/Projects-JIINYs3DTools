@@ -4,15 +4,15 @@
 #include <filesystem>
 #include <Windows.h>
 #include <tchar.h>
+#include "backends/imgui_impl_win32.h"
 using namespace std;
 
 
 //윈도우 프로시저: 윈도우즈 시스템이 WM왔다고 호출할 수 있도록, 프로그램 시작 전에 미리 등록되어야 하는 함수
-extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 {
-	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
-		return true;
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam)) { return true; }
 
 	//1. app* 포인터를 꺼냄
 	App* pApp = reinterpret_cast<App*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -27,7 +27,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 	switch (msg) 
 	{
-	case WM_CREATE:
+	case WM_NCCREATE: //윈도우를 만들자마자, WM_CREATE는 윈도우의 내용물을 생성할 때
 	{
 		//1. lParam을 CREATESTRUCT*로 캐스팅
 		CREATESTRUCT* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
@@ -39,9 +39,22 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pAppLocal));
 		break;
 	}
-	case WM_DESTROY:
+	case WM_SIZE: 
+	{
+		if (pApp) 
+		{
+			int width = LOWORD(lParam);
+			int height = HIWORD(lParam);
+
+			pApp->onScreenResize(width, height);
+		}
+		break;
+	}
+	case WM_DESTROY: 
+	{
 		PostQuitMessage(0);
 		return 0;
+	}
 	default:
 		break;
 	}

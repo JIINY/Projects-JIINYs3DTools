@@ -18,8 +18,7 @@ namespace Render
     class Mesh : public IMesh 
     {
     public:
-        Mesh();
-        virtual ~Mesh();
+        virtual ~Mesh() = default;
 
         void initialize(ID3D11Device* device) override;
         void draw(ID3D11DeviceContext* context) const override;

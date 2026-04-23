@@ -8,7 +8,8 @@ struct GridChangedEvent;
 struct WireframeChangedEvent;
 struct SolidChangedEvent;
 
-struct EnvironmentConfigChangedEvent;
+struct CreatePopupChangedEvent;
+struct EnvironmentConfigPopupChangedEvent;
 
 
 class MainMenuBarUI {
@@ -35,6 +36,7 @@ private:
 	bool isWireframeVisible_ = true;
 	bool isSolidVisible_ = true;
 	
+	bool isCreateVisible_ = false;
 	bool isEnvironmentConfigVisible_ = false;
 
 	void onAppModeChanged(const AppModeChangedEvent& event);
@@ -44,5 +46,6 @@ private:
 	void onWireframeChanged(const WireframeChangedEvent& event);
 	void onSolidChanged(const SolidChangedEvent& event);
 
-	void onEnvironmentConfigChanged(const EnvironmentConfigChangedEvent& event);
+	void onCreatePopupChanged(const CreatePopupChangedEvent& event);
+	void onEnvironmentConfigPopupChanged(const EnvironmentConfigPopupChangedEvent& event);
 };

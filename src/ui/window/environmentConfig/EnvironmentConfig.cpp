@@ -1,12 +1,17 @@
 ﻿#include "EnvironmentConfig.hpp"
+#include <string>
 #include <filesystem>
+#include <cassert>
 #include "EnvironmentConfigSerializer.hpp"
 #include "common/Fonts.hpp"
+#include "core/PathConfig.hpp"
 #include "event/appEvent/AppEventPublisher.hpp"
 #include "event/appEvent/AppEventSubscriber.hpp"
-#include "event/appEvent/ui/EnvironmentConfigRequestedEvent.hpp"
+#include "event/appEvent/ui/EnvironmentConfigPopupRequestedEvent.hpp"
 #include "event/appEvent/ui/EnvironmentDataRequestedEvent.hpp"
 #include "event/appEvent/ui/EnvironmentDataChangedEvent.hpp"
+#include "utils/FontUtils.hpp"
+#include "utils/FileDialogUtils.hpp"
 #include "imgui.h"
 
 #include "common/DebugLog.hpp"
@@ -15,52 +20,70 @@ using namespace std;
 
 namespace EnvConfig 
 {
-    void EnvironmentConfig::initialize(LightManager* manager) 
+    bool EnvironmentConfig::initialize(LightManager* manager) 
     {
-        lightConfig_.initialize(manager);
-        
+        assert(manager && "LightManager가 비었습니다. 초기화 실패");
+        if (!manager) { return false; }
+
+        lightManager_ = manager;
+        lightConfig_.initialize(lightManager_);
+
         auto envDataChangeID = AppEventSubscriber::get().subscribe<EnvironmentDataChangedEvent>([this](const EnvironmentDataChangedEvent& event)
             {
-                this->onEnvironmentDataChange();
+                this->onEnvironmentDataChanged(event);
             });
-        AppEventSubID_.push_back(envDataChangeID);
+        appEventSubID_.push_back(envDataChangeID);
+
+        return true;
     }
 
-    void EnvironmentConfig::onEnvironmentDataChange() 
+    void EnvironmentConfig::onEnvironmentDataChanged(const EnvironmentDataChangedEvent& event) 
     {
-        isDirty_ = false;
-        lightConfig_.setFromManager();
+        switch (event.type) 
+        {
+        case EnvDataType::DataChanged: 
+        {
+            isDirty_ = true;
+            lightConfig_.setFromManager();
+            if (currentFileName_.empty() || currentFileName_.back() != '*')
+            {
+                currentFileName_ += "*";
+            }
+            break;
+        }
+        case EnvDataType::FileSaved:
+        {
+            isDirty_ = false;
+            lightConfig_.setFromManager();
 
-        switch (pendingRequestType_) 
-        {
-        case EnvDataType::Save: 
-        {
+            currentFilePath_ = event.path;
+            currentFileName_ = getFileName(currentFilePath_);
             break;
         }
-        case EnvDataType::SaveAs:
+        case EnvDataType::FileLoaded: 
         {
-            break;
-        }
-        case EnvDataType::Load:
-        {
-            break;
-        }
-        case EnvDataType::Restore: 
-        {
-            break;
-        }
-        case EnvDataType::New:
-        {
-            currentFilePath_ = "";
+            isDirty_ = false;
+            lightConfig_.setFromManager();
+
+            if (event.path.empty())
+            {
+                currentFileName_ = "";
+                currentFilePath_ = "";
+            }
+            else 
+            {
+                currentFilePath_ = event.path;
+                currentFileName_ = getFileName(currentFilePath_);
+            }
             break;
         }
         default:
-            assert(0 && "초기화된 EnvDataType이 ChangedEvent로 왔습니다.\n");
+            assert(0 && "정의되지 않은 EnvDataType이 ChangedEvent로 왔습니다.\n");
             break;
         }
     }
 
-    void EnvironmentConfig::draw(bool isVisible, EnvConfig::EnvironmentConfigSerializer* serializer)
+    void EnvironmentConfig::draw(bool isVisible)
     {
         if (!isVisible) { return; }
 
@@ -70,7 +93,11 @@ namespace EnvConfig
 
         if (ImGui::Begin("Environment Config", &isOpen, window_flags))
         {
-            if (lightConfig_.draw()) { isDirty_ = true; }
+            if (lightConfig_.draw()) 
+            { 
+                isDirty_ = true;
+                AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::UIModify, "" });
+            }
 
             //버튼
             ImGui::Separator();
@@ -83,24 +110,40 @@ namespace EnvConfig
 
             if (ImGui::Button("Save", ImVec2(btnWidth2, btnHeight + 1.0f)))
             {
-                AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvDataType::Save, "assets/environments/test.json" });
+                if (currentFilePath_.empty()) 
+                {
+                    doSaveAs();
+                }
+                else 
+                {
+                    AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::Save, currentFilePath_ });
+                }
             }
             ImGui::SameLine();
             if (ImGui::Button("Load", ImVec2(btnWidth2, btnHeight + 1.0f)))
             {
-                AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvDataType::Load, "assets/environments/test.json" });
+                if (isDirty_)
+                {
+                    pendingRequestType_ = EnvActionType::Load;
+                    openConfirmDiscardTrigger_ = true;
+                }
+                else
+                {
+                    doLoad();
+                }
             }
 
             ImGui::Dummy(ImVec2(0.0f, 3.0f));
 
             if (ImGui::Button("Save As", ImVec2(btnWidth3, btnHeight + 2.0f)))
             {
-                AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvDataType::SaveAs, "assets/environments/test.json" });
+                doSaveAs();
             }
+
             ImGui::SameLine();
             if (ImGui::Button("Restore", ImVec2(btnWidth3, btnHeight + 2.0f)))
             {
-                AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::Restore, currentFileName_ });
+                AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::Restore, currentFilePath_ });
             }
             ImGui::SameLine();
             if (ImGui::Button("New", ImVec2(btnWidth3, btnHeight + 2.0f)))
@@ -117,33 +160,24 @@ namespace EnvConfig
             }
 
             ImGui::Dummy(ImVec2(0.0f, 3.0f));
-            if (currentFilePath_.empty()) { ImGui::Text("file: "); }
-            else
-            {
-                string name = "";
-                name = filesystem::path(currentFilePath_).filename().string();
-                ImGui::Text("file: %s", name.c_str());
-            }
-
+            ImGui::Text("file: %s", toUTF8(currentFileName_).c_str());
             ImGui::PopStyleVar();
-
-
         }
         ImGui::End();
 
-
+        //변경 상태 버려짐 팝업
         if (openConfirmDiscardTrigger_) 
         {
             ImGui::OpenPopup(getPopupTitleFromType(pendingRequestType_));
             openConfirmDiscardTrigger_ = false;
         }
     
+        ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
         ImGui::SetNextWindowSize(ImVec2(272, 116));
         if (ImGui::BeginPopupModal(getPopupTitleFromType(pendingRequestType_), NULL, ImGuiWindowFlags_NoResize))
         {
-
             ImGui::PushFont(Fonts::Regular18);
-            ImGui::Text(utf8("작업 내용이 버려집니다.\n 진행하시겠습니까?"));
+            ImGui::Text(utf8("변경 사항이 버려집니다.\n 진행하시겠습니까?"));
             ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(15, 0));
 
@@ -165,6 +199,7 @@ namespace EnvConfig
             {
                 ImGui::CloseCurrentPopup();
             }
+
             ImGui::PopFont();
             ImGui::PopStyleVar();
             ImGui::EndPopup();
@@ -172,7 +207,7 @@ namespace EnvConfig
 
         if (!isOpen) 
         {
-            AppEventPublisher::get().publish(EnvironmentConfigRequestedEvent{ false });
+            AppEventPublisher::get().publish(EnvironmentConfigPopupRequestedEvent{ false });
         }
     }
 
@@ -187,7 +222,17 @@ namespace EnvConfig
         default: return "Notification";
         }
     }
-}
+
+    void EnvironmentConfig::doSaveAs() 
+    {
+        string filePath = FileDialogUtils::SaveFile("JSON Files (*.json)\0*.json\0All Files (*.*)\0*.*\0", "", "json", EnvPathConfig::userFilePath_.c_str());
+
+        if (!filePath.empty())
+        {
+            filesystem::path absPath(filePath);
+            AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::SaveAs, filePath });
+        }
+    }
 
     void EnvironmentConfig::doLoad() 
     {
@@ -196,5 +241,11 @@ namespace EnvConfig
         {
             AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::Load, filePath });
         }
+    }
+
+    string EnvironmentConfig::getFileName(const string& path)
+    {
+        filesystem::path p(path);
+        return p.filename().string();
     }
 }

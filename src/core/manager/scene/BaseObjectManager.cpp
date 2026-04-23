@@ -4,81 +4,181 @@
 #include <memory>
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include <algorithm>
 #include "renderer/Renderer.hpp"
-#include "render/RenderObject.hpp"
+#include "render/RenderCommandQueue.hpp"
 #include "render/PixelShader.hpp"
-#include "render/primitives/Cube.hpp"
+#include "object/SceneObject.hpp"
+#include "render/primitives/PrimitivesInclude.hpp"
+#include "utils/NameGenerator.hpp"
 
 #include "../resources/MaterialManager.hpp"
+#include "../shaders/Unlit_VertexColor/VertexColorMaterial.hpp"
+#include "../shaders/Unlit_MaterialColor/UnlitMaterial.hpp"
 #include "../shaders/Lit_BlinnPhong/BlinnPhongMaterial.hpp"
+
+#include "event/appEvent/AppEventPublisher.hpp"
+#include "event/appEvent/state/SceneObjectChangedEvent.hpp"
+
+#include "common/DebugLog.hpp"
 using namespace std;
 using namespace Render;
+using namespace DirectX;
 
 
-BaseObjectManager* BaseObjectManager::get() 
+bool BaseObjectManager::initialize(Renderer* renderer, MaterialManager* matManager) 
 {
-	static BaseObjectManager instance;
-	return &instance;
-}
+	assert(renderer && "renderer가 없습니다.");
+	if (!renderer) { return false; }
+	assert(matManager && "materialManager가 없습니다.");
+	if (!matManager) { return false; }
 
-
-void BaseObjectManager::initialize(Renderer* renderer) 
-{
-	assert(renderer && "[에러] BaseObjectManager 초기화 실패: 렌더러가 null입니다.");
-	if (isInitialized_) { return; }
-
+	renderer_ = renderer;
+	materialManager_ = matManager;
 	device_ = renderer->getDevice();
-	assert(device_ && "[에러] BaseObjectManager 초기화 실패: 디바이스를 가져올 수 없습니다.");
+	assert(device_ && "device를 가져올 수 없습니다.");
+	if (!device_) { return false; }
 	context_ = renderer->getDeviceContext();
-	assert(context_ && "[에러] BaseObjectManager 초기화 실패: 컨텍스트를 가져올 수 없습니다.");
+	assert(context_ && "context를 가져올 수 없습니다.");
+	if (!context_) { return false; }
 
-	isInitialized_ = true;
+	return true;
 }
 
-void BaseObjectManager::draw(Renderer* renderer, const DirectX::XMMATRIX& viewMat, const DirectX::XMMATRIX& projMat, shared_ptr<Render::PixelShader> overridePS)
+shared_ptr<SceneObject> BaseObjectManager::createPrimitive(const Primitives::PrimitiveData& data)
 {
-	assert(isInitialized_ && "[에러] BaseObjectManager가 초기화되지 않았습니다.");
-	assert(renderer && "[에러] draw호출시 렌더러가 null입니다.");
+	string name;
+	ColliderType colType = ColliderType::Primitive;
+	Primitives::PrimitiveType pType = Primitives::PrimitiveType::Count;
+	shared_ptr<Mesh> mesh = nullptr;
 
-	//TODO: 여기에 Label필터링 로직 추가
-
-	Math::Mat4 view, proj;
-	DirectX::XMStoreFloat4x4(&view, viewMat);
-	DirectX::XMStoreFloat4x4(&proj, projMat);
-
-	//Static
-	for (const auto& obj : staticObjects_)
+	switch (data.type)
 	{
-		if (obj->isVisible()) { obj->draw(context_, view, proj, overridePS); }
+	case Primitives::PrimitiveType::Cube: 
+	{
+		name = NameGenerator::generate("Box");
+		pType = Primitives::PrimitiveType::Cube;
+		mesh = make_shared<Primitives::Cube>(data.width, data.height, data.depth, data.segmentsX, data.segmentsY, data.segmentsZ);
+		break;
+	}
+	case Primitives::PrimitiveType::Cylinder: 
+	{
+		name = NameGenerator::generate("Cylinder");
+		pType = Primitives::PrimitiveType::Cylinder;
+		mesh = make_shared<Primitives::Cylinder>(data.radiusTop, data.radiusBot, data.height, data.segmentsX, data.segmentsY);
+		break;
+	}
+	case Primitives::PrimitiveType::Capsule: 
+	{
+		name = NameGenerator::generate("Capsule");
+		pType = Primitives::PrimitiveType::Capsule;
+		mesh = make_shared<Primitives::Capsule>(data.radius, data.height, data.heightHemi, data.segmentsX, data.segmentsY, data.segmentsHemi);
+		break;
+	}
+	case Primitives::PrimitiveType::Plane: 
+	{
+		name = NameGenerator::generate("Plane");
+		pType = Primitives::PrimitiveType::Plane;
+		mesh = make_shared<Primitives::Plane>(data.width, data.depth, data.segmentsX, data.segmentsY);
+		break;
+	}
+	case Primitives::PrimitiveType::Sphere: 
+	{
+		name = NameGenerator::generate("Sphere");
+		pType = Primitives::PrimitiveType::Sphere;
+		mesh = make_shared<Primitives::Sphere>(data.radius, data.segmentsX, data.segmentsY);
+		break;
+	}
+	case Primitives::PrimitiveType::Torus: 
+	{
+		name = NameGenerator::generate("Ring");
+		pType = Primitives::PrimitiveType::Torus;
+		mesh = make_shared<Primitives::Torus>(data.radius, data.thickness, data.segmentsX, data.segmentsY);
+		break;
+	}
+	default:
+	{
+		assert(0 && "정의되지 않은 PrimitiveType이 생성요청 들어왔습니다.");
+		break;
+	}
 	}
 
-	for (const auto& obj : dynamicObjects_)
+	if (mesh) 
 	{
-		if (obj->isVisible()) { obj->draw(context_, view, proj, overridePS); }
+		mesh->initialize(device_);
 	}
-}
 
-std::shared_ptr<RenderObject> BaseObjectManager::createCube(float size) 
-{
-	assert(isInitialized_ && "[에러] BaseObjectManager가 초기화되지 않았습니다.");
-
-	auto newObj = make_shared<RenderObject>();
-	auto mesh = make_shared<Render::Primitives::Cube>(size);
-	mesh->initialize(device_);
-
-	auto material = MaterialManager::get()->createMaterial<Render::Materials::BlinnPhongMaterial>(
-		//L"shaders/Lit_BlinnPhong/Lit_VS_BlinnPhong.hlsl",
-		//L"shaders/Lit_BlinnPhong/Lit_PS_BlinnPhong.hlsl"
+	auto material = materialManager_->createMaterial<Render::Materials::BlinnPhongMaterial>(
+		//L"shaders/Unlit_VertexColor/Unlit_VS_VertexColor.hlsl",
+		//L"shaders/Unlit_MaterialColor/Unlit_PS_MaterialColor.hlsl"
 	);
 
-	newObj->initialize(device_, mesh, material);
+	auto newObj = std::make_shared<SceneObject>(name, colType, SceneObjectType::BaseObject);
+	newObj->setPrimitiveType(pType);
 	newObj->setDynamic(false);
+	newObj->initialize(device_, mesh, material);
+
+	//BoundingBox 설정
+	BoundingBox box;
+	switch (data.type)
+	{
+	case Primitives::PrimitiveType::Cube:
+		box.Center = XMFLOAT3(0.0f, data.height * 0.5f, 0.0f);
+		box.Extents = XMFLOAT3(data.width * 0.5f, data.height * 0.5f, data.depth * 0.5f);
+		break;
+	case Primitives::PrimitiveType::Cylinder:
+		box.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		box.Extents = XMFLOAT3(data.radiusTop, data.height * 0.5f, data.radiusTop);
+		break;
+	case Primitives::PrimitiveType::Sphere:
+		box.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		box.Extents = XMFLOAT3(data.radius, data.radius, data.radius);
+		break;
+	case Primitives::PrimitiveType::Plane:
+		box.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		box.Extents = XMFLOAT3(data.width * 0.5f, 0.01f, data.depth * 0.5f);
+		break;
+	case Primitives::PrimitiveType::Capsule:
+		box.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		box.Extents = XMFLOAT3(data.radius, data.height * 0.5f, data.radius);
+		break;
+	default:
+		box.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		box.Extents = XMFLOAT3(1.0f, 1.0f, 1.0f);
+		break;
+	}
+	newObj->setBoundingBox(box);
+
 	staticObjects_.push_back(newObj);
+	AppEventPublisher::get().publish(SceneObjectChangedEvent{});
 
 	return newObj;
 }
 
-void BaseObjectManager::setDynamicState(std::shared_ptr<RenderObject> obj, bool makeDynamic) 
+void BaseObjectManager::addObject(shared_ptr<SceneObject> obj) 
+{
+	if (!obj) { return; }
+
+	for (const auto& existing : staticObjects_) 
+	{
+		if (existing == obj) { return; }
+	}
+
+	staticObjects_.push_back(obj);
+	AppEventPublisher::get().publish(SceneObjectChangedEvent{});
+}
+
+void BaseObjectManager::removeObject(std::shared_ptr<SceneObject> obj) 
+{
+	if (!obj) { return; }
+
+	staticObjects_.erase(
+		remove(staticObjects_.begin(), staticObjects_.end(), obj), staticObjects_.end()
+	);
+	AppEventPublisher::get().publish(SceneObjectChangedEvent{});
+}
+
+void BaseObjectManager::setDynamicState(std::shared_ptr<SceneObject> obj, bool makeDynamic) 
 {
 	if (!obj || obj->isDynamic() == makeDynamic) { return; }
 
@@ -89,6 +189,7 @@ void BaseObjectManager::setDynamicState(std::shared_ptr<RenderObject> obj, bool 
 	obj->setDynamic(makeDynamic);
 	auto& targetList = makeDynamic ? dynamicObjects_ : staticObjects_;
 	targetList.push_back(obj);
+	AppEventPublisher::get().publish(SceneObjectChangedEvent{});
 }
 
 
@@ -99,5 +200,64 @@ void BaseObjectManager::shutdown()
 
 	device_ = nullptr;
 	context_ = nullptr;
-	isInitialized_ = false;
+}
+
+void BaseObjectManager::addToRenderQueue(RenderCommandQueue* queue, const XMMATRIX& viewMat, const OverridePSType& type)
+{
+	if (!queue) { return; }
+
+	XMMATRIX invView = XMMatrixInverse(nullptr, viewMat);
+	XMVECTOR camPos = invView.r[3];
+
+	for (const shared_ptr<SceneObject>& o : staticObjects_)
+	{
+		if (!o || !o->isVisible()) { continue; }
+
+		XMMATRIX world = XMLoadFloat4x4(&o->getWorldMatForShader());
+		XMVECTOR oPos = world.r[3];
+
+		XMVECTOR diff = XMVectorSubtract(oPos, camPos);
+		float depth = XMVectorGetX(XMVector3Length(diff));
+
+		if (type == OverridePSType::None)
+		{
+			queue->addCommand(o.get(), depth);
+		}
+		else
+		{
+			queue->addCommand(o.get(), depth, type);
+		}
+	}
+
+	for (const shared_ptr<SceneObject>& o : dynamicObjects_)
+	{
+		if (!o || !o->isVisible()) { continue; }
+
+		XMMATRIX world = XMLoadFloat4x4(&o->getWorldMatForShader());
+		XMVECTOR oPos = world.r[3];
+
+		XMVECTOR diff = XMVectorSubtract(oPos, camPos);
+		float depth = XMVectorGetX(XMVector3Length(diff));
+
+		if (type == OverridePSType::None)
+		{
+			queue->addCommand(o.get(), depth);
+		}
+		else
+		{
+			queue->addCommand(o.get(), depth, type);
+		}
+	}
+}
+
+void BaseObjectManager::updateTransforms()
+{
+	for (auto& obj : staticObjects_)
+	{
+		if (obj) { obj->updateTransform(); }
+	}
+	for (auto& obj : dynamicObjects_)
+	{
+		if (obj) { obj->updateTransform(); }
+	}
 }

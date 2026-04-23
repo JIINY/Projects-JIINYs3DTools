@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <unordered_map>
 #include "event/InputEventType.hpp"
 
@@ -6,16 +6,12 @@ class InputEventQueue;
 
 class InputHandler {
 public:
-	InputHandler() {}
-
-	void update(InputEventQueue& queue);
-	void handleEvent(const InputEvent& event, InputEventQueue& queue);
+	void update();
 
 private:
 	std::unordered_map<int, bool> keyStates_;
 	std::unordered_map<int, int> keyDurations_; //holdCount
 	
-	//ImGui ³»ºÎ Å° »óÅÂ¸¦ ¾ò¾î³»±â À§ÇÔ
+	//ImGui ë‚´ë¶€ í‚¤ ìƒíƒœë¥¼ ì–»ì–´ë‚´ê¸° ìœ„í•¨
 	bool isKeyDown(int key) const;
-	void handleKeyPressed(const KeyPressedEvent& event, InputEventQueue& queue);
 };

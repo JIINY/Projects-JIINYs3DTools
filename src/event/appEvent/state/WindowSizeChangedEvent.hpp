@@ -3,6 +3,6 @@
 
 struct WindowSizeChangedEvent
 {
-    float width;
-    float height;
+    int width;
+    int height;
 };

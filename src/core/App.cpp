@@ -5,49 +5,51 @@
 #include "common/ElementID.hpp"
 #include "common/Fonts.hpp"
 #include "AppConfig.hpp"
-#include "ManagerInclude.hpp"
-#include "coordinator/CameraCoordinator.hpp"
-#include "coordinator/RenderCoordinator.hpp"
-#include "coordinator/ViewStateCoordinator.hpp"
-#include "coordinator/ResourceCoordinator.hpp"
-#include "ui/UIInclude.hpp"
+#include "command/CommandStack.hpp"
+#include "command/passiveObject/CmdCreatePrimitive.hpp"
 
-#include "event/appEvent/AppEventQueue.hpp"
-#include "event/appEvent/AppEventSubscriber.hpp"
-#include "event/uiEvent/UIEventQueue.hpp"
-#include "event/uiEvent/UIEventSubscriber.hpp"
-#include "event/InputEventType.hpp"
-#include "io/InputEventQueue.hpp"
-#include "io/InputHandler.hpp"
-#include "scene/SceneSerializer.hpp"
-#include "ui/window/environmentConfig/EnvironmentConfigSerializer.hpp"
+#include "object/action/SceneObjectActionHandler.hpp"
+#include "viewport/ui/GizmoController.hpp"
+#include "manager/ManagerInclude.hpp"
+#include "coordinator/CoordinatorInclude.hpp"
+#include "ui/UIInclude.hpp"
+#include "event/EventInclude.hpp"
+
+//#include "scene/SceneSerializer.hpp"
+#include "ui/window/environmentConfig/EnvironmentConfigController.hpp"
 #include "renderer/Renderer.hpp"
 #include "renderer/dx11/DX11Renderer.hpp"
 
 #include "imgui.h"
 #include "backends/imgui_impl_win32.h"
 #include "backends/imgui_impl_dx11.h"
+
+#include "common/DebugLog.hpp"
 using namespace std;
 
 
 App::App() : 
-	inputHandler_(std::make_unique<InputHandler>()),
-	appUIManager_(std::make_unique<AppUIManager>()),
+	//sceneSerializer_(std::make_unique<Scene::SceneSerializer>()),
+	inputHandler_(make_unique<InputHandler>()),
+	inputEditorHandler_(make_unique<InputEventEditorHandler>()),
+	sceneObjActionHandler_(make_unique<SceneObjectActionHandler>()),
+	envConfigController_(make_unique<EnvConfig::EnvironmentConfigController>()),
 
-	shortcutManager_(std::make_unique<ShortcutManager>()),
-	floatingWindowManager_(std::make_unique<FloatingWindowManager>()),
+	appUIManager_(make_unique<AppUIManager>()),
+	shortcutManager_(make_unique<ShortcutManager>()),
+	floatingWindowManager_(make_unique<FloatingWindowManager>()),
+	sceneObjManager_(make_unique<SceneObjectManager>()),
 
-	cameraCoordinator_(std::make_unique<CameraCoordinator>()),
-	renderCoordinator_(std::make_unique<RenderCoordinator>()),
-	resourceCoordinator_(std::make_unique<ResourceCoordinator>()),
-	viewStateCoordinator_(std::make_unique<ViewStateCoordinator>()),
+	cameraCoordinator_(make_unique<CameraCoordinator>()),
+	renderCoordinator_(make_unique<RenderCoordinator>()),
+	resourceCoordinator_(make_unique<ResourceCoordinator>()),
+	selectionCoordinator_(make_unique<SelectionCoordinator>()),
+	viewStateCoordinator_(make_unique<ViewStateCoordinator>()),
 
-	environmentConfigSerializer_(std::make_unique<EnvConfig::EnvironmentConfigSerializer>()),
-	sceneSerializer_(std::make_unique<Scene::SceneSerializer>()),
-	renderer_(std::make_unique<DX11Renderer>()),
-	mainMenuBarUI_(std::make_unique<MainMenuBarUI>()) {}
+	renderer_(make_unique<DX11Renderer>()),
+	mainMenuBarUI_(make_unique<MainMenuBarUI>()) {}
 
-App::~App() {}
+App::~App() = default;
 
 
 bool App::initialize(void* hwnd) 
@@ -89,57 +91,89 @@ bool App::initialize(void* hwnd)
 	ImGui_ImplDX11_CreateDeviceObjects();
 
 	//초기화 호출
+	assert(shortcutManager_ && "없음, 초기화 실패");
+	if (shortcutManager_)
+	{
+		shortcutManager_->initialize();
+	}
+	assert(appUIManager_ && "없음, 초기화 실패");
 	if (appUIManager_)
 	{
 		appUIManager_->initialize();
 	}
-
+	assert(cameraCoordinator_ && "없음, 초기화 실패");
 	if (cameraCoordinator_)
 	{
 		cameraCoordinator_->initialize();
 	}
-	if (!resourceCoordinator_->initialize(renderer_->getDevice(), renderer_->getDeviceContext()))
+	assert(resourceCoordinator_ && "없음, 초기화 실패");
+	if (resourceCoordinator_)
 	{
-		assert(0 && "[에러] ResourceCoordinator 초기화 실패\n");
-		return false;
+		resourceCoordinator_->initialize(renderer_->getDevice(), renderer_->getDeviceContext());
 	}
-	if (!renderCoordinator_->initialize(renderer_.get(), cameraCoordinator_.get()))
+	assert(sceneObjManager_ && "없음, 초기화 실패");
+	if (sceneObjManager_)
 	{
-		assert(0 && "[에러] RenderCoordinator 초기화 실패\n");
-		return false;
+		SceneObjectContext context;
+		context.renderer = renderer_.get();
+		context.matManager = resourceCoordinator_->getMaterialManager();
+		sceneObjManager_->initialize(context);
 	}
+	assert(renderCoordinator_ && "없음, 초기화 실패");
+	if (renderCoordinator_)
+	{
+		RenderContext context;
+		context.renderer = renderer_.get();
+		context.camCoordinator = cameraCoordinator_.get();
+		context.passiveObjCoordinator = sceneObjManager_->getPassiveCoordinator();
 
-	if (environmentConfigSerializer_)
-	{
-		EnvConfig::EnvConfigContext envContext;
-		envContext.lightManager = renderCoordinator_->getLightManager();
-
-		environmentConfigSerializer_->initialize(envContext);
-		environmentConfigSerializer_->deserialize("src/defaults/DefaultEnvironmentConfig.json");
+		renderCoordinator_->initialize(context);
 	}
-	if (sceneSerializer_)
+	assert(envConfigController_ && "envConfigController 없음, 초기화 실패");
+	if (envConfigController_)
 	{
-
+		EnvConfig::EnvironmentContext context;
+		context.lightManager = renderCoordinator_->getLightManager();
+		
+		envConfigController_->initialize(context);
 	}
+	assert(selectionCoordinator_ && "비었음, 초기화 실패");
+	if (selectionCoordinator_)
+	{
+		SelectionContext context;
+		context.camCoord = cameraCoordinator_.get();
+		context.sceneObjManager = sceneObjManager_.get();
+
+		selectionCoordinator_->initialize(context);
+	}
+	assert(floatingWindowManager_ && "floatingWindowManager 없음, 초기화 실패");
 	if (floatingWindowManager_)
 	{
-		LightManager* lightManager = renderCoordinator_->getLightManager();
-		ViewportCameraManager* camManager = cameraCoordinator_->getViewportCameraManager();
-
 		FloatingWindowContext context;
-		context.lightManager = lightManager;
-		context.cameraManager = camManager;
-		context.envSerializer = environmentConfigSerializer_.get();
+		context.lightManager = renderCoordinator_->getLightManager();
+		context.cameraManager = cameraCoordinator_->getViewportCameraManager();
+		context.passiveObjCoordinator = sceneObjManager_->getPassiveCoordinator();
 
 		FloatingConfigData floatingData;
 		floatingData = appData.floatingConfig;
 
 		floatingWindowManager_->initialize(context, floatingData);
 	}
-	if (viewStateCoordinator_) 
+	assert(viewStateCoordinator_ && "viewStateCoordinator 없음, 초기화 실패");
+	if (viewStateCoordinator_)
 	{
 		viewStateCoordinator_->initialize();
 	}
+	assert(sceneObjActionHandler_ && "sceneObjectActionHandler 없음, 초기화 실패");
+	if (sceneObjActionHandler_) 
+	{
+		SceneObjectActionContext context;
+		context.sceneObjManager = sceneObjManager_.get();
+		context.selectionCoord = selectionCoordinator_.get();
+
+		sceneObjActionHandler_->initialize(context);
+	}
+	assert(mainMenuBarUI_ && "mainMenuBarUI 없음, 초기화 실패");
 	if (mainMenuBarUI_)
 	{
 		mainMenuBarUI_->initialize();
@@ -157,8 +191,7 @@ bool App::initialize(void* hwnd)
 		float width = static_cast<float>(rc.right - rc.left);
 		float height = static_cast<float>(rc.bottom - rc.top);
 
-		WindowSizeChangedEvent initEvent = { width, height };
-		AppEventSubscriber::get().dispatch(initEvent);
+		this->onScreenResize(width, height);
 	}
 
 	return true;
@@ -199,7 +232,6 @@ void App::run()
 
 
 		// 2. DRAW (화면에 보일 요소 구성)
-		handleInput();
 		draw();
 		ImGui::Render();
 
@@ -209,50 +241,32 @@ void App::run()
 	}
 }
 
-void App::handleInput() 
-{
-	ImGuiIO& io = ImGui::GetIO();
-	for (int i = ImGuiKey_NamedKey_BEGIN; i < ImGuiKey_NamedKey_END; ++i) 
-	{
-		ImGuiKey key = static_cast<ImGuiKey>(i);
-
-		//IsKeyPressed는 이번 프레임에 처음 눌렸는가를 확인
-		if (ImGui::IsKeyPressed(key, false))
-		{
-			InputEventQueue::get().push(KeyPressedEvent{ i });
-		}
-	}
-
-	//마우스 입력 처리
-}
-
 void App::update(float deltaTime) 
 {
 	if (inputHandler_)  //KeyPressed를 KeyDown/Up/Hold로 번역
 	{
-		inputHandler_->update(InputEventQueue::get());
+		inputHandler_->update();
 	}
-	while (!InputEventQueue::get().isEmpty()) 
-	{
-		InputEvent event = InputEventQueue::get().pop();
-		if (inputHandler_) 
-		{
-			inputHandler_->handleEvent(event, InputEventQueue::get());
-		}
-
-		if (shortcutManager_) 
-		{
-			shortcutManager_->processInputEvent(event);
-		}
-
-		if (cameraCoordinator_) 
-		{
-			cameraCoordinator_->handleInput(event);
-		}
-	}
-
 
 	cameraCoordinator_->update(deltaTime);
+	sceneObjManager_->update(deltaTime);
+
+	Math::Ray mouseRay = {};
+	ImVec2 mousePos = ImGui::GetMousePos();
+	ImVec2 vpSize = ImGui::GetMainViewport()->Size;
+	if (cameraCoordinator_)
+	{
+		mouseRay = cameraCoordinator_->convertScreenPointToRay(mousePos.x, mousePos.y, vpSize.x, vpSize.y);
+	}
+
+	while (!InputEventQueue::get().isEmpty())
+	{
+		InputEvent event = InputEventQueue::get().pop();
+		if (inputEditorHandler_) //InputEvent를 InputEditorEvent로 번역
+		{
+			inputEditorHandler_->onInputEvent(event, mouseRay);
+		}
+	}
 
 	//이벤트 처리
 	while (!AppEventQueue::get().isEmpty())
@@ -265,6 +279,18 @@ void App::update(float deltaTime)
 		UIEventVariant event = UIEventQueue::get().pop();
 		UIEventSubscriber::get().dispatch(event);
 	}
+	while (!EditorEventQueue::get().isEmpty())
+	{
+		EditorEventVariant event = EditorEventQueue::get().pop();
+		EditorEventSubscriber::get().dispatch(event);
+	}
+
+	//이벤트 처리 후 적용
+	if (renderCoordinator_)
+	{
+		renderCoordinator_->updateTransforms();
+		renderCoordinator_->update(deltaTime, mouseRay);
+	}
 }
 
 void App::draw() 
@@ -274,6 +300,7 @@ void App::draw()
 	viewStateCoordinator_->draw();
 	mainMenuBarUI_->draw();
 	floatingWindowManager_->draw();
+	renderCoordinator_->drawImGui();
 }
 
 void App::render()
@@ -300,4 +327,14 @@ void App::shutdown()
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 	renderer_->shutdown();
+}
+
+void App::onScreenResize(int width, int height) 
+{
+	if (width == 0 || height == 0) { return; }
+
+	width_ = width;
+	height_ = height;
+
+	AppEventPublisher::get().publish(WindowSizeChangedEvent{ width, height });
 }

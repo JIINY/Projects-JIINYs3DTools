@@ -44,6 +44,32 @@ CameraController::CameraCoreState TargetCameraController::getCoreState() const
 
 void TargetCameraController::onActivate(const CameraController* prevController, CameraMode prevMode) 
 {
+	//이벤트 구독
+	auto mouseDown = EditorEventSubscriber::get().subscribe<MouseDownEditorEvent>([this](const MouseDownEditorEvent& event)
+		{
+			this->onMouseDowned(event);
+		});
+	editorEventSubID_.push_back(mouseDown);
+
+	auto mouseUp = EditorEventSubscriber::get().subscribe<MouseUpEditorEvent>([this](const MouseUpEditorEvent& event)
+		{
+			this->onMouseUpped(event);
+		});
+	editorEventSubID_.push_back(mouseUp);
+
+	auto mouseWheel = EditorEventSubscriber::get().subscribe<MouseWheelEditorEvent>([this](const MouseWheelEditorEvent& event)
+		{
+			this->onMouseWheeled(event);
+		});
+	editorEventSubID_.push_back(mouseWheel);
+
+	auto mouseMove = EditorEventSubscriber::get().subscribe<MouseMoveEditorEvent>([this](const MouseMoveEditorEvent& event)
+		{
+			this->onMouseMoved(event);
+		});
+	editorEventSubID_.push_back(mouseMove);
+
+
 	auto player = nullptr;
 	if (!camera_ || !player)
 	{
@@ -66,54 +92,57 @@ void TargetCameraController::onActivate(const CameraController* prevController, 
 	updateView();
 }
 
-void TargetCameraController::handleInput(const InputEvent& event) 
+void TargetCameraController::onDeactivate()
 {
-	visit([&](auto&& ev) {
-		
-		using T = decay_t<decltype(ev)>;
-
-		if constexpr (is_same_v<T, MouseDownEvent>) 
-		{
-			if (ev.button_ == 1)
-			{
-				dragging_ = true;
-				lastMousePos_ = ev.pos_;
-			}
-		}
-		else if constexpr (is_same_v<T, MouseUpEvent>) 
-		{
-			if (ev.button_ == 1)
-			{
-				dragging_ = false;
-			}
-		}
-		else if constexpr (is_same_v<T, MouseMoveEvent>) 
-		{
-			if (dragging_)
-			{
-				int dx = ev.pos_.x - lastMousePos_.x;
-				int dy = ev.pos_.y - lastMousePos_.y;
-				lastMousePos_ = ev.pos_;
-
-				yawDeg_ += dx * rotationSpeed_;
-				pitchDeg_ -= dy * rotationSpeed_;
-
-				if (pitchDeg_ < minPitch_) pitchDeg_ = minPitch_;
-				if (pitchDeg_ > maxPitch_) pitchDeg_ = maxPitch_;
-				updateView();
-			}
-		}
-		else if constexpr (is_same_v<T, MouseWheelEvent>) 
-		{
-			distance_ -= ev.delta_ * zoomSpeed_;
-
-			if (distance_ < minDistance_) distance_ = minDistance_;
-			if (distance_ > maxDistance_) distance_ = maxDistance_;
-			updateView();
-		}
-	}, event);
+	for (auto id : editorEventSubID_)
+	{
+		EditorEventSubscriber::get().unsubscribe(id);
+	}
+	editorEventSubID_.clear();
 }
 
+void TargetCameraController::onMouseDowned(const MouseDownEditorEvent& event)
+{
+	if (event.button_ == 1)
+	{
+		dragging_ = true;
+		lastMousePos_ = event.pos_;
+	}
+}
+
+void TargetCameraController::onMouseUpped(const MouseUpEditorEvent& event)
+{
+	if (event.button_ == 1)
+	{
+		dragging_ = false;
+	}
+}
+
+void TargetCameraController::onMouseMoved(const MouseMoveEditorEvent& event)
+{
+	if (dragging_)
+	{
+		int dx = event.pos_.x - lastMousePos_.x;
+		int dy = event.pos_.y - lastMousePos_.y;
+		lastMousePos_ = event.pos_;
+
+		yawDeg_ += dx * rotationSpeed_;
+		pitchDeg_ -= dy * rotationSpeed_;
+
+		if (pitchDeg_ < minPitch_) pitchDeg_ = minPitch_;
+		if (pitchDeg_ > maxPitch_) pitchDeg_ = maxPitch_;
+		updateView();
+	}
+}
+
+void TargetCameraController::onMouseWheeled(const MouseWheelEditorEvent& event)
+{
+	distance_ -= event.delta_ * zoomSpeed_;
+
+	if (distance_ < minDistance_) { distance_ = minDistance_; }
+	if (distance_ > maxDistance_) { distance_ = maxDistance_; }
+	updateView();
+}
 
 void TargetCameraController::updateView() 
 {

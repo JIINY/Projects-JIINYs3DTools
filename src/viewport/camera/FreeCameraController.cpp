@@ -7,6 +7,8 @@
 #include "CameraController.hpp"
 #include "common/Math.hpp"
 #include "common/Mode.hpp"
+#include "event/editorEvent/io/KeyboardEvent.hpp"
+#include "imgui.h"
 
 #include "common/DebugLog.hpp"
 using namespace std;
@@ -45,6 +47,38 @@ CameraController::CameraCoreState FreeCameraController::getCoreState() const
 
 void FreeCameraController::onActivate(const CameraController* prevController, CameraMode prevMode)
 {
+	//이벤트 구독
+	auto keyDown = EditorEventSubscriber::get().subscribe<KeyDownEditorEvent>([this](const KeyDownEditorEvent& event)
+		{
+			this->onKeyDowned(event);
+		});
+	editorEventSubID_.push_back(keyDown);
+
+	auto keyUp = EditorEventSubscriber::get().subscribe<KeyUpEditorEvent>([this](const KeyUpEditorEvent& event)
+		{
+			this->onKeyUpped(event);
+		});
+	editorEventSubID_.push_back(keyUp);
+
+	auto mouseDown = EditorEventSubscriber::get().subscribe<MouseDownEditorEvent>([this](const MouseDownEditorEvent& event)
+		{
+			this->onMouseDowned(event);
+		});
+	editorEventSubID_.push_back(mouseDown);
+
+	auto mouseUp = EditorEventSubscriber::get().subscribe<MouseUpEditorEvent>([this](const MouseUpEditorEvent& event)
+		{
+			this->onMouseUpped(event);
+		});
+	editorEventSubID_.push_back(mouseUp);
+
+	auto mouseMove = EditorEventSubscriber::get().subscribe<MouseMoveEditorEvent>([this](const MouseMoveEditorEvent& event)
+		{
+			this->onMouseMoved(event);
+		});
+	editorEventSubID_.push_back(mouseMove);
+
+
 	if (!camera_ || !prevController || !prevController->getCamera()) 
 	{
 		resetMovementState();
@@ -75,94 +109,101 @@ void FreeCameraController::onActivate(const CameraController* prevController, Ca
 	return;
 }
 
+void FreeCameraController::onDeactivate()
+{
+	for (auto id : editorEventSubID_)
+	{
+		EditorEventSubscriber::get().unsubscribe(id);
+	}
+	editorEventSubID_.clear();
+}
+
+void FreeCameraController::onKeyDowned(const KeyDownEditorEvent& event)
+{
+	if (event.isCtrl || event.isAlt || event.isShift) { return; }
+
+	switch (event.keyCode)
+	{
+	case ImGuiKey_W: moveForward_ = true; break;
+	case ImGuiKey_S: moveBackward_ = true; break;
+	case ImGuiKey_A: moveLeft_ = true; break;
+	case ImGuiKey_D: moveRight_ = true; break;
+	case ImGuiKey_E: moveUp_ = true; break;
+	case ImGuiKey_Q: moveDown_ = true; break;
+	}
+}
+
+void FreeCameraController::onKeyUpped(const KeyUpEditorEvent& event)
+{
+	if (event.isCtrl || event.isAlt || event.isShift) { return; }
+
+	switch (event.keyCode)
+	{
+	case ImGuiKey_W: moveForward_ = false; break;
+	case ImGuiKey_S: moveBackward_ = false; break;
+	case ImGuiKey_A: moveLeft_ = false; break;
+	case ImGuiKey_D: moveRight_ = false; break;
+	case ImGuiKey_E: moveUp_ = false; break;
+	case ImGuiKey_Q: moveDown_ = false; break;
+	}
+}
+
+void FreeCameraController::onMouseDowned(const MouseDownEditorEvent& event)
+{
+	switch (event.button_)
+	{
+	case 1:
+	{
+		yawDragging_ = true;
+		lastMousePos_ = event.pos_;
+		break;
+	}
+	case 2:
+	{
+		pitchDragging_ = true;
+		lastMousePos_ = event.pos_;
+		break;
+	}
+	default: break;
+	}
+}
+
+void FreeCameraController::onMouseUpped(const MouseUpEditorEvent& event)
+{
+	switch (event.button_)
+	{
+	case 1: yawDragging_ = false; break;
+	case 2: pitchDragging_ = false; break;
+	default: break;
+	}
+}
+
+void FreeCameraController::onMouseMoved(const MouseMoveEditorEvent& event)
+{
+	if (yawDragging_ || pitchDragging_)
+	{
+		int dx = event.pos_.x - lastMousePos_.x;
+		int dy = event.pos_.y - lastMousePos_.y;
+		lastMousePos_ = event.pos_;
+
+		if (yawDragging_) { yawDeg_ += dx * rotationSpeed_; }
+		if (pitchDragging_)
+		{
+			pitchDeg_ -= dy * rotationSpeed_;
+			pitchDeg_ = clamp(pitchDeg_, -89.0f, 89.0f); //짐벌락 방지
+		}
+
+		updateView();
+	}
+
+}
+
 void FreeCameraController::resetMovementState() 
 {
 	velocity_ = { 0.0f, 0.0f, 0.0f };
 	moveForward_ = moveBackward_ = moveLeft_ = moveRight_ = false;
 	yawDragging_ = false;
 	pitchDragging_ = false;
-}
-
-void FreeCameraController::handleInput(const InputEvent& event) 
-{
-	constexpr int KEY_W = 568;
-	constexpr int KEY_A = 546;
-	constexpr int KEY_S = 564;
-	constexpr int KEY_D = 549;
-	constexpr int KEY_E = 550;
-	constexpr int KEY_Q = 562;
-
-	visit([&](auto&& ev) {
-
-		using T = decay_t<decltype(ev)>;
-
-		if constexpr (is_same_v<T, MouseDownEvent>)
-		{
-			if (ev.button_ == 1)
-			{
-				yawDragging_ = true;
-				lastMousePos_ = ev.pos_;
-			}
-			else if (ev.button_ == 2) 
-			{
-				pitchDragging_ = true;
-				lastMousePos_ = ev.pos_;
-			}
-
-		}
-		else if constexpr (is_same_v<T, MouseUpEvent>) 
-		{
-			if (ev.button_ == 1)
-			{
-				yawDragging_ = false;
-			}
-			else if(ev.button_ == 2)
-			{
-				pitchDragging_ = false;
-			}
-		}
-		else if constexpr (is_same_v<T, MouseMoveEvent>) 
-		{
-			if (yawDragging_ || pitchDragging_)
-			{
-				int dx = ev.pos_.x - lastMousePos_.x;
-				int dy = ev.pos_.y - lastMousePos_.y;
-				lastMousePos_ = ev.pos_;
-
-				if (yawDragging_) { yawDeg_ += dx * rotationSpeed_; }
-				if (pitchDragging_) 
-				{ 
-					pitchDeg_ -= dy * rotationSpeed_; 
-					pitchDeg_ = clamp(pitchDeg_, -89.0f, 89.0f); //짐벌락 방지
-				}
-
-				updateView();
-			}
-		}
-		else if constexpr (is_same_v<T, KeyDownEvent>) 
-		{
-			switch (ev.keyCode_) {
-			case KEY_W: moveForward_ = true; break;
-			case KEY_S: moveBackward_ = true; break;
-			case KEY_A: moveLeft_ = true; break;
-			case KEY_D: moveRight_ = true; break;
-			case KEY_E: moveUp_ = true; break;
-			case KEY_Q: moveDown_ = true; break;
-			}
-		}
-		else if constexpr (is_same_v<T, KeyUpEvent>)
-		{
-			switch (ev.keyCode_) {
-			case KEY_W: moveForward_ = false; break;
-			case KEY_S: moveBackward_ = false; break;
-			case KEY_A: moveLeft_ = false; break;
-			case KEY_D: moveRight_ = false; break;
-			case KEY_E: moveUp_ = false; break;
-			case KEY_Q: moveDown_ = false; break;
-			}
-		}
-	}, event);
-
 }
 
 void FreeCameraController::update(float deltaTime) 

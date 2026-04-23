@@ -1,27 +1,28 @@
 ﻿#include "BlinnPhongMaterial.hpp"
+using namespace std;
+using namespace DirectX;
 
 
-namespace Render 
+namespace Render::Materials
 {
-    namespace Materials 
+    void BlinnPhongMaterial::initialize(ID3D11Device* device)
     {
-        void BlinnPhongMaterial::initialize(ID3D11Device* device)
-        {
-            Material::initialize(device);
+        Material::initialize(device);
 
-            loadVertexShader(device, L"shaders/Lit_BlinnPhong/Lit_VS_BlinnPhong.hlsl");
-            loadPixelShader(device, L"shaders/Lit_BlinnPhong/Lit_PS_BlinnPhong.hlsl");
+        loadVertexShader(device, L"shaders/Lit_BlinnPhong/Lit_VS_BlinnPhong.hlsl");
+        loadPixelShader(device, L"shaders/Lit_BlinnPhong/Lit_PS_BlinnPhong.hlsl");
 
-            createBuffer<MaterialData>(device);
-        }
+        addProperty<XMFLOAT4>("MaterialColor", XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+        addProperty<float>("Roughness", 0.0f);
+        addProperty<XMFLOAT3>("Padding", XMFLOAT3(0, 0, 0));
 
-        void BlinnPhongMaterial::bind(ID3D11DeviceContext* context)
-        {
-            Material::bind(context);
-            updateData(context, data_);
+        createBuffer(device);
+    }
 
-            if (constantBuffer_) { constantBuffer_->bindPS(context, 2); }
-        }
+    void BlinnPhongMaterial::bind(ID3D11DeviceContext* context)
+    {
+        Material::bind(context);
 
+        if (constantBuffer_) { constantBuffer_->bindPS(context, 2); }
     }
 }

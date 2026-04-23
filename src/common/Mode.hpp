@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include <array>
 #include <string>
 
-enum class AppMode //Ãß°¡½Ã syncModeState¿¡¼­ MainMenuBar ¼³Á¤Àº Á÷Á¢ Ãß°¡ ÇÊ¿ä (+ UIElementID)
+enum class AppMode //ì¶”ê°€ì‹œ syncModeStateì—ì„œ MainMenuBar ì„¤ì •ì€ ì§ì ‘ ì¶”ê°€ í•„ìš” (+ UIElementID)
 {
 	Edit = 0,
 	Play = 1,
@@ -18,9 +18,9 @@ inline constexpr std::array<const char*, 2> AppModeName =
 
 enum class CameraMode
 {
-	FreeArm = 0, //°ÅÄ¡´ë+¾Ï ±¸Á¶
-	Target = 1, //Focus Áß½É È¸Àü
-	FreeFly = 2, //FPSÄ«¸Ş¶óÃ³·³ ÀÚÀ¯ ÀÌµ¿
+	FreeArm = 0, //ê±°ì¹˜ëŒ€+ì•” êµ¬ì¡°
+	Target = 1, //Focus ì¤‘ì‹¬ íšŒì „
+	FreeFly = 2, //FPSì¹´ë©”ë¼ì²˜ëŸ¼ ììœ  ì´ë™
 	FixedAngle = 3,
 	Count
 };
@@ -37,7 +37,7 @@ enum class ViewMode
 	Count
 };
 
-enum class CameraUIMode //UI¿¡¼­ ÆíÇÏ°Ô ´Ù·ç±â À§ÇØ CameraMode + ViewMode
+enum class CameraUIMode //UIì—ì„œ í¸í•˜ê²Œ ë‹¤ë£¨ê¸° ìœ„í•´ CameraMode + ViewMode
 {
 	FreeArm = 0,
 	Target = 1,
@@ -49,5 +49,13 @@ enum class CameraUIMode //UI¿¡¼­ ÆíÇÏ°Ô ´Ù·ç±â À§ÇØ CameraMode + ViewMode
 	RightView = 7,
 	BackView = 8,
 	BottomView = 9,
+	Count
+};
+
+enum class TransformMode
+{
+	Translate,
+	Rotate,
+	Scale,
 	Count
 };

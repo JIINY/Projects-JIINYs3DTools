@@ -1,45 +1,27 @@
 ﻿#include "UnlitMaterial.hpp"
+#include <DirectXMath.h>
 #include "common/Math.hpp"
 using namespace std;
 using namespace Math;
+using namespace DirectX;
 
 
-namespace Render 
+namespace Render::Materials
 {
-    namespace Materials 
+    bool UnlitMaterial::initialize(ID3D11Device* device, const wstring& vsPath, const wstring& psPath) 
     {
-        UnlitMaterial::UnlitMaterial() {}
-        UnlitMaterial::~UnlitMaterial() {}
+        Material::initialize(device);
 
-        bool UnlitMaterial::initialize(ID3D11Device* device, const wstring& vsPath, const wstring& psPath) 
-        {
-            Material::initialize(device);
+        loadVertexShader(device, vsPath, "vsMain");
+        loadPixelShader(device, psPath, "psMain");
 
-            loadVertexShader(device, vsPath, "vsMain");
-            loadPixelShader(device, psPath, "psMain");
+        addProperty<XMFLOAT4>("Color", XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+        createBuffer(device);
+        return true;
+    }
 
-            createBuffer<Data>(device);
-            return true;
-        }
-
-        void UnlitMaterial::setBaseColor(const Vec4& color) 
-        {
-            data_.baseColor = color;
-        }
-
-        void UnlitMaterial::bind(ID3D11DeviceContext* context) 
-        {
-            //CPU데이터를 GPU버퍼로 전송
-            updateData(context, data_); 
-
-            //쉐이더 바인딩(부모 호출)
-            Material::bind(context);
-
-            //버퍼를 픽셀 쉐이더의 b1슬롯에 연결
-            if (constantBuffer_ && pixelShader_) 
-            {
-                pixelShader_->setConstantBuffer(1, Render::ShaderStage::Pixel, constantBuffer_, context);
-            }
-        }
+    void UnlitMaterial::setBaseColor(const Vec4& color) 
+    {
+        setColor("Color", color);
     }
 }

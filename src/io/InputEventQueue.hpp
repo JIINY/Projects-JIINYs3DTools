@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <queue>
 #include <mutex>
 #include <cassert>
@@ -7,7 +7,11 @@
 
 class InputEventQueue {
 public:
-	static InputEventQueue& get();
+	static InputEventQueue& get()
+	{
+		static InputEventQueue instance;
+		return instance;
+	}
 
 	void push(const InputEvent& event) 
 	{ 
@@ -20,15 +24,15 @@ public:
 		return queue_.empty();
 	}
 
-	const InputEvent& front() const //ÀĞ±â Àü¿ë
+	const InputEvent& front() const //ì½ê¸° ì „ìš©
 	{ 
-		assert(!queue_.empty() && "[¿¡·¯] InputEventÅ¥°¡ ºñ¾îÀÖ¾î front¸¦ È®ÀÎÇÒ ¼ö ¾ø½À´Ï´Ù.");
+		assert(!queue_.empty() && "InputEventíê°€ ë¹„ì–´ìˆì–´ frontë¥¼ í™•ì¸í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 		return queue_.front();
 	}
 
 	InputEvent pop() 
 	{
-		assert(!queue_.empty() && "[¿¡·¯] InputEventÅ¥°¡ ºñ¾îÀÖ¾î popÇÒ ¼ö ¾ø½À´Ï´Ù.");
+		assert(!queue_.empty() && "InputEventíê°€ ë¹„ì–´ìˆì–´ popí•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 
 		std::lock_guard<std::mutex> lock(mutex_);
 		InputEvent event = std::move(queue_.front());
@@ -45,7 +49,7 @@ private:
 	std::queue<InputEvent> queue_;
 	mutable std::mutex mutex_;
 
-	InputEventQueue() = default; //Singleton
-	InputEventQueue(const InputEventQueue&) = delete; //º¹»ç ±İÁö
-	InputEventQueue& operator=(const InputEventQueue&) = delete; //´ëÀÔ ±İÁö
+	InputEventQueue() = default;
+	InputEventQueue(const InputEventQueue&) = delete;
+	InputEventQueue& operator=(const InputEventQueue&) = delete;
 };
