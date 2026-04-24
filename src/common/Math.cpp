@@ -91,9 +91,9 @@ namespace Math
 	const Vec4 AxisInfo::colorLocked = { 0.5f, 0.5f, 0.5f, 1.0f };
 	const Vec4 AxisInfo::colorDefault = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-	const XMMATRIX AxisInfo::rotationX = XMMatrixRotationZ(XM_PIDIV2);
+	const XMMATRIX AxisInfo::rotationX = XMMatrixRotationZ(-XM_PIDIV2);
 	const XMMATRIX AxisInfo::rotationY = XMMatrixIdentity();
-	const XMMATRIX AxisInfo::rotationZ = XMMatrixRotationX(-XM_PIDIV2);
+	const XMMATRIX AxisInfo::rotationZ = XMMatrixRotationX(XM_PIDIV2);
 
 
 	Ray TransformRay(const Ray& ray, const XMMATRIX& transform) 

@@ -47,19 +47,7 @@ namespace Render::Tools
             float radius = ((std::max)(data.bodyRadius_, data.headRadius_) + pickPadding) * 0.5f;
             halfLength_ = halfLength;
 
-            switch (axis)
-            {
-            case Axis::Y:
-            {
-                boundingBox_.Center = XMFLOAT3(0.0f, halfLength, 0.0f);
-                break;
-            }
-            default:
-            {
-                boundingBox_.Center = XMFLOAT3(0.0f, -halfLength, 0.0f);
-                break;
-            }
-            }
+            boundingBox_.Center = XMFLOAT3(0.0f, halfLength, 0.0f);
             boundingBox_.Extents = XMFLOAT3(radius, halfLength, radius);
             break;
         }

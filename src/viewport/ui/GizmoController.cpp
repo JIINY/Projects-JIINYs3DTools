@@ -245,7 +245,7 @@ float GizmoController::projectRayOnAxis(const Math::Ray& mouseRay, Axis axis) co
     XMVECTOR rayDir = XMLoadFloat3(&mouseRay.direction);
 
     //마우스Ray와 축Ray의 최근접점 계산
-    XMVECTOR w0 = XMVectorSubtract(rayOrigin, gizmoPos);
+    XMVECTOR w0 = XMVectorSubtract(gizmoPos, rayOrigin);
     float a = XMVectorGetX(XMVector3Dot(axisDir, axisDir));
     float b = XMVectorGetX(XMVector3Dot(axisDir, rayDir));
     float c = XMVectorGetX(XMVector3Dot(rayDir, rayDir));
