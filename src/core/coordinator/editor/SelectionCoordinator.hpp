@@ -29,7 +29,6 @@ public:
     void update(float deltaTime);
     void shutdown();
 
-    void onInputEvent(const InputEvent& event);
     void clearSelection();
 
     ObjectSelectionManager* getObjectSelectionManager() const { return objManager_.get(); }
