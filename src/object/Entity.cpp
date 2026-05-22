@@ -111,11 +111,5 @@ namespace Objects
 
         XMStoreFloat4x4(&worldMatForShader_, local); //셰이더에서 column-major로 전치
         XMStoreFloat4x4(&worldMatForCollider_, local);
-
-        DebugLog("[updateWorldMat] this: %p pos: %.3f, %.3f, %.3f scale: %.3f, %.3f, %.3f", this, position_.x, position_.y, position_.z, scale_.x, scale_.y, scale_.z);
-        DebugLog("[updateWorldMat] this: %p mat _11, _12, _13, _14: %.3f, %.3f, %.3f, %.3f", this, worldMatForShader_._11, worldMatForShader_._12, worldMatForShader_._13, worldMatForShader_._14);
-        DebugLog("[updateWorldMat] this: %p mat _21, _22, _23, _24: %.3f, %.3f, %.3f, %.3f", this, worldMatForShader_._21, worldMatForShader_._22, worldMatForShader_._23, worldMatForShader_._24);
-        DebugLog("[updateWorldMat] this: %p mat _31, _32, _33, _14: %.3f, %.3f, %.3f, %.3f", this, worldMatForShader_._31, worldMatForShader_._32, worldMatForShader_._33, worldMatForShader_._34);
-        DebugLog("[updateWorldMat] this: %p mat _41, _42, _43, _44: %.3f, %.3f, %.3f, %.3f", this, worldMatForShader_._41, worldMatForShader_._42, worldMatForShader_._43, worldMatForShader_._44);
     }
 }
