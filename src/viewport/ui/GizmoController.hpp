@@ -32,7 +32,7 @@ private:
     std::vector<EditorEventSubscriptionID> editorEventSubID_;
     std::unique_ptr<Render::Tools::Gizmo> gizmo_;
     std::vector<std::shared_ptr<SceneObject>> targets_;
-    DirectX::XMFLOAT4X4 gizmoWorldMat_;
+    Math::Mat4 gizmoWorldMat_;
 
     bool isDragging_ = false;
     Math::Axis dragAxis_ = Math::Axis::Count;
