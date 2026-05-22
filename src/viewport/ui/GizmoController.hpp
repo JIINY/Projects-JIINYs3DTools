@@ -38,7 +38,12 @@ private:
     Math::Axis dragAxis_ = Math::Axis::Count;
     Math::Mat4 dragStartGizmoWorldMat_ = {};
     float prevProjection_ = 0.0f;
-    const float sensitivity_ = 0.01f;
+    Math::Vec3 rotatePlaneNormal_ = { 0.0f, 0.0f, 0.0f };
+    Math::Vec3 rotatePlaneCenter_ = { 0.0f, 0.0f, 0.0f };
+    Math::Vec3 rotateStartVec_ = { 0.0f, 0.0f, 0.0f }; //드래그 시작지점의 (P0 - center) 벡터, 정규화됨
+    float rotateMinStartLength_ = 0.1f;
+    float rotatePrevDistance_ = 0.0f;
+    const float sensitivity_ = 0.5f;
 
     Math::Vec3 calculatePivot() const;
     void initializeGizmoTransform();

@@ -110,4 +110,35 @@ namespace Math
 		XMStoreFloat3(&result.direction, vNewDir);
 		return result;
 	}
+
+	bool castRayOnPlane(const Ray& ray, const Vec3& planePoint, const Vec3& planeNormal, Vec3& outHitPoint)
+	{
+		//ray: P(t) = origin + t * direction
+		//plane: dot(P - planePoint, planeNormal) = 0
+		//그래서 t = dot(planePoint - origin, planeNormal) / dot(direction, planeNormal)
+
+		XMVECTOR rayOrigin = XMLoadFloat3(&ray.origin);
+		XMVECTOR rayDir = XMVector3Normalize(XMLoadFloat3(&ray.direction));
+		XMVECTOR pPoint = XMLoadFloat3(&planePoint);
+		XMVECTOR pNormal = XMLoadFloat3(&planeNormal);
+
+		XMVECTOR denom = XMVector3Dot(rayDir, pNormal);
+		float denomScalar = XMVectorGetX(denom);
+
+		//ray와 평면이 거의 평행: 교차점이 무한대로 발생하므로 실패 처리
+		if (fabsf(denomScalar) < 1e-6f)
+		{
+			return false;
+		}
+
+		XMVECTOR diff = XMVectorSubtract(pPoint, rayOrigin);
+		XMVECTOR numer = XMVector3Dot(diff, pNormal);
+		float t = XMVectorGetX(numer) / denomScalar;
+
+		//ray 뒤쪽 교차(t < 0)도 허용
+		//드래그 중 카메라가 평면을 비스듬히 볼 때 평면 뒤쪽에 교차점이 잡히는 경우, 평면 위 위치 자체는 유효로 판정
+		XMVECTOR hit = XMVectorAdd(rayOrigin, XMVectorScale(rayDir, t));
+		XMStoreFloat3(&outHitPoint, hit);
+		return true;
+	}
 }

@@ -132,6 +132,8 @@ namespace Math
 
 	Ray transformRay(const Ray& ray, const DirectX::XMMATRIX& transform);
 
+	bool castRayOnPlane(const Ray& ray, const Vec3& planePoint, const Vec3& planeNormal, Vec3& outHitPoint);
+
 	enum class Axis
 	{
 		X,
