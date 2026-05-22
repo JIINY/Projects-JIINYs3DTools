@@ -105,8 +105,8 @@ namespace Math
 
 	Vec3 normalize(const Vec3& v);
 	float length(const Vec3& v);
-	std::pair<float, float> DirectionToPitchYaw(const Vec3& dir);
-	Vec3 PitchYawToDirection(float pitch, float yaw);
+	std::pair<float, float> directionToPitchYaw(const Vec3& dir);
+	Vec3 pitchYawToDirection(float pitch, float yaw);
 
 	float getPitchFromView(ViewMode view);
 	float getYawFromView(ViewMode view);
@@ -130,7 +130,7 @@ namespace Math
 		Math::Vec3 direction;
 	};
 
-	Ray TransformRay(const Ray& ray, const DirectX::XMMATRIX& transform);
+	Ray transformRay(const Ray& ray, const DirectX::XMMATRIX& transform);
 
 	enum class Axis
 	{

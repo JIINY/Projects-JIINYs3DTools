@@ -30,7 +30,7 @@ namespace Math
 		return XMVectorGetX(lengthVector);
 	}
 
-	Vec3 PitchYawToDirection(float pitch, float yaw) 
+	Vec3 pitchYawToDirection(float pitch, float yaw) 
 	{
 		float x = cos(pitch) * sin(yaw);
 		float y = sin(pitch);
@@ -38,7 +38,7 @@ namespace Math
 		return normalize(Vec3(x, y, z));
 	}
 
-	pair<float, float> DirectionToPitchYaw(const Vec3& dir) 
+	pair<float, float> directionToPitchYaw(const Vec3& dir) 
 	{
 		Vec3 n = normalize(dir);
 		float pitch = asin(n.y); //sin(pitch) = y
@@ -96,7 +96,7 @@ namespace Math
 	const XMMATRIX AxisInfo::rotationZ = XMMatrixRotationX(XM_PIDIV2);
 
 
-	Ray TransformRay(const Ray& ray, const XMMATRIX& transform) 
+	Ray transformRay(const Ray& ray, const XMMATRIX& transform) 
 	{
 		XMVECTOR vOrigin = XMLoadFloat3(&ray.origin);
 		XMVECTOR vDir = XMLoadFloat3(&ray.direction);
