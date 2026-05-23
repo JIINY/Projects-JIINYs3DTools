@@ -12,7 +12,7 @@ namespace Render::Materials
 
         void initialize(ID3D11Device* device) override;
 
-        void setBaseColor(float r, float g, float b, float a = 1.0f) { setColor("Color", Math::Vec4(r, g, b, a)); }
+        void setBaseColor(float r, float g, float b, float a = 1.0f) { setColor("MaterialColor", Math::Vec4(r, g, b, a)); }
         void setRoughness(float r) { setProperty("Roughness", r); }
     };
 }

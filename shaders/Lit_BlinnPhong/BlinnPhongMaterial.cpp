@@ -9,8 +9,8 @@ namespace Render::Materials
     {
         Material::initialize(device);
 
-        loadVertexShader(device, L"shaders/Lit_BlinnPhong/Lit_VS_BlinnPhong.hlsl");
-        loadPixelShader(device, L"shaders/Lit_BlinnPhong/Lit_PS_BlinnPhong.hlsl");
+        vsPath_ = L"shaders/Lit_BlinnPhong/Lit_VS_BlinnPhong.hlsl";
+        psPath_ = L"shaders/Lit_BlinnPhong/Lit_PS_BlinnPhong.hlsl";
 
         addProperty<XMFLOAT4>("MaterialColor", XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
         addProperty<float>("Roughness", 0.0f);
