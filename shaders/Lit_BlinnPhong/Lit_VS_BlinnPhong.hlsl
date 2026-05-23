@@ -1,5 +1,4 @@
 ﻿#include "../Common/Constants.hlsli"
-#include "../Common/LightingUtil.hlsli"
 
 //정점 입력(Vertex Input)
 struct VertexInput
