@@ -9,14 +9,12 @@ namespace Render::Materials
     public:
         virtual ~VertexColorMaterial() = default;
 
-        bool initialize(ID3D11Device* device, const std::wstring& vsPath, const std::wstring& psPath) 
+        void initialize(ID3D11Device* device) 
         {
             Material::initialize(device);
 
-            loadVertexShader(device, vsPath, "vsMain");
-            loadPixelShader(device, psPath, "psMain");
-
-            return true;
+            vsPath_ = L"shaders/Unlit_VertexColor/Unlit_VS_VertexColor.hlsl";
+            psPath_ = L"shaders/Unlit_VertexColor/Unlit_PS_VertexColor.hlsl";
         }
     };
 }
