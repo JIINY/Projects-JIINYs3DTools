@@ -1,10 +1,10 @@
-﻿struct VertexOutput
+﻿struct PixelInput
 {
-    float4 position : SV_Position;
+    float4 position : SV_POSITION;
     float4 color : COLOR;
 };
 
-float4 psMain(VertexOutput input) : SV_Target
+float4 psMain(PixelInput input) : SV_TARGET
 {
     return input.color;
 }

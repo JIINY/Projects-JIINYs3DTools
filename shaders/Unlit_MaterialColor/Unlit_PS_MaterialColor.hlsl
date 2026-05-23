@@ -5,11 +5,11 @@
 
 struct VertexOutput
 {
-    float4 position : SV_Position;
+    float4 position : SV_POSITION;
     float4 color : COLOR;
 };
 
-float4 psMain(VertexOutput input) : SV_Target
+float4 psMain(VertexOutput input) : SV_TARGET
 {
     return MaterialColor;
 }
