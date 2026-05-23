@@ -2,24 +2,21 @@
 #include "render/Material.hpp"
 
 
-namespace Render 
+namespace Render::Materials
 {
-    namespace Materials 
+    class VertexColorMaterial : public Material
     {
-        class VertexColorMaterial : public Material
+    public:
+        virtual ~VertexColorMaterial() = default;
+
+        bool initialize(ID3D11Device* device, const std::wstring& vsPath, const std::wstring& psPath) 
         {
-        public:
-            virtual ~VertexColorMaterial() = default;
+            Material::initialize(device);
 
-            bool initialize(ID3D11Device* device, const std::wstring& vsPath, const std::wstring& psPath) 
-            {
-                Material::initialize(device);
+            loadVertexShader(device, vsPath, "vsMain");
+            loadPixelShader(device, psPath, "psMain");
 
-                loadVertexShader(device, vsPath, "vsMain");
-                loadPixelShader(device, psPath, "psMain");
-
-                return true;
-            }
-        };
-    }
+            return true;
+        }
+    };
 }
