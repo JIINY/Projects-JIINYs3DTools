@@ -1,6 +1,7 @@
 ﻿#include "../Common/Constants.hlsli"
 #include "../Common/LightingUtil.hlsli"
-struct VertexOutput
+
+struct PixelInput
 {
     float4 posH : SV_POSITION;
     float3 posW : POSITION;
@@ -8,7 +9,7 @@ struct VertexOutput
     float2 uv : TEXCOORD;
 };
 
-float4 psMain(VertexOutput input) : SV_TARGET
+float4 psMain(PixelInput input) : SV_TARGET
 {
     float3 normal = normalize(input.normal); //정규화 필수
     float3 toEye = normalize(CameraPos - input.posW);
