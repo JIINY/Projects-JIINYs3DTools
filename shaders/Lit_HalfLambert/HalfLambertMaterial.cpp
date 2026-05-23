@@ -9,7 +9,7 @@ namespace Render::Materials
     {
         Material::initialize(device);
 
-        vsPath_ = L"shaders/Lit_HalfLambert/Lit_VS_HalfLambert.hlsl";
+        vsPath_ = L"shaders/Lit_HalfLambert/Lit_VS_BlinnPhong.hlsl";
         psPath_ = L"shaders/Lit_HalfLambert/Lit_PS_HalfLambert.hlsl";
 
         addProperty<XMFLOAT4>("MaterialColor", XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
