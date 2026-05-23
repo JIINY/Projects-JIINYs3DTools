@@ -18,6 +18,7 @@
 #include "../shaders/Lit_BlinnPhong/BlinnPhongMaterial.hpp"
 
 #include "event/appEvent/AppEventPublisher.hpp"
+#include "event/editorEvent/EditorEventPublisher.hpp"
 #include "event/appEvent/state/SceneObjectChangedEvent.hpp"
 
 #include "common/DebugLog.hpp"
@@ -171,6 +172,11 @@ void BaseObjectManager::addObject(shared_ptr<SceneObject> obj)
 void BaseObjectManager::removeObject(std::shared_ptr<SceneObject> obj) 
 {
 	if (!obj) { return; }
+
+	if (obj->isSelected())
+	{
+		EditorEventPublisher::get().publish(SelectionRequestedEvent{ obj, false, true });
+	}
 
 	staticObjects_.erase(
 		remove(staticObjects_.begin(), staticObjects_.end(), obj), staticObjects_.end()
