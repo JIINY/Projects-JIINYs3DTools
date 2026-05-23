@@ -4,8 +4,8 @@
 
 struct PixelInput
 {
-    float4 posH : SV_Position;
-    float3 posW : POSITIONT;
+    float4 posH : SV_POSITION;
+    float3 posW : POSITION;
     float3 normal : NORMAL;
     float2 uv : TEXCOORD;
 };
