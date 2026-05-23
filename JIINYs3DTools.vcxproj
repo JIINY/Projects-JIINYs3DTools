@@ -28,6 +28,7 @@
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="lib\imgui\misc\freetype\imgui_freetype.cpp" />
     <ClCompile Include="shaders\Lit_BlinnPhong\BlinnPhongMaterial.cpp" />
+    <ClCompile Include="shaders\Lit_HalfLambert\HalfLambertMaterial.cpp" />
     <ClCompile Include="shaders\Unlit_MaterialColor\UnlitMaterial.cpp" />
     <ClCompile Include="src\common\DebugLog.cpp" />
     <ClCompile Include="src\common\Fonts.cpp" />
@@ -105,6 +106,7 @@
     <ClCompile Include="src\viewport\ui\WorldPivotUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="shaders\Lit_HalfLambert\HalfLambertMaterial.hpp" />
     <ClInclude Include="src\event\editorEvent\io\KeyboardEvent.hpp" />
     <ClInclude Include="src\event\editorEvent\io\MouseEvent.hpp" />
     <ClInclude Include="src\event\editorEvent\transform\GizmoDragEvent.hpp" />

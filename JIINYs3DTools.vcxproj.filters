@@ -468,7 +468,12 @@
     <ClCompile Include="src\object\action\SceneObjectActionHandler.cpp">
       <Filter>src\object\action</Filter>
     </ClCompile>
-    <ClCompile Include="src\io\InputEventEditorHandler.cpp" />
+    <ClCompile Include="shaders\Lit_HalfLambert\HalfLambertMaterial.cpp">
+      <Filter>shaders\Lit_HalfLambert</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\InputEventEditorHandler.cpp">
+      <Filter>src\io</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\renderer\Renderer.hpp">
@@ -920,6 +925,9 @@
     </ClInclude>
     <ClInclude Include="src\io\InputEventEditorHandler.hpp">
       <Filter>src\io</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Lit_HalfLambert\HalfLambertMaterial.hpp">
+      <Filter>shaders\Lit_HalfLambert</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
