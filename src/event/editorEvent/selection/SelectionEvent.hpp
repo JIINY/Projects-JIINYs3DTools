@@ -5,21 +5,21 @@
 namespace Selection { class Selectable; }
 
 
-struct SelectionRequestedEvent 
+struct SelectionRequestedEvent
 {
     std::shared_ptr<Selection::Selectable> target;
     bool isMultiSelect;
     bool isSubtract;
 };
 
-struct SelectionDragRequestedEvent 
+struct SelectionDragRequestedEvent
 {
     std::vector<std::shared_ptr<Selection::Selectable>> targets;
     bool isShift;
     bool isAlt;
 };
 
-struct SelectionChangedEvent 
+struct SelectionChangedEvent
 {
     std::vector<std::shared_ptr<Selection::Selectable>> currentSelection;
 };
