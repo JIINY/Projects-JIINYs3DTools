@@ -18,11 +18,4 @@ namespace Render::Materials
 
         createBuffer(device);
     }
-
-    void BlinnPhongMaterial::bind(ID3D11DeviceContext* context)
-    {
-        Material::bind(context);
-
-        if (constantBuffer_) { constantBuffer_->bindPS(context, 2); }
-    }
 }
