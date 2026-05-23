@@ -36,10 +36,16 @@ public:
 	}
 
 	template <typename T>
-	std::shared_ptr<T> createMaterial() 
+	std::shared_ptr<T> createMaterial()
 	{
 		auto newMat = std::make_shared<T>();
 		newMat->initialize(device_);
+
+		auto vs = shaderManager_->getVertexShader(newMat->getVSPath(), newMat->getVSEntry());
+		auto ps = shaderManager_->getPixelShader(newMat->getPSPath(), newMat->getPSEntry());
+
+		if (vs) { newMat->setVertexShader(vs); } //fallback처리를 위한 방어코드
+		if (ps) { newMat->setPixelShader(ps); }
 
 		return newMat;
 	}

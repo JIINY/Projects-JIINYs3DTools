@@ -38,6 +38,10 @@ namespace Render
 		void setPixelShader(std::shared_ptr<PixelShader> ps) { pixelShader_ = ps; }
 		std::shared_ptr<VertexShader> getVertexShader() { return vertexShader_; }
 		std::shared_ptr<PixelShader> getPixelShader() { return pixelShader_; }
+		const std::wstring& getVSPath() const { return vsPath_; }
+		const std::wstring& getPSPath() const { return psPath_; }
+		const std::string& getVSEntry() const { return vsEntry_; }
+		const std::string& getPSEntry() const { return psEntry_; }
 
 		std::shared_ptr<ConstantBuffer> getConstantBuffer() { return constantBuffer_; }
 		const std::vector<uint8_t>& getBufferData() const { return bufferData_; }
@@ -94,6 +98,10 @@ namespace Render
 	protected:
 		std::shared_ptr<VertexShader> vertexShader_;
 		std::shared_ptr<PixelShader> pixelShader_;
+		std::wstring vsPath_ = L"";
+		std::wstring psPath_ = L"";
+		std::string vsEntry_ = "vsMain";
+		std::string psEntry_ = "psMain";
 		std::shared_ptr<ConstantBuffer> constantBuffer_;
 		std::vector<uint8_t> bufferData_;
 		std::unordered_map<std::string, MaterialPropData> propertyMap_;
