@@ -1,8 +1,10 @@
 ﻿#pragma once
 #include "DX11Renderer.hpp"
 #include <cassert>
+#include "render/lights/LightType.hpp"
 #include "render/Mesh.hpp"
 #include "render/Material.hpp"
+using namespace std;
 
 
 bool DX11Renderer::initialize(void* hwnd) 
@@ -11,8 +13,11 @@ bool DX11Renderer::initialize(void* hwnd)
 
 	if (!createDevice(hwnd_)) { return false; }
 
-	sceneBuffer_ = std::make_shared<Render::ConstantBuffer>();
+	sceneBuffer_ = make_shared<Render::ConstantBuffer>();
 	if (!sceneBuffer_->initialize<Render::SceneConstantBufferData>(pd3dDevice_.Get())) { return false; }
+
+	lightBuffer_ = make_shared<Render::ConstantBuffer>();
+	if (!lightBuffer_->initialize<Render::LightBufferData>(pd3dDevice_.Get())) { return false; }
 
 	createRenderTarget();
 
@@ -314,4 +319,14 @@ void DX11Renderer::updateSceneConstants(const Render::SceneConstantBufferData& d
 
 	sceneBuffer_->bindVS(pd3dDeviceContext_.Get(), 0);
 	sceneBuffer_->bindPS(pd3dDeviceContext_.Get(), 0);
+}
+
+void DX11Renderer::updateLightConstants(const Render::LightBufferData& data)
+{
+	assert(lightBuffer_ && "lightBuffer_가 없습니다. initialize가 먼저 호출되야 합니다.");
+	assert(pd3dDeviceContext_ && "디바이스 컨텍스트가 유효하지 않습니다.");
+	if (!lightBuffer_ || !pd3dDeviceContext_) { return; }
+
+	lightBuffer_->update(pd3dDeviceContext_.Get(), data);
+	lightBuffer_->bindPS(pd3dDeviceContext_.Get(), 3); //cbuffer b3
 }

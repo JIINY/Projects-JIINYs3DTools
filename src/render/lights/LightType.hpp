@@ -26,4 +26,13 @@ namespace Render
         int type = 0; //LightType
         DirectX::XMFLOAT3 padding = { 0, 0, 0 };
     };
+
+    constexpr int MAX_LIGHTS = 16;
+
+    struct LightBufferData
+    {
+        LightData lights[MAX_LIGHTS];
+        int lightCount = 0;
+        DirectX::XMFLOAT3 padding = { 0, 0, 0 };
+    };
 }

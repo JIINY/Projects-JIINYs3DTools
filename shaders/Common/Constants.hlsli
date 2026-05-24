@@ -33,4 +33,28 @@ cbuffer MaterialBuffer : register(b2)
     float3 MatPad;
 };
 
+#define MAX_LIGHTS 16
+
+struct LightData
+{
+    float3 pos; //row0
+    float range;
+    
+    float3 direction; //row1
+    float intensity;
+    
+    float3 color; //row2
+    float spotAngle;
+    
+    int type; //row3
+    float3 padding;
+};
+
+cbuffer LightBuffer : register(b3)
+{
+    LightData Lights[MAX_LIGHTS];
+    int LightCount;
+    float3 lightBufferPadding;
+};
+
 #endif

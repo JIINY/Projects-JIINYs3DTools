@@ -117,3 +117,29 @@ void LightManager::removeAllLights()
     pointLights_.clear();
     spotLights_.clear();
 }
+
+Render::LightBufferData LightManager::getLightBufferData() const
+{
+    Render::LightBufferData data;
+    int& count = data.lightCount;
+
+    for (const auto& light : dirLights_)
+    {
+        if (count >= Render::MAX_LIGHTS) { break; } //forward 한시 구현. deffered구현시 설계 자체가 변경될 것
+        data.lights[count++] = light->getData();
+    }
+
+    for(const auto& light : pointLights_)
+    {
+        if (count >= Render::MAX_LIGHTS) { break; }
+        data.lights[count++] = light->getData();
+    }
+
+    for (const auto& light : spotLights_)
+    {
+        if (count >= Render::MAX_LIGHTS) { break; }
+        data.lights[count++] = light->getData();
+    }
+
+    return data;
+}

@@ -16,5 +16,6 @@ public:
 	virtual ID3D11DeviceContext* getDeviceContext() = 0;
 
 	virtual void updateSceneConstants(const Render::SceneConstantBufferData& data) = 0;
+	virtual void updateLightConstants(const Render::LightBufferData& data) = 0;
 	virtual void setWireframeMode(bool enable) = 0;
 };
