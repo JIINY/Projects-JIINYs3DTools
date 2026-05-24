@@ -126,6 +126,7 @@ bool App::initialize(void* hwnd)
 		context.renderer = renderer_.get();
 		context.camCoordinator = cameraCoordinator_.get();
 		context.passiveObjCoordinator = sceneObjManager_->getPassiveCoordinator();
+		context.resourceCoordinator = resourceCoordinator_.get();
 
 		renderCoordinator_->initialize(context);
 	}

@@ -1,6 +1,7 @@
 ﻿#include "Grid.hpp"
 #include <cmath>
 #include <cassert>
+#include "core/manager/resources/MaterialManager.hpp"
 #include "render/tools/GridMesh.hpp"
 #include "render/RenderCommandQueue.hpp"
 #include "../shaders/Unlit_VertexColor/VertexColorMaterial.hpp"
@@ -13,24 +14,22 @@ using namespace DirectX;
 
 namespace Render::Tools
 {
-	bool Grid::initialize(ID3D11Device* device, int size, float spacing)
+	bool Grid::initialize(GridContext context)
 	{
-		device_ = device;
-		gridSize_ = size;
-		gridSpacing_ = spacing;
+		device_ = context.device;
+		materialManager_ = context.matManager;
+		size_ = context.size;
+		spacing_ = context.spacing;
 
 		//GridMesh 생성
 		auto mesh = make_shared<GridMesh>();
-		mesh->rebuild(device, size, spacing);
+		mesh->rebuild(device_, size_, spacing_);
 
 		//매티리얼 생성
-		auto material = make_shared<Materials::VertexColorMaterial>();
-		material->initialize(device,
-			L"shaders/Unlit_VertexColor/Unlit_VS_VertexColor.hlsl",
-			L"shaders/Unlit_VertexColor/Unlit_PS_VertexColor.hlsl");
+		auto material = materialManager_->createMaterial<Materials::VertexColorMaterial>();
 
 		//부모(RenderObject)에 조립 요청
-		RenderObject::initialize(device, mesh, material);
+		RenderObject::initialize(device_, mesh, material);
 
 		return true;
 	}
@@ -52,15 +51,15 @@ namespace Render::Tools
 
 	void Grid::setGridSize(int size) 
 	{
-		if (gridSize_ == size) { return; }
-		gridSize_ = size;
+		if (size_ == size) { return; }
+		size_ = size;
 		rebuildMesh();
 	}
 
 	void Grid::setGridSpacing(float spacing) 
 	{
-		if (abs(gridSpacing_ - spacing) < 1e-5f) { return; }
-		gridSpacing_ = spacing;
+		if (abs(spacing_ - spacing) < 1e-5f) { return; }
+		spacing_ = spacing;
 		rebuildMesh();
 	}
 
@@ -73,7 +72,7 @@ namespace Render::Tools
 
 		if (gridMesh) 
 		{
-			gridMesh->rebuild(device_, gridSize_, gridSpacing_);
+			gridMesh->rebuild(device_, size_, spacing_);
 		}
 	}
 }

@@ -333,7 +333,7 @@
     <ClCompile Include="src\render\tools\GridMesh.cpp">
       <Filter>src\render\tools</Filter>
     </ClCompile>
-    <ClCompile Include="shaders\Unlit_MaterialColor\UnlitMaterial.cpp">
+    <ClCompile Include="shaders\Unlit_MaterialColor\MaterialColorMaterial.cpp">
       <Filter>shaders\Unlit_MaterialColor</Filter>
     </ClCompile>
     <ClCompile Include="src\object\Entity.cpp">
@@ -650,7 +650,7 @@
     <ClInclude Include="shaders\Unlit_VertexColor\VertexColorMaterial.hpp">
       <Filter>shaders\Unlit_VertexColor</Filter>
     </ClInclude>
-    <ClInclude Include="shaders\Unlit_MaterialColor\UnlitMaterial.hpp">
+    <ClInclude Include="shaders\Unlit_MaterialColor\MaterialColorMaterial.hpp">
       <Filter>shaders\Unlit_MaterialColor</Filter>
     </ClInclude>
     <ClInclude Include="src\event\appEvent\state\WindowSizeChangedEvent.hpp">

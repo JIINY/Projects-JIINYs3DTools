@@ -10,7 +10,7 @@
 
 namespace Render { class RenderCommandQueue; }
 class SceneObject;
-
+class MaterialManager;
 
 class GizmoController
 {
@@ -18,7 +18,7 @@ public:
     GizmoController();
     ~GizmoController();
 
-    bool initialize(ID3D11Device* device);
+    bool initialize(ID3D11Device* device, MaterialManager* matManager);
     void update(float deltaTime, const Math::Ray& mouseRay);
 
     void addToRenderQueue(Render::RenderCommandQueue* queue, const DirectX::XMMATRIX& viewMat);

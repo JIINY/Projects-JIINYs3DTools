@@ -7,15 +7,24 @@
 #include "../RenderObject.hpp"
 #include "selection/Selectable.hpp"
 
+class MaterialManager;
+
 
 namespace Render::Tools 
 {
+    struct GizmoObjectContext
+    {
+        ID3D11Device* device = nullptr;
+        MaterialManager* matManager = nullptr;
+        GizmoData data{};
+    };
+
     class GizmoObject : public Render::RenderObject, public Selection::Selectable
     {
     public:
         virtual ~GizmoObject() = default;
 
-        void initialize(ID3D11Device* device, GizmoData data, Math::Axis);
+        void initialize(GizmoObjectContext context, Math::Axis);
         
         virtual bool intersects(const Math::Vec3& rayOrigin, const Math::Vec3& rayDir, float& outDist) override;
 
@@ -31,6 +40,7 @@ namespace Render::Tools
         Math::Mat4 worldMatForCollider_;
         Math::Axis axis_ = Math::Axis::Count;
         float halfLength_ = 0.0f;
+        MaterialManager* materialManager_ = nullptr;
 
         void buildBoundingBox(const GizmoData& data, Math::Axis);
         bool intersectsRing(const Math::Vec3& rayOrigin, const Math::Vec3& rayDir, float& outDist) const;

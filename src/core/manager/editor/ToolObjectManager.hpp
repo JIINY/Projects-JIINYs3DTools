@@ -16,8 +16,15 @@ namespace Render::Tools { class Grid; }
 class Renderer;
 class WorldPivotUI;
 class ViewportCameraManager;
+class MaterialManager;
 class GizmoController;
 
+struct ToolObjectContext
+{
+    Renderer* renderer = nullptr;
+    ViewportCameraManager* viewCamManager = nullptr;
+    MaterialManager* matManager = nullptr;
+};
 
 class ToolObjectManager 
 {
@@ -25,7 +32,7 @@ public:
     ToolObjectManager();
     ~ToolObjectManager();
 
-    bool initialize(Renderer* renderer, ViewportCameraManager* viewCamManager);
+    bool initialize(ToolObjectContext context);
     void drawImGui();
     void update(float deltaTime, const Math::Ray& mouseRay);
 
@@ -46,6 +53,7 @@ private:
     ID3D11Device* device_ = nullptr;
     ID3D11DeviceContext* context_ = nullptr;
     ViewportCameraManager* viewCamManager_ = nullptr;
+    MaterialManager* materialManager_ = nullptr;
 
     void onGridChanged(const GridChangedEvent& event);
 };

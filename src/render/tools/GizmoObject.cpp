@@ -3,6 +3,8 @@
 #include <string>
 #include <algorithm>
 #include <DirectXCollision.h>
+#include "core/manager/resources/MaterialManager.hpp"
+#include "../shaders/Unlit_MaterialColor/MaterialColorMaterial.hpp"
 #include "common/Math.hpp"
 #include "GizmoMesh.hpp"
 #include "../RenderObject.hpp"
@@ -15,24 +17,23 @@ using namespace Math;
 
 namespace Render::Tools 
 {
-    void GizmoObject::initialize(ID3D11Device* device, GizmoData data, Axis axis) 
+    void GizmoObject::initialize(GizmoObjectContext context, Math::Axis axis)
     {
-        data_ = data;
-        auto mesh = std::make_shared<GizmoMesh>();
-        mesh->initialize(device, data);
+        data_ = context.data;
+        axis_ = axis;
 
-        auto material = std::make_shared<Material>();
-        material->loadVertexShader(device, L"shaders/Unlit_VertexColor/Unlit_VS_VertexColor.hlsl", "vsMain");
-        material->loadPixelShader(device, L"shaders/Unlit_MaterialColor/Unlit_PS_MaterialColor.hlsl", "psMain");
-        material->setColor("Color", AxisInfo::GetColor(axis));
+        auto mesh = std::make_shared<GizmoMesh>();
+        mesh->initialize(context.device, context.data);
+
+        auto material = context.matManager->createMaterial<Render::Materials::MaterialColorMaterial>();
+        material->setBaseColor(AxisInfo::GetColor(axis));
         
-        RenderObject::initialize(device, mesh, material);
+        RenderObject::initialize(context.device, mesh, material);
         setRenderQueue(static_cast<int>(Render::RenderQueue::Overlay));
         setCastShadow(false);
         setReceiveShadow(false);
 
-        buildBoundingBox(data, axis);
-        axis_ = axis;
+        buildBoundingBox(data_, axis_);
     }
 
     void GizmoObject::buildBoundingBox(const GizmoData& data, Axis axis) 

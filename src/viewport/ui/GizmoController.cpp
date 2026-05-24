@@ -1,6 +1,7 @@
 ﻿#include "GizmoController.hpp"
 #include <vector>
 #include "common/Math.hpp"
+#include "core/manager/resources/MaterialManager.hpp"
 #include "Gizmo.hpp"
 #include "object/SceneObject.hpp"
 #include "render/RenderCommandQueue.hpp"
@@ -24,7 +25,7 @@ GizmoController::GizmoController() : gizmo_(make_unique<Render::Tools::Gizmo>())
 }
 GizmoController::~GizmoController() = default;
 
-bool GizmoController::initialize(ID3D11Device* device)
+bool GizmoController::initialize(ID3D11Device* device, MaterialManager* matManager)
 {
     if (!gizmo_) { return false; }
 
@@ -61,7 +62,7 @@ bool GizmoController::initialize(ID3D11Device* device)
         });
     editorEventSubID_.push_back(mouseUp);
 
-    return gizmo_->initialize(device);
+    return gizmo_->initialize(device, matManager);
 }
 
 void GizmoController::update(float deltaTime, const Math::Ray& mouseRay)

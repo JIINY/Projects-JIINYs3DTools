@@ -6,6 +6,7 @@
 #include "CameraCoordinator.hpp"
 #include "core/manager/editor/ViewportCameraManager.hpp"
 #include "../scene/PassiveObjectCoordinator.hpp"
+#include "../resources/ResourceCoordinator.hpp"
 #include "core/manager/editor/ToolObjectManager.hpp"
 #include "core/manager/scene/LightManager.hpp"
 #include "render/Material.hpp"
@@ -34,10 +35,16 @@ bool RenderCoordinator::initialize(RenderContext context)
 	cameraCoordinator_ = context.camCoordinator;
 	assert(context.passiveObjCoordinator && "초기화 실패");
 	passiveObjCoordinator_ = context.passiveObjCoordinator;
+	assert(context.resourceCoordinator && "초기화 실패");
+	resourceCoordinator_ = context.resourceCoordinator;
 
 	if (!lightManager_->initialize()) { return false; }
-	ViewportCameraManager* viewCamManager = cameraCoordinator_->getViewportCameraManager();
-	if (!toolObjManager_->initialize(renderer_, viewCamManager)) { return false; };
+
+	ToolObjectContext toolContext;
+	toolContext.renderer = renderer_;
+	toolContext.viewCamManager = cameraCoordinator_->getViewportCameraManager();
+	toolContext.matManager = resourceCoordinator_->getMaterialManager();
+	if (!toolObjManager_->initialize(toolContext)) { return false; };
 
 	AppEventSubscriber::get().subscribe<AppModeChangedEvent>([this](const AppModeChangedEvent& event)
 		{

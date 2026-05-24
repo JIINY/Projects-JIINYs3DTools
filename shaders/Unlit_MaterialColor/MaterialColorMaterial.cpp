@@ -1,4 +1,4 @@
-﻿#include "UnlitMaterial.hpp"
+﻿#include "MaterialColorMaterial.hpp"
 #include <DirectXMath.h>
 #include "common/Math.hpp"
 using namespace std;
@@ -8,7 +8,7 @@ using namespace DirectX;
 
 namespace Render::Materials
 {
-    void UnlitMaterial::initialize(ID3D11Device* device) 
+    void MaterialColorMaterial::initialize(ID3D11Device* device) 
     {
         Material::initialize(device);
 
@@ -22,7 +22,7 @@ namespace Render::Materials
         createBuffer(device);
     }
 
-    void UnlitMaterial::setBaseColor(const Vec4& color) 
+    void MaterialColorMaterial::setBaseColor(const Vec4& color)
     {
         setColor("MaterialColor", color);
     }

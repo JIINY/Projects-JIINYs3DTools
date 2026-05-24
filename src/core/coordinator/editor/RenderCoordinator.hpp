@@ -9,6 +9,7 @@ class DX11Renderer;
 class CameraCoordinator;
 class Camera;
 class PassiveObjectCoordinator;
+class ResourceCoordinator;
 class LightManager;
 class ToolObjectManager;
 namespace Render{ class RenderCommandQueue; }
@@ -26,6 +27,7 @@ struct RenderContext
 	DX11Renderer* renderer = nullptr;
 	CameraCoordinator* camCoordinator = nullptr;
 	PassiveObjectCoordinator* passiveObjCoordinator = nullptr;
+	ResourceCoordinator* resourceCoordinator = nullptr;
 };
 
 class RenderCoordinator 
@@ -67,4 +69,5 @@ private:
 	DX11Renderer* renderer_ = nullptr;
 	CameraCoordinator* cameraCoordinator_ = nullptr;
 	PassiveObjectCoordinator* passiveObjCoordinator_ = nullptr;
+	ResourceCoordinator* resourceCoordinator_ = nullptr;
 };

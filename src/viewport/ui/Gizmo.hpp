@@ -6,8 +6,8 @@
 #include "common/Mode.hpp"
 #include "object/Entity.hpp"
 #include "render/tools/GizmoObject.hpp"
-#include "render/PixelShader.hpp"
 
+class MaterialManager;
 namespace Render { class RenderCommandQueue; }
 
 
@@ -19,7 +19,7 @@ namespace Render::Tools
         Gizmo();
         virtual ~Gizmo();
 
-        bool initialize(ID3D11Device* device);
+        bool initialize(ID3D11Device* device, MaterialManager* matManager);
         void update(const Math::Ray& mouseRay, const DirectX::XMMATRIX& targetWorld);
 
         void addToRenderQueue(Render::RenderCommandQueue* queue, const DirectX::XMMATRIX& viewMat);
@@ -37,14 +37,11 @@ namespace Render::Tools
         std::unique_ptr<Render::Tools::GizmoObject> y_;
         std::unique_ptr<Render::Tools::GizmoObject> z_;
 
-        std::shared_ptr<PixelShader> red_ = nullptr;
-        std::shared_ptr<PixelShader> green_ = nullptr;
-        std::shared_ptr<PixelShader> blue_ = nullptr;
-        std::shared_ptr<PixelShader> yellow_ = nullptr;
         TransformMode currentMode_ = TransformMode::Count;
         GizmoShape currentShape_ = GizmoShape::Count;
         Math::Axis hovered_ = Math::Axis::Count;
 
         ID3D11Device* device_ = nullptr;
+        MaterialManager* materialManager_ = nullptr;
     };
 }

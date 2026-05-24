@@ -4,6 +4,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "common/Math.hpp"
+#include "../resources/MaterialManager.hpp"
 #include "renderer/Renderer.hpp"
 #include "render/RenderCommandQueue.hpp"
 #include "render/RenderObject.hpp"
@@ -27,28 +28,30 @@ ToolObjectManager::ToolObjectManager() :
 	grid_(make_unique<Render::Tools::Grid>()), worldPivotUI_(std::make_unique<WorldPivotUI>()), gizmoController_(std::make_unique<GizmoController>()) {}
 ToolObjectManager::~ToolObjectManager() = default;
 
-bool ToolObjectManager::initialize(Renderer* renderer, ViewportCameraManager* viewCamManager)
+bool ToolObjectManager::initialize(ToolObjectContext context)
 {
-	assert(renderer && "초기화 실패");
-	if (!renderer) { return false; }
-
-	device_ = renderer->getDevice();
+	assert(context.renderer && "초기화 실패");
+	device_ = context.renderer->getDevice();
 	assert(device_ && "초기화 실패");
-	if (!device_) { return false; }
-	context_ = renderer->getDeviceContext();
+	context_ = context.renderer->getDeviceContext();
 	assert(context_ && "초기화 실패");
-	if (!context_) { return false; }
-	viewCamManager_ = viewCamManager;
-	assert(viewCamManager_ && "초기화 실패");
-	if (!viewCamManager_) { return false; }
+
+	assert(context.viewCamManager && "초기화 실패");
+	viewCamManager_ = context.viewCamManager;
+	assert(context.matManager && "초기화 실패");
+	materialManager_ = context.matManager;
 	assert(gizmoController_ && "초기화 실패");
-	if (!gizmoController_->initialize(device_)) { return false; }
+
+	if (!gizmoController_->initialize(device_, materialManager_)) { return false; }
 
 
 	//Grid초기화
-	int defaultSize = 10;
-	float defaultSpacing = 1.0f;
-	if (!grid_->initialize(device_, defaultSize, defaultSpacing)) { return false; }
+	Render::Tools::GridContext gridContext;
+	gridContext.device = device_;
+	gridContext.matManager = materialManager_;
+	gridContext.size = 10;
+	gridContext.spacing = 1.0f;
+	if (!grid_->initialize(gridContext)) { return false; }
 
 	UIEventSubscriber::get().subscribe<GridChangedEvent>([this](const GridChangedEvent& event)
 		{

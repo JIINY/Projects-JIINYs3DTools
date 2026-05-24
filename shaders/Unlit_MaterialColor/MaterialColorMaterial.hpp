@@ -5,10 +5,10 @@
 
 namespace Render::Materials
 {
-    class UnlitMaterial : public Material
+    class MaterialColorMaterial : public Material
     {
     public:
-        virtual ~UnlitMaterial() = default;
+        virtual ~MaterialColorMaterial() = default;
 
         void initialize(ID3D11Device* device);
 

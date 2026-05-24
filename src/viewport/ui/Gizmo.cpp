@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "common/Math.hpp"
 #include "common/Mode.hpp"
+#include "core/manager/resources/MaterialManager.hpp"
 #include "render/RenderCommandQueue.hpp"
 #include "render/tools/GizmoObject.hpp"
 
@@ -20,18 +21,10 @@ namespace Render::Tools
         y_(make_unique<Render::Tools::GizmoObject>()), z_(make_unique<Render::Tools::GizmoObject>()) {}
     Gizmo::~Gizmo() = default;
 
-    bool Gizmo::initialize(ID3D11Device* device)
+    bool Gizmo::initialize(ID3D11Device* device, MaterialManager* matManager)
     {
         device_ = device;
-        red_ = make_shared<PixelShader>();
-        green_ = make_shared<PixelShader>();
-        blue_ = make_shared<PixelShader>();
-        yellow_ = make_shared<PixelShader>();
-
-        if (!red_->initialize(device_, L"resources/Unlit_Common/GizmoX_PS_Red.hlsl", "psMain")) { red_ = nullptr; }
-        if (!green_->initialize(device_, L"resources/Unlit_Common/GizmoY_PS_Green.hlsl", "psMain")) { green_ = nullptr; }
-        if (!blue_->initialize(device_, L"resources/Unlit_Common/GizmoZ_PS_Blue.hlsl", "psMain")) { blue_ = nullptr; }
-        if (!yellow_->initialize(device, L"resources/Unlit_Common/GizmoHovered_PS_Yellow.hlsl", "psMain")) { yellow_ = nullptr; }
+        materialManager_ = matManager;
 
         setMode(TransformMode::Translate);
         return true;
@@ -58,10 +51,13 @@ namespace Render::Tools
         default: currentShape_ = GizmoShape::Count; break;
         }
 
-        GizmoData data = getData(x_, currentShape_);
-        x_->initialize(device_, data, Axis::X);
-        y_->initialize(device_, data, Axis::Y);
-        z_->initialize(device_, data, Axis::Z);
+        GizmoObjectContext gizmoObjContext;
+        gizmoObjContext.device = device_;
+        gizmoObjContext.data = getData(x_, currentShape_);
+        gizmoObjContext.matManager = materialManager_;
+        x_->initialize(gizmoObjContext, Axis::X);
+        y_->initialize(gizmoObjContext, Axis::Y);
+        z_->initialize(gizmoObjContext, Axis::Z);
     }
 
     void Gizmo::update(const Math::Ray& mouseRay, const DirectX::XMMATRIX& targetWorld) 
@@ -113,6 +109,15 @@ namespace Render::Tools
         updateAxis(x_.get(), Axis::X);
         updateAxis(y_.get(), Axis::Y);
         updateAxis(z_.get(), Axis::Z);
+
+        auto applyColor = [&](GizmoObject* obj, Axis axisType)
+            {
+                const Vec4& color = (hovered_ == axisType) ? AxisInfo::colorHover : AxisInfo::GetColor(axisType);
+                obj->getMaterial()->setColor("MaterialColor", color);
+            };
+        applyColor(x_.get(), Axis::X);
+        applyColor(y_.get(), Axis::Y);
+        applyColor(z_.get(), Axis::Z);
     }
 
     void Gizmo::addToRenderQueue(Render::RenderCommandQueue* queue, const DirectX::XMMATRIX& viewMat)
@@ -122,35 +127,15 @@ namespace Render::Tools
         XMMATRIX invView = XMMatrixInverse(nullptr, viewMat);
         XMVECTOR camPos = invView.r[3];
 
-        if (x_)
-        {
-            XMMATRIX world = XMLoadFloat4x4(&x_->getWorldMatForShader());
-            XMVECTOR oPos = world.r[3];
-            XMVECTOR diff = XMVectorSubtract(oPos, camPos);
-            float depth = XMVectorGetX(XMVector3Length(diff));
-
-            shared_ptr<PixelShader> ps = (hovered_ == Axis::X) ? yellow_ : red_;
-            queue->addCommand(x_.get(), depth, ps);
-        }
-        if (y_)
-        {
-            XMMATRIX world = XMLoadFloat4x4(&y_->getWorldMatForShader());
-            XMVECTOR oPos = world.r[3];
-            XMVECTOR diff = XMVectorSubtract(oPos, camPos);
-            float depth = XMVectorGetX(XMVector3Length(diff));
-
-            shared_ptr<PixelShader> ps = (hovered_ == Axis::Y) ? yellow_ : green_;
-            queue->addCommand(y_.get(), depth, ps);
-        }
-        if (z_)
-        {
-            XMMATRIX world = XMLoadFloat4x4(&z_->getWorldMatForShader());
-            XMVECTOR oPos = world.r[3];
-            XMVECTOR diff = XMVectorSubtract(oPos, camPos);
-            float depth = XMVectorGetX(XMVector3Length(diff));
-
-            shared_ptr<PixelShader> ps = (hovered_ == Axis::Z) ? yellow_ : blue_;
-            queue->addCommand(z_.get(), depth, ps);
-        }
+        auto enqueue = [&](GizmoObject* obj)
+            {
+                XMMATRIX world = XMLoadFloat4x4(&obj->getWorldMatForShader());
+                XMVECTOR diff = XMVectorSubtract(world.r[3], camPos);
+                float depth = XMVectorGetX(XMVector3Length(diff));
+                queue->addCommand(obj, depth);
+            };
+        if (x_) { enqueue(x_.get()); }
+        if (y_) { enqueue(y_.get()); }
+        if (z_) { enqueue(z_.get()); }
     }
 }

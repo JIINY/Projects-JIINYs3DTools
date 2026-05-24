@@ -14,7 +14,6 @@
 
 #include "../resources/MaterialManager.hpp"
 #include "../shaders/Unlit_VertexColor/VertexColorMaterial.hpp"
-#include "../shaders/Unlit_MaterialColor/UnlitMaterial.hpp"
 #include "../shaders/Lit_BlinnPhong/BlinnPhongMaterial.hpp"
 
 #include "event/appEvent/AppEventPublisher.hpp"
@@ -109,10 +108,7 @@ shared_ptr<SceneObject> BaseObjectManager::createPrimitive(const Primitives::Pri
 		mesh->initialize(device_);
 	}
 
-	auto material = materialManager_->createMaterial<Render::Materials::BlinnPhongMaterial>(
-		//L"shaders/Unlit_VertexColor/Unlit_VS_VertexColor.hlsl",
-		//L"shaders/Unlit_MaterialColor/Unlit_PS_MaterialColor.hlsl"
-	);
+	auto material = materialManager_->createMaterial<Render::Materials::BlinnPhongMaterial>();
 
 	auto newObj = std::make_shared<SceneObject>(name, colType, SceneObjectType::BaseObject);
 	newObj->setPrimitiveType(pType);
