@@ -10,7 +10,7 @@ namespace Render::Materials
     public:
         virtual ~UnlitMaterial() = default;
 
-        bool initialize(ID3D11Device* device, const std::wstring& vsPath, const std::wstring& psPath);
+        void initialize(ID3D11Device* device);
 
         void setBaseColor(const Math::Vec4& color);
     };

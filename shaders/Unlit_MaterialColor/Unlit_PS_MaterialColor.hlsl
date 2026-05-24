@@ -1,7 +1,4 @@
-﻿cbuffer MaterialData : register(b1)
-{
-    float4 MaterialColor;
-}
+﻿#include "../Common/Constants.hlsli"
 
 struct PixelInput
 {

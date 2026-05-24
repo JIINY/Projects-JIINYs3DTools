@@ -8,20 +8,22 @@ using namespace DirectX;
 
 namespace Render::Materials
 {
-    bool UnlitMaterial::initialize(ID3D11Device* device, const wstring& vsPath, const wstring& psPath) 
+    void UnlitMaterial::initialize(ID3D11Device* device) 
     {
         Material::initialize(device);
 
-        loadVertexShader(device, vsPath, "vsMain");
-        loadPixelShader(device, psPath, "psMain");
+        vsPath_ = L"shaders/Unlit_MaterialColor/Unlit_VS_MaterialColor.hlsl";
+        psPath_ = L"shaders/Unlit_MaterialColor/Unlit_PS_MaterialColor.hlsl";
 
-        addProperty<XMFLOAT4>("Color", XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+        addProperty<XMFLOAT4>("MaterialColor", XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+        addProperty<float>("Roughness", 0.0f);
+        addProperty<XMFLOAT3>("Padding", XMFLOAT3(0, 0, 0));
+
         createBuffer(device);
-        return true;
     }
 
     void UnlitMaterial::setBaseColor(const Vec4& color) 
     {
-        setColor("Color", color);
+        setColor("MaterialColor", color);
     }
 }
