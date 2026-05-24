@@ -10,7 +10,7 @@ struct PixelInput
     float2 uv : TEXCOORD;
 };
 
-float4 psMain(PixelInput input) : SV_Target
+float4 psMain(PixelInput input) : SV_TARGET
 {
     input.normal = normalize(input.normal);
     
