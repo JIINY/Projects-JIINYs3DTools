@@ -62,6 +62,7 @@ public:
     const std::vector<std::shared_ptr<Render::DirectionalLight>>& getDirectionalLights() const { return dirLights_; }
     const std::vector<std::shared_ptr<Render::PointLight>>& getPointLights() const { return pointLights_; }
     const std::vector<std::shared_ptr<Render::SpotLight>>& getSpotLights() const { return spotLights_; }
+    Render::LightBufferData getLightBufferData() const;
 
     std::shared_ptr<Render::DirectionalLight> addDirectionalLight(const LocalLightConfig& config = LocalLightConfig());
     std::shared_ptr<Render::PointLight> addPointLight(const LocalLightConfig& config = LocalLightConfig());
@@ -74,6 +75,7 @@ private:
     Math::Vec3 ambientMid_ = { 0.0f, 0.0f, 0.0f };
     Math::Vec3 ambientBot_ = { 0.0f, 0.0f, 0.0f };
 
+    //forward한정. defferred 변경시 재설계 필요
     std::vector<std::shared_ptr<Render::DirectionalLight>> dirLights_ = {};
     std::vector<std::shared_ptr<Render::PointLight>> pointLights_ = {};
     std::vector<std::shared_ptr<Render::SpotLight>> spotLights_ = {};

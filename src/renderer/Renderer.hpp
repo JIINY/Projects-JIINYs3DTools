@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <d3d11.h>
 #include "render/structures/SceneConstantBufferData.hpp"
+#include "render/lights/LightType.hpp"
 
 
 class Renderer {

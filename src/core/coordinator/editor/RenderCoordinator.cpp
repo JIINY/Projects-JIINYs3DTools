@@ -159,6 +159,7 @@ void RenderCoordinator::updateGlobalRenderData(const Camera& activeCam)
 	sb.ambientBot = ambientBot;
 
 	renderer_->updateSceneConstants(sb);
+	renderer_->updateLightConstants(lightManager_->getLightBufferData());
 }
 
 void RenderCoordinator::drawImGui() 
