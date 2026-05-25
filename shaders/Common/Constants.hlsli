@@ -1,6 +1,9 @@
 ﻿#ifndef __CONSTANTS_HLSLI__
 #define __CONSTANTS_HLSLI__
 
+#define MAX_LIGHTS 16
+#define PI 3.14159265f
+
 cbuffer SceneConstantBuffer : register(b0)
 {
     matrix View;
@@ -32,8 +35,6 @@ cbuffer MaterialBuffer : register(b2)
     float Roughness;
     float3 MatPad;
 };
-
-#define MAX_LIGHTS 16
 
 struct LightData
 {
