@@ -217,6 +217,9 @@
     <Filter Include="src\event\editorEvent\io">
       <UniqueIdentifier>{4f75a55b-8995-4622-91dd-dbf478c8226f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders\Lit_PhysicallyBasedRendering">
+      <UniqueIdentifier>{9d077473-8cac-4f36-afd8-def63a3e0f75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -473,6 +476,9 @@
     </ClCompile>
     <ClCompile Include="src\io\InputEventEditorHandler.cpp">
       <Filter>src\io</Filter>
+    </ClCompile>
+    <ClCompile Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.cpp">
+      <Filter>shaders\Lit_PhysicallyBasedRendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -928,6 +934,9 @@
     </ClInclude>
     <ClInclude Include="shaders\Lit_HalfLambert\HalfLambertMaterial.hpp">
       <Filter>shaders\Lit_HalfLambert</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.hpp">
+      <Filter>shaders\Lit_PhysicallyBasedRendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

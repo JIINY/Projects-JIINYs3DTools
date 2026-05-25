@@ -29,6 +29,7 @@
     <ClCompile Include="lib\imgui\misc\freetype\imgui_freetype.cpp" />
     <ClCompile Include="shaders\Lit_BlinnPhong\BlinnPhongMaterial.cpp" />
     <ClCompile Include="shaders\Lit_HalfLambert\HalfLambertMaterial.cpp" />
+    <ClCompile Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.cpp" />
     <ClCompile Include="shaders\Unlit_MaterialColor\MaterialColorMaterial.cpp" />
     <ClCompile Include="src\common\DebugLog.cpp" />
     <ClCompile Include="src\common\Fonts.cpp" />
@@ -107,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shaders\Lit_HalfLambert\HalfLambertMaterial.hpp" />
+    <ClInclude Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.hpp" />
     <ClInclude Include="src\event\editorEvent\io\KeyboardEvent.hpp" />
     <ClInclude Include="src\event\editorEvent\io\MouseEvent.hpp" />
     <ClInclude Include="src\event\editorEvent\transform\GizmoDragEvent.hpp" />
