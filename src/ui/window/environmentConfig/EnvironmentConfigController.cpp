@@ -17,13 +17,9 @@ namespace EnvConfig
 {
 	bool EnvironmentConfigController::initialize(const EnvironmentContext& context)
 	{
+		assert(context.lightManager && "LightManager가 비었습니다. 초기화 실패");
+		if (!context.lightManager) { return false; }
 		lightManager_ = context.lightManager;
-
-		if (!lightManager_)
-		{
-			assert(0 && "lightManager가 비었습니다.");
-			return false;
-		}
 
 		EnvConfig::EnvConfigContext envContext;
 		envContext.lightManager = lightManager_;
