@@ -83,7 +83,7 @@ std::shared_ptr<Render::DirectionalLight> LightManager::addDirectionalLight(cons
 
 std::shared_ptr<Render::PointLight> LightManager::addPointLight(const LocalLightConfig& config)
 {
-    auto light = std::make_shared<Render::PointLight>();
+    auto light = make_shared<Render::PointLight>();
 
     light->setPosition(config.position);
     light->setColor(config.color);
@@ -96,7 +96,7 @@ std::shared_ptr<Render::PointLight> LightManager::addPointLight(const LocalLight
 
 std::shared_ptr<Render::SpotLight> LightManager::addSpotLight(const LocalLightConfig& config) 
 {
-    auto light = std::make_shared<Render::SpotLight>();
+    auto light = make_shared<Render::SpotLight>();
 
     light->setPosition(config.position);
     light->setDirection(config.direction);
