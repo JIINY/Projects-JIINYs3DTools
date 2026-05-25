@@ -1,7 +1,6 @@
 ﻿#include "CreatePanel.hpp"
 #include <memory>
 #include "event/appEvent/AppEventPublisher.hpp"
-#include "event/appEvent/AppEventSubscriber.hpp"
 #include "event/appEvent/ui/CreatePopupRequestedEvent.hpp"
 #include "CreatePrimitive.hpp"
 #include "command/CommandStack.hpp"
