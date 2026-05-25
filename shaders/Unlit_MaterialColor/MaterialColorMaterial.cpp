@@ -17,7 +17,8 @@ namespace Render::Materials
 
         addProperty<XMFLOAT4>("MaterialColor", XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
         addProperty<float>("Roughness", 0.0f);
-        addProperty<XMFLOAT3>("Padding", XMFLOAT3(0, 0, 0));
+        addProperty<float>("Metallic", 0.0f);
+        addProperty<XMFLOAT2>("Padding", XMFLOAT2(0, 0));
 
         createBuffer(device);
     }
