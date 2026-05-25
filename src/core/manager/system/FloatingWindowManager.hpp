@@ -23,7 +23,6 @@ struct FloatingWindowContext
 	PassiveObjectCoordinator* passiveObjCoordinator = nullptr;
 };
 
-
 class FloatingWindowManager
 {
 public:

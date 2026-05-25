@@ -70,18 +70,10 @@ bool FloatingWindowManager::initialize(const FloatingWindowContext& context, con
 
 void FloatingWindowManager::draw()
 {
-	if (isCreateVisible_) 
-	{
-		create_->draw(isCreateVisible_);
-	}
-	if (isEnvConfigVisible_) 
-	{
-		envConfig_->draw(isEnvConfigVisible_);
-	}
-	if (isCamInfoVisible_)
-	{
-		cameraInfoUI_->draw(isCamInfoVisible_);
-	}
+	if (isCreateVisible_) { create_->draw(isCreateVisible_); }
+	if (isEnvConfigVisible_) { envConfig_->draw(isEnvConfigVisible_); }
+	if (isMaterialVisible_) { material_->draw(isMaterialVisible_); }
+	if (isCamInfoVisible_) { cameraInfoUI_->draw(isCamInfoVisible_); }
 }
 
 void FloatingWindowManager::setCreateVisibility(bool isVisible) 
