@@ -7,6 +7,7 @@
 
 struct CreatePopupChangedEvent;
 struct EnvironmentConfigPopupChangedEvent;
+struct MaterialPopupChangedEvent;
 struct CameraInfoChangedEvent;
 
 class LightManager;
@@ -15,6 +16,8 @@ class PassiveObjectCoordinator;
 class CameraInfoUI;
 namespace Create { class CreatePanel; }
 namespace EnvConfig { class EnvironmentConfig; }
+namespace Material { class MaterialPanel; }
+
 
 struct FloatingWindowContext 
 {
@@ -39,6 +42,7 @@ public:
 
 	void setCreateVisibility(bool isVisible);
 	void setEnvironmentConfigVisibility(bool isVisible);
+	void setMaterialVisibility(bool isVisible);
 	void setCameraInfoVisibility(bool isVisible);
 
 	void toggleCameraInfo();
@@ -51,6 +55,8 @@ private:
 	bool isCreateVisible_ = false;
 	std::unique_ptr<EnvConfig::EnvironmentConfig> envConfig_;
 	bool isEnvConfigVisible_ = false;
+	std::unique_ptr<Material::MaterialPanel> material_;
+	bool isMaterialVisible_ = false;
 
 	std::vector<UIEventSubscriptionID> uiEventSubID_;
 	std::unique_ptr<CameraInfoUI> cameraInfoUI_;
@@ -59,5 +65,6 @@ private:
 
 	void onCreatePopupChanged(const CreatePopupChangedEvent& event);
 	void onEnvironmentConfigPopupChanged(const EnvironmentConfigPopupChangedEvent& event);
+	void onMaterialPopupChanged(const MaterialPopupChangedEvent& event);
 	void onCameraInfoChanged(const CameraInfoChangedEvent& event);
 };

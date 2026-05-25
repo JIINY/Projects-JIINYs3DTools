@@ -11,6 +11,7 @@
 #include "event/appEvent/state/CameraModeChangedEvent.hpp"
 #include "event/appEvent/ui/CreatePopupChangedEvent.hpp"
 #include "event/appEvent/ui/EnvironmentConfigPopupChangedEvent.hpp"
+#include "event/appEvent/ui/MaterialPopupChangedEvent.hpp"
 
 #include "event/uiEvent/UIEventPublisher.hpp"
 #include "event/uiEvent/UIEventSubscriber.hpp"
@@ -78,6 +79,11 @@ void MainMenuBarUI::onCreatePopupChanged(const CreatePopupChangedEvent& event)
 void MainMenuBarUI::onEnvironmentConfigPopupChanged(const EnvironmentConfigPopupChangedEvent& event)
 {
 	this->isEnvironmentConfigVisible_ = event.isVisible;
+}
+
+void MainMenuBarUI::onMaterialPopupChanged(const MaterialPopupChangedEvent& event)
+{
+	this->isMaterialVisible_ = event.isVisible;
 }
 
 void MainMenuBarUI::onCameraInfoChanged(const CameraInfoChangedEvent& event) 
@@ -238,6 +244,10 @@ void MainMenuBarUI::windowMenu()
 			AppEventPublisher::get().publish(EnvironmentConfigPopupRequestedEvent{ !isEnvironmentConfigVisible_ });
 		}
 
+		if (ImGui::MenuItem("Material Editor", nullptr))
+		{
+			AppEventPublisher::get().publish(MaterialPopupRequestedEvent{ !isMaterialVisible_ });
+		}
 		ImGui::EndMenu();
 	}
 }

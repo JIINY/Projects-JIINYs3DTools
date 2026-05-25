@@ -6,8 +6,11 @@
 #include "event/appEvent/ui/CreatePopupRequestedEvent.hpp"
 #include "event/appEvent/ui/EnvironmentConfigPopupRequestedEvent.hpp"
 #include "event/appEvent/ui/EnvironmentConfigPopupChangedEvent.hpp"
+#include "event/appEvent/ui/MaterialPopupRequestedEvent.hpp"
+#include "event/appEvent/ui/MaterialPopupChangedEvent.hpp"
 #include "ui/window/create/CreatePanel.hpp"
 #include "ui/window/environmentConfig/EnvironmentConfig.hpp"
+#include "ui/window/material/MaterialPanel.hpp"
 
 #include "event/uiEvent/UIEventPublisher.hpp"
 #include "event/uiEvent/UIEventSubscriber.hpp"
@@ -22,6 +25,7 @@ using namespace std;
 FloatingWindowManager::FloatingWindowManager() :
 	create_(make_unique<Create::CreatePanel>()),
 	envConfig_(make_unique<EnvConfig::EnvironmentConfig>()),
+	material_(make_unique<Material::MaterialPanel>()),
 	cameraInfoUI_(make_unique<CameraInfoUI>()) {}
 
 FloatingWindowManager::~FloatingWindowManager() = default;
@@ -41,10 +45,13 @@ bool FloatingWindowManager::initialize(const FloatingWindowContext& context, con
 	isCreateVisible_ = data.showCreate;
 	isEnvConfigVisible_ = data.showEnvConfig;
 	isCamInfoVisible_ = data.showCameraInfo;
+	isMaterialVisible_ = data.showMaterialEditor;
 
 	if (!create_->initialize(context.passiveObjCoordinator)) { return false; }
 	if (!envConfig_->initialize(context.lightManager)) { return false; };
+	if (!material_->initialize()) { return false; }
 	cameraInfoUI_->initialize(camManager_);
+
 
 	//콜백 구독 예약
 	auto createID = AppEventSubscriber::get().subscribe<CreatePopupRequestedEvent>([this](const CreatePopupRequestedEvent& event)
@@ -58,6 +65,12 @@ bool FloatingWindowManager::initialize(const FloatingWindowContext& context, con
 			this->setEnvironmentConfigVisibility(event.isVisible);
 		});
 	appEventSubID_.push_back(envConfigID);
+
+	auto matEditorID = AppEventSubscriber::get().subscribe<MaterialPopupRequestedEvent>([this](const MaterialPopupRequestedEvent& event)
+		{
+			this->setMaterialVisibility(event.isVisible);
+		});
+	appEventSubID_.push_back(matEditorID);
 
 	auto camInfoSubID = UIEventSubscriber::get().subscribe<CameraInfoRequestedEvent>([this](const CameraInfoRequestedEvent& event)
 		{
@@ -90,6 +103,14 @@ void FloatingWindowManager::setEnvironmentConfigVisibility(bool isVisible)
 
 	isEnvConfigVisible_ = isVisible;
 	AppEventPublisher::get().publish(EnvironmentConfigPopupChangedEvent{ isEnvConfigVisible_ });
+}
+
+void FloatingWindowManager::setMaterialVisibility(bool isVisible)
+{
+	if (isMaterialVisible_ == isVisible) { return; }
+
+	isMaterialVisible_ = isVisible;
+	AppEventPublisher::get().publish(MaterialPopupChangedEvent{ isMaterialVisible_ });
 }
 
 void FloatingWindowManager::setCameraInfoVisibility(bool isVisible)

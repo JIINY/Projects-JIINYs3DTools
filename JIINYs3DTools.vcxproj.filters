@@ -220,6 +220,9 @@
     <Filter Include="shaders\Lit_PhysicallyBasedRendering">
       <UniqueIdentifier>{9d077473-8cac-4f36-afd8-def63a3e0f75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ui\window\material">
+      <UniqueIdentifier>{5d9741f0-2ae9-47e7-990a-7f7dae403647}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -479,6 +482,9 @@
     </ClCompile>
     <ClCompile Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.cpp">
       <Filter>shaders\Lit_PhysicallyBasedRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\window\material\MaterialPanel.cpp">
+      <Filter>src\ui\window\material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -937,6 +943,15 @@
     </ClInclude>
     <ClInclude Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.hpp">
       <Filter>shaders\Lit_PhysicallyBasedRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\window\material\MaterialPanel.hpp">
+      <Filter>src\ui\window\material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\ui\MaterialPopupRequestedEvent.hpp">
+      <Filter>src\event\appEvent\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\ui\MaterialPopupChangedEvent.hpp">
+      <Filter>src\event\appEvent\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

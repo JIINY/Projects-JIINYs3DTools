@@ -12,6 +12,8 @@
 #include "ui/EnvironmentConfigPopupRequestedEvent.hpp"
 #include "ui/EnvironmentDataChangedEvent.hpp"
 #include "ui/EnvironmentDataRequestedEvent.hpp"
+#include "ui/MaterialPopupRequestedEvent.hpp"
+#include "ui/MaterialPopupChangedEvent.hpp"
 
 
 using AppEventVariant = std::variant<
@@ -33,5 +35,7 @@ using AppEventVariant = std::variant<
 	EnvironmentConfigPopupChangedEvent, //창 열기
 	EnvironmentConfigPopupRequestedEvent,
 	EnvironmentDataChangedEvent,
-	EnvironmentDataRequestedEvent
+	EnvironmentDataRequestedEvent,
+	MaterialPopupRequestedEvent,
+	MaterialPopupChangedEvent
 >;

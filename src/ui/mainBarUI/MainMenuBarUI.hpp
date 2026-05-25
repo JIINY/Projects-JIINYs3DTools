@@ -10,6 +10,7 @@ struct SolidChangedEvent;
 
 struct CreatePopupChangedEvent;
 struct EnvironmentConfigPopupChangedEvent;
+struct MaterialPopupChangedEvent;
 
 
 class MainMenuBarUI {
@@ -38,6 +39,7 @@ private:
 	
 	bool isCreateVisible_ = false;
 	bool isEnvironmentConfigVisible_ = false;
+	bool isMaterialVisible_ = false;
 
 	void onAppModeChanged(const AppModeChangedEvent& event);
 	void onCameraModeChanged(const CameraModeChangedEvent& event);
@@ -48,4 +50,5 @@ private:
 
 	void onCreatePopupChanged(const CreatePopupChangedEvent& event);
 	void onEnvironmentConfigPopupChanged(const EnvironmentConfigPopupChangedEvent& event);
+	void onMaterialPopupChanged(const MaterialPopupChangedEvent& event);
 };

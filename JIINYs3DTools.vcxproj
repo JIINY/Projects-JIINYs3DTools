@@ -79,6 +79,7 @@
     <ClCompile Include="src\render\RenderObject.cpp" />
     <ClCompile Include="src\render\ShaderInclude.cpp" />
     <ClCompile Include="src\render\tools\GizmoObject.cpp" />
+    <ClCompile Include="src\ui\window\material\MaterialPanel.cpp" />
     <ClCompile Include="src\viewport\ui\Gizmo.cpp" />
     <ClCompile Include="src\render\tools\GizmoMesh.cpp" />
     <ClCompile Include="src\render\tools\GridMesh.cpp" />
@@ -109,6 +110,8 @@
   <ItemGroup>
     <ClInclude Include="shaders\Lit_HalfLambert\HalfLambertMaterial.hpp" />
     <ClInclude Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.hpp" />
+    <ClInclude Include="src\event\appEvent\ui\MaterialPopupChangedEvent.hpp" />
+    <ClInclude Include="src\event\appEvent\ui\MaterialPopupRequestedEvent.hpp" />
     <ClInclude Include="src\event\editorEvent\io\KeyboardEvent.hpp" />
     <ClInclude Include="src\event\editorEvent\io\MouseEvent.hpp" />
     <ClInclude Include="src\event\editorEvent\transform\GizmoDragEvent.hpp" />
@@ -161,6 +164,7 @@
     <ClInclude Include="src\event\appEvent\ui\CreatePopupRequestedEvent.hpp" />
     <ClInclude Include="src\ui\window\create\CreatePrimitive.hpp" />
     <ClInclude Include="src\ui\window\environmentConfig\EnvironmentConfigController.hpp" />
+    <ClInclude Include="src\ui\window\material\MaterialPanel.hpp" />
     <ClInclude Include="src\utils\FileDialogUtils.hpp" />
     <ClInclude Include="lib\imgui\imgui.h" />
     <ClInclude Include="shaders\Lit_BlinnPhong\BlinnPhongMaterial.hpp" />
