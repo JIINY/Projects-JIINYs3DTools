@@ -4,6 +4,11 @@
 #define MAX_LIGHTS 16
 #define PI 3.14159265f
 
+#define LIGHT_DIRECTIONAL 0
+#define LIGHT_POINT 1
+#define LIGHT_SPOT 2
+
+
 cbuffer SceneConstantBuffer : register(b0)
 {
     matrix View;
