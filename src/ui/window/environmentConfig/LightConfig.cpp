@@ -103,9 +103,9 @@ namespace EnvConfig
                     Math::Vec3 dir = { cos(radPhi) * sin(radTheta), sin(radPhi), cos(radPhi) * cos(radTheta) };
                     dir = Math::normalize(dir);
 
-                    manager_->setDirectionalLightDir(dir);
-                    manager_->setDirectionalLightColor({ sunColor_[0], sunColor_[1], sunColor_[2] });
-                    manager_->setDirectionalLightIntensity(sunIntensity_);
+                    manager_->setSunDir(dir);
+                    manager_->setSunColor({ sunColor_[0], sunColor_[1], sunColor_[2] });
+                    manager_->setSunIntensity(sunIntensity_);
 
                     isChanged = true;
                 }
@@ -186,7 +186,7 @@ namespace EnvConfig
     void LightConfig::setFromManager() 
     {
         if (!manager_) return;
-        auto sun = manager_->getDirectionalLight();
+        auto sun = manager_->getSun();
 
         Math::Vec3 dir = sun->getDirection();
         sunTheta_ = getDegreeThetaFromRad(dir.x, dir.z);

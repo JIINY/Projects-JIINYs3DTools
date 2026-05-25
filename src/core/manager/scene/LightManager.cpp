@@ -7,14 +7,14 @@
 using namespace std;
 
 
-LightManager::LightManager() : dirLight_(make_unique<Render::DirectionalLight>()) {}
+LightManager::LightManager() : sun_(make_unique<Render::DirectionalLight>()) {}
 LightManager::~LightManager() = default;
 
 bool LightManager::initialize(const GlobalLightConfig& config)
 {
-    dirLight_->setDirection(config.sunDirection);
-    dirLight_->setColor(config.sunColor);
-    dirLight_->setIntensity(config.sunIntensity);
+    sun_->setDirection(config.sunDirection);
+    sun_->setColor(config.sunColor);
+    sun_->setIntensity(config.sunIntensity);
 
     ambientTop_ = config.ambientTop;
     ambientMid_ = config.ambientMid;
@@ -26,9 +26,9 @@ bool LightManager::initialize(const GlobalLightConfig& config)
 GlobalLightConfig LightManager::backupCurrentGlobalLightData() const 
 {
     GlobalLightConfig config;
-    if (dirLight_)
+    if (sun_)
     {
-        auto sun = getDirectionalLight();
+        auto sun = getSun();
         config.sunDirection = sun->getDirection();
         config.sunColor = sun->getColor();
         config.sunIntensity = sun->getIntensity();
@@ -44,11 +44,11 @@ GlobalLightConfig LightManager::backupCurrentGlobalLightData() const
 
 void LightManager::restoreCurrentGlobalLightData(const GlobalLightConfig& config) 
 {
-    if (dirLight_) 
+    if (sun_) 
     {
-        setDirectionalLightDir(config.sunDirection);
-        setDirectionalLightColor(config.sunColor);
-        setDirectionalLightIntensity(config.sunIntensity);
+        setSunDir(config.sunDirection);
+        setSunColor(config.sunColor);
+        setSunIntensity(config.sunIntensity);
 
         setAmbientTop(config.ambientTop);
         setAmbientMid(config.ambientMid);
@@ -60,28 +60,25 @@ void LightManager::restoreCurrentGlobalLightData(const GlobalLightConfig& config
     }
 }
 
-Render::LightData LightManager::getDirectionalLightData() const 
+Render::LightData LightManager::getSunData() const 
 {
-    if (!dirLight_) 
+    if (!sun_) 
     { 
         return Render::LightData(); 
     }
-    return dirLight_->getData();
+    return sun_->getData();
 }
 
-void LightManager::setDirectionalLightDir(const Math::Vec3& dir) 
+std::shared_ptr<Render::DirectionalLight> LightManager::addDirectionalLight(const LocalLightConfig& config)
 {
-    if (dirLight_) { dirLight_->setDirection(dir); }
-}
+    auto light = make_shared<Render::DirectionalLight>();
 
-void LightManager::setDirectionalLightColor(const Math::Vec3& color) 
-{
-    if (dirLight_) { dirLight_->setColor(color); }
-}
+    light->setDirection(config.direction);
+    light->setColor(config.color);
+    light->setIntensity(config.intensity);
 
-void LightManager::setDirectionalLightIntensity(const float intensity) 
-{
-    if (dirLight_) { dirLight_->setIntensity(intensity); }
+    dirLights_.push_back(light);
+    return light;
 }
 
 std::shared_ptr<Render::PointLight> LightManager::addPointLight(const LocalLightConfig& config)
@@ -114,6 +111,7 @@ std::shared_ptr<Render::SpotLight> LightManager::addSpotLight(const LocalLightCo
 
 void LightManager::removeAllLights() 
 {
+    dirLights_.clear();
     pointLights_.clear();
     spotLights_.clear();
 }

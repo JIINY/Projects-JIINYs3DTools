@@ -26,7 +26,7 @@ namespace EnvConfig
 
         json savefile;
 
-        Render::DirectionalLight* sun = lightManager_->getDirectionalLight();
+        Render::DirectionalLight* sun = lightManager_->getSun();
         Math::Vec3 sunDir = sun->getDirection();
         Math::Vec3 sunColor = sun->getColor();
 
@@ -112,22 +112,22 @@ namespace EnvConfig
         {
             auto& sun = loadfile["SunLight"];
 
-            if (sun.contains("Direction"))
+            if (sun.contains("SunDirection"))
             {
-                auto& dir = sun["Direction"];
-                lightManager_->setDirectionalLightDir({ dir[0], dir[1], dir[2] });
+                auto& dir = sun["SunDirection"];
+                lightManager_->setSunDir({ dir[0], dir[1], dir[2] });
             }
-            if (sun.contains("Color"))
+            if (sun.contains("SunColor"))
             {
-                auto& color = sun["Color"];
+                auto& color = sun["SunColor"];
                 float r = Math::color255ToFloat(color[0]);
                 float g = Math::color255ToFloat(color[1]);
                 float b = Math::color255ToFloat(color[2]);
-                lightManager_->setDirectionalLightColor({ r, g, b });
+                lightManager_->setSunColor({ r, g, b });
             }
-            if (sun.contains("Intensity"))
+            if (sun.contains("SunIntensity"))
             {
-                lightManager_->setDirectionalLightIntensity(sun["Intensity"]);
+                lightManager_->setSunIntensity(sun["SunIntensity"]);
             }
         }
 

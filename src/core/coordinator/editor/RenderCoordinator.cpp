@@ -142,7 +142,7 @@ void RenderCoordinator::onAppModeChanged(const AppModeChangedEvent& event)
 
 void RenderCoordinator::updateGlobalRenderData(const Camera& activeCam)
 {
-	auto sunData = lightManager_->getDirectionalLightData();
+	auto sunData = lightManager_->getSunData();
 	auto [ambientTop, ambientMid, ambientBot] = lightManager_->getAmbientColors();
 
 	Render::SceneConstantBufferData sb;

@@ -11,6 +11,7 @@ namespace Render
         {
             data_.direction = { 0.0f, 1.0f, 0.0f };
             data_.color = { 1.0f, 1.0f, 1.0f };
+            data_.intensity = 1.0f;
         }
     };
 }
