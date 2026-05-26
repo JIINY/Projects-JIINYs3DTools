@@ -57,6 +57,14 @@ namespace Selection
 
     void SelectionList::appendRange(const vector<shared_ptr<Selectable>>& items) 
     {
+        if (items.empty()) { return; }
+
+        auto last = getLastSelected();
+        if (last && last->getSelectableType() != items.front()->getSelectableType()) 
+        {
+            clear();
+        }
+
         bool changed = false;
         for (const auto& it : items)
         {
