@@ -1,5 +1,8 @@
 ﻿#include "MaterialPanel.hpp"
 #include <memory>
+#include "MaterialContainer.hpp"
+#include "MaterialConfig.hpp"
+
 #include "event/appEvent/AppEventPublisher.hpp"
 #include "event/appEvent/AppEventSubscriber.hpp"
 #include "event/appEvent/ui/MaterialPopupRequestedEvent.hpp"
@@ -11,8 +14,14 @@ using namespace std;
 
 namespace Material
 {
+    MaterialPanel::MaterialPanel() : matContainer_(make_unique<MaterialContainer>()), matConfig_(make_unique<MaterialConfig>()) {}
+    MaterialPanel::~MaterialPanel() = default;
+
     bool MaterialPanel::initialize()
     {
+        if (!matContainer_->initialize()) { return false; }
+        if (!matConfig_->initialize()) { return false; }
+
         return true;
     }
 
@@ -25,7 +34,8 @@ namespace Material
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize;
         if (ImGui::Begin("Material", &isOpen, window_flags))
         {
-
+            matContainer_->draw();
+            matConfig_->draw();
         }
         ImGui::End();
 
