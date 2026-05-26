@@ -117,6 +117,8 @@
     <ClInclude Include="src\event\appEvent\ui\MaterialPopupRequestedEvent.hpp" />
     <ClInclude Include="src\event\editorEvent\io\KeyboardEvent.hpp" />
     <ClInclude Include="src\event\editorEvent\io\MouseEvent.hpp" />
+    <ClInclude Include="src\event\uiEvent\material\MaterialTargetChangedEvent.hpp" />
+    <ClInclude Include="src\event\editorEvent\selection\SelectionStateEvent.hpp" />
     <ClInclude Include="src\event\editorEvent\transform\GizmoDragEvent.hpp" />
     <ClInclude Include="src\command\sceneObject\CmdMoveSceneObject.hpp" />
     <ClInclude Include="src\command\sceneObject\CmdRotateSceneObject.hpp" />

@@ -3,6 +3,7 @@
 #include "io/KeyboardEvent.hpp"
 #include "io/MouseEvent.hpp"
 #include "selection/SelectionChangeEvent.hpp"
+#include "selection/SelectionStateEvent.hpp"
 #include "selection/SelectionModeEvent.hpp"
 #include "transform/GizmoModeRequestedEvent.hpp"
 #include "transform/GizmoDragEvent.hpp"
@@ -21,6 +22,8 @@ using EditorEventVariant = std::variant<
 	SelectionDragRequestedEvent,
 	SelectionChangedEvent,
 	SelectionModeChangedEvent,
+	SelectionStateRequestedEvent,
+	SelectionStateProvidedEvent,
 
 	GizmoModeRequestedEvent,
 	GizmoDragEvent

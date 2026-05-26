@@ -223,6 +223,9 @@
     <Filter Include="src\ui\window\material">
       <UniqueIdentifier>{5d9741f0-2ae9-47e7-990a-7f7dae403647}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\event\uiEvent\material">
+      <UniqueIdentifier>{f57385e1-7a03-4a04-81ce-fb2015a3b2fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -961,6 +964,12 @@
     </ClInclude>
     <ClInclude Include="src\ui\window\material\MaterialContainer.hpp">
       <Filter>src\ui\window\material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\editorEvent\selection\SelectionStateEvent.hpp">
+      <Filter>src\event\editorEvent\selection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\uiEvent\material\MaterialTargetChangedEvent.hpp">
+      <Filter>src\event\uiEvent\material</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
