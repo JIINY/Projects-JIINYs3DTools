@@ -486,6 +486,7 @@
     <ClCompile Include="src\ui\window\material\MaterialPanel.cpp">
       <Filter>src\ui\window\material</Filter>
     </ClCompile>
+    <ClCompile Include="src\utils\FontUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\renderer\Renderer.hpp">

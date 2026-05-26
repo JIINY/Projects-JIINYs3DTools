@@ -80,6 +80,7 @@
     <ClCompile Include="src\render\ShaderInclude.cpp" />
     <ClCompile Include="src\render\tools\GizmoObject.cpp" />
     <ClCompile Include="src\ui\window\material\MaterialPanel.cpp" />
+    <ClCompile Include="src\utils\FontUtils.cpp" />
     <ClCompile Include="src\viewport\ui\Gizmo.cpp" />
     <ClCompile Include="src\render\tools\GizmoMesh.cpp" />
     <ClCompile Include="src\render\tools\GridMesh.cpp" />
