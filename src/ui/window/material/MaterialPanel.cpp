@@ -4,7 +4,6 @@
 #include "MaterialConfig.hpp"
 
 #include "event/appEvent/AppEventPublisher.hpp"
-#include "event/appEvent/AppEventSubscriber.hpp"
 #include "event/appEvent/ui/MaterialPopupRequestedEvent.hpp"
 #include "imgui.h"
 

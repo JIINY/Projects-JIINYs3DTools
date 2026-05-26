@@ -1,6 +1,4 @@
 ﻿#include "MaterialContainer.hpp"
-#include <string>
-#include "common/Fonts.hpp"
 #include "utils/FontUtils.hpp"
 #include "imgui.h"
 using namespace std;
