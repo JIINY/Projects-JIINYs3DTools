@@ -1,14 +1,18 @@
 ﻿#pragma once
 #include <memory>
+#include "event/editorEvent/EditorEventSubscriber.hpp"
 
-namespace Material 
+struct SelectionChangedEvent;
+struct SelectionStateProvidedEvent;
+class SceneObject;
+namespace MaterialEditor
 {
     class MaterialContainer;
     class MaterialConfig;
 }
 
 
-namespace Material
+namespace MaterialEditor
 {
     class MaterialPanel
     {
@@ -19,8 +23,19 @@ namespace Material
         bool initialize();
         void draw(bool isVisible);
 
+        std::shared_ptr<SceneObject> convertSceneObject(const std::shared_ptr<Selection::Selectable>& sel) const;
+        void applySelection(const std::vector<std::shared_ptr<Selection::Selectable>>& selection);
+
+
     private:
+        std::vector<EditorEventSubscriptionID> editorEventSubID_;
         std::unique_ptr<MaterialContainer> matContainer_;
         std::unique_ptr<MaterialConfig> matConfig_;
+
+        int currentSelectionSize_ = 0;
+        std::shared_ptr<SceneObject> lastSelected_ = nullptr;
+
+        void onSelectionChanged(const SelectionChangedEvent& event);
+        void onSelectionStateProvided(const SelectionStateProvidedEvent& event);
     };
 }

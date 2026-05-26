@@ -16,7 +16,7 @@ class PassiveObjectCoordinator;
 class CameraInfoUI;
 namespace Create { class CreatePanel; }
 namespace EnvConfig { class EnvironmentConfig; }
-namespace Material { class MaterialPanel; }
+namespace MaterialEditor { class MaterialPanel; }
 
 
 struct FloatingWindowContext 
@@ -55,7 +55,7 @@ private:
 	bool isCreateVisible_ = false;
 	std::unique_ptr<EnvConfig::EnvironmentConfig> envConfig_;
 	bool isEnvConfigVisible_ = false;
-	std::unique_ptr<Material::MaterialPanel> material_;
+	std::unique_ptr<MaterialEditor::MaterialPanel> material_;
 	bool isMaterialVisible_ = false;
 
 	std::vector<UIEventSubscriptionID> uiEventSubID_;

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 
-namespace Material
+namespace MaterialEditor
 {
     class MaterialContainer
     {

@@ -25,7 +25,7 @@ using namespace std;
 FloatingWindowManager::FloatingWindowManager() :
 	create_(make_unique<Create::CreatePanel>()),
 	envConfig_(make_unique<EnvConfig::EnvironmentConfig>()),
-	material_(make_unique<Material::MaterialPanel>()),
+	material_(make_unique<MaterialEditor::MaterialPanel>()),
 	cameraInfoUI_(make_unique<CameraInfoUI>()) {}
 
 FloatingWindowManager::~FloatingWindowManager() = default;

@@ -489,9 +489,15 @@
     <ClCompile Include="src\ui\window\material\MaterialPanel.cpp">
       <Filter>src\ui\window\material</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\window\material\MaterialConfig.cpp" />
-    <ClCompile Include="src\ui\window\material\MaterialContainer.cpp" />
-    <ClCompile Include="src\utils\FontUtils.cpp" />
+    <ClCompile Include="src\utils\FontUtils.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\window\material\MaterialConfig.cpp">
+      <Filter>src\ui\window\material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\window\material\MaterialContainer.cpp">
+      <Filter>src\ui\window\material</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\renderer\Renderer.hpp">
