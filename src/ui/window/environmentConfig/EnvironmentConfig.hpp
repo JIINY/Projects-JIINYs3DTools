@@ -1,32 +1,36 @@
 ﻿#pragma once
+#include <memory>
 #include <string>
 #include "event/appEvent/AppEventSubscriber.hpp"
 #include "event/appEvent/ui/EnvironmentDataChangedEvent.hpp"
-#include "LightConfig.hpp"
 #include "core/manager/scene/LightManager.hpp"
 
 class LightManager;
-
+namespace EnvConfig { class LightConfig; }
 
 namespace EnvConfig 
 {
     class EnvironmentConfig
     {
     public:
+        EnvironmentConfig();
+        ~EnvironmentConfig();
+
         bool initialize(LightManager* manager);
         void draw(bool isVisible);
 
-        EnvConfig::LightConfig* getLightConfig() { return &lightConfig_; }
+        LightConfig* getLightConfig() { return lightConfig_.get(); }
         std::string getFileName(const std::string& path);
 
     private:
+        std::vector<AppEventSubscriptionID> appEventSubID_;
+        std::unique_ptr<LightConfig> lightConfig_;
         LightManager* lightManager_ = nullptr;
-        EnvConfig::LightConfig lightConfig_;
+
         EnvActionType pendingRequestType_ = EnvActionType::Count;
         std::string currentFileName_ = "";
         std::string currentFilePath_ = "";
 
-        std::vector<AppEventSubscriptionID> appEventSubID_;
         bool isDirty_ = false;
         bool openConfirmDiscardTrigger_ = false;
         

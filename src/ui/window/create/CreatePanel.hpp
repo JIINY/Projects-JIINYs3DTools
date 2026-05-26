@@ -1,7 +1,8 @@
 ﻿#pragma once
-#include "CreatePrimitive.hpp"
+#include <memory>
 
 class PassiveObjectCoordinator;
+namespace Create { class CreatePrimitive; }
 
 
 namespace Create 
@@ -9,10 +10,13 @@ namespace Create
     class CreatePanel
     {
     public:
+        CreatePanel();
+        ~CreatePanel();
+
         bool initialize(PassiveObjectCoordinator* passiveObjCoord);
         void draw(bool isVisible);
 
     private:
-        Create::CreatePrimitive primitive_;
+        std::unique_ptr<CreatePrimitive> primitive_;
     };
 }

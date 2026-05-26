@@ -5,10 +5,10 @@
 #include "event/appEvent/AppEventSubscriber.hpp"
 #include "core/PathConfig.hpp"
 #include "core/manager/scene/LightManager.hpp"
-#include "EnvironmentConfigSerializer.hpp"
-
 
 struct EnvironmentDataRequestedEvent;
+namespace EnvConfig { class EnvironmentConfigSerializer; }
+
 
 namespace EnvConfig
 {

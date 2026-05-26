@@ -13,9 +13,12 @@ using namespace std;
 
 namespace Create 
 {
+    CreatePanel::CreatePanel() : primitive_(make_unique<CreatePrimitive>()) {}
+    CreatePanel::~CreatePanel() = default;
+
     bool CreatePanel::initialize(PassiveObjectCoordinator* passiveObjCoord) 
     {
-        if (!primitive_.initialize(passiveObjCoord)) { return false; }
+        if (!primitive_->initialize(passiveObjCoord)) { return false; }
         return true;
     }
 
@@ -28,7 +31,7 @@ namespace Create
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize;
         if (ImGui::Begin("Create", &isOpen, window_flags))
         {
-            primitive_.draw();
+            primitive_->draw();
         }
         ImGui::End();
 

@@ -1,10 +1,13 @@
 ﻿#include "EnvironmentConfig.hpp"
+#include <memory>
 #include <string>
 #include <filesystem>
 #include <cassert>
+#include "LightConfig.hpp"
 #include "EnvironmentConfigSerializer.hpp"
 #include "common/Fonts.hpp"
 #include "core/PathConfig.hpp"
+
 #include "event/appEvent/AppEventPublisher.hpp"
 #include "event/appEvent/AppEventSubscriber.hpp"
 #include "event/appEvent/ui/EnvironmentConfigPopupRequestedEvent.hpp"
@@ -20,13 +23,16 @@ using namespace std;
 
 namespace EnvConfig 
 {
+    EnvironmentConfig::EnvironmentConfig() : lightConfig_(make_unique<LightConfig>()) {}
+    EnvironmentConfig::~EnvironmentConfig() = default;
+
     bool EnvironmentConfig::initialize(LightManager* manager) 
     {
         assert(manager && "LightManager가 비었습니다. 초기화 실패");
         if (!manager) { return false; }
 
         lightManager_ = manager;
-        lightConfig_.initialize(lightManager_);
+        lightConfig_->initialize(lightManager_);
 
         auto envDataChangeID = AppEventSubscriber::get().subscribe<EnvironmentDataChangedEvent>([this](const EnvironmentDataChangedEvent& event)
             {
@@ -44,7 +50,7 @@ namespace EnvConfig
         case EnvDataType::DataChanged: 
         {
             isDirty_ = true;
-            lightConfig_.setFromManager();
+            lightConfig_->setFromManager();
             if (currentFileName_.empty() || currentFileName_.back() != '*')
             {
                 currentFileName_ += "*";
@@ -54,7 +60,7 @@ namespace EnvConfig
         case EnvDataType::FileSaved:
         {
             isDirty_ = false;
-            lightConfig_.setFromManager();
+            lightConfig_->setFromManager();
 
             currentFilePath_ = event.path;
             currentFileName_ = getFileName(currentFilePath_);
@@ -63,7 +69,7 @@ namespace EnvConfig
         case EnvDataType::FileLoaded: 
         {
             isDirty_ = false;
-            lightConfig_.setFromManager();
+            lightConfig_->setFromManager();
 
             if (event.path.empty())
             {
@@ -93,7 +99,7 @@ namespace EnvConfig
 
         if (ImGui::Begin("Environment Config", &isOpen, window_flags))
         {
-            if (lightConfig_.draw()) 
+            if (lightConfig_->draw()) 
             { 
                 isDirty_ = true;
                 AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::UIModify, "" });
