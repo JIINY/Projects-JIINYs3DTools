@@ -35,6 +35,7 @@ namespace Render
         void setMaterial(size_t index, std::shared_ptr<Material> mat);
         std::shared_ptr<Mesh> getMesh(size_t index = 0) const;
         std::shared_ptr<Material> getMaterial(size_t index = 0) const;
+        size_t getMaterialCount() const { return elements_.size(); }
 
         void setDynamic(bool isDynamic) { isDynamic_ = isDynamic; }
         bool isDynamic() const { return isDynamic_; }
