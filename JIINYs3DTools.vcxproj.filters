@@ -839,7 +839,7 @@
     <ClInclude Include="src\selection\ObjectSelectionController.hpp">
       <Filter>src\selection</Filter>
     </ClInclude>
-    <ClInclude Include="src\event\editorEvent\selection\SelectionEvent.hpp">
+    <ClInclude Include="src\event\editorEvent\selection\SelectionChangeEvent.hpp">
       <Filter>src\event\appEvent\state</Filter>
     </ClInclude>
     <ClInclude Include="src\object\SceneObject.hpp">

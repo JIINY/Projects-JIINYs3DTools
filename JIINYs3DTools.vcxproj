@@ -130,7 +130,7 @@
     <ClInclude Include="src\event\editorEvent\EditorEventQueue.hpp" />
     <ClInclude Include="src\event\editorEvent\EditorEventSubscriber.hpp" />
     <ClInclude Include="src\event\editorEvent\EditorEventVariant.hpp" />
-    <ClInclude Include="src\event\editorEvent\selection\SelectionEvent.hpp" />
+    <ClInclude Include="src\event\editorEvent\selection\SelectionChangeEvent.hpp" />
     <ClInclude Include="src\command\CommandStack.hpp" />
     <ClInclude Include="src\command\ICommand.hpp" />
     <ClInclude Include="src\command\passiveObject\CmdCreatePrimitive.hpp" />

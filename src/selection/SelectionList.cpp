@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "Selectable.hpp"
 #include "event/editorEvent/EditorEventPublisher.hpp"
-#include "event/editorEvent/selection/SelectionEvent.hpp"
+#include "event/editorEvent/selection/SelectionChangeEvent.hpp"
 #include "common/DebugLog.hpp"
 using namespace std;
 

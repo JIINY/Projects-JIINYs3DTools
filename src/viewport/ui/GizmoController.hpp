@@ -5,7 +5,7 @@
 #include "common/Mode.hpp"
 #include "Gizmo.hpp"
 #include "event/editorEvent/EditorEventSubscriber.hpp"
-#include "event/editorEvent/selection/SelectionEvent.hpp"
+#include "event/editorEvent/selection/SelectionChangeEvent.hpp"
 #include "imgui.h"
 
 namespace Render { class RenderCommandQueue; }

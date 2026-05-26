@@ -9,7 +9,7 @@
 #include "object/SceneObject.hpp"
 
 #include "event/EditorEvent/EditorEventPublisher.hpp"
-#include "event/EditorEvent/selection/SelectionEvent.hpp"
+#include "event/EditorEvent/selection/SelectionChangeEvent.hpp"
 
 #include "common/DebugLog.hpp"
 using namespace std;

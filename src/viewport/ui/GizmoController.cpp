@@ -9,7 +9,7 @@
 #include "event/editorEvent/EditorEventPublisher.hpp"
 #include "event/editorEvent/EditorEventSubscriber.hpp"
 #include "event/editorEvent/io/MouseEvent.hpp"
-#include "event/editorEvent/selection/SelectionEvent.hpp"
+#include "event/editorEvent/selection/SelectionChangeEvent.hpp"
 #include "event/editorEvent/transform/GizmoModeRequestedEvent.hpp"
 
 #include "render/tools/GizmoObject.hpp"
