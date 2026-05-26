@@ -9,6 +9,8 @@
 #include "event/editorEvent/EditorEventPublisher.hpp"
 #include "event/editorEvent/EditorEventSubscriber.hpp"
 #include "event/editorEvent/selection/SelectionModeEvent.hpp"
+#include "event/editorEvent/selection/SelectionChangeEvent.hpp"
+#include "event/editorEvent/selection/SelectionStateEvent.hpp"
 #include "event/InputEventType.hpp"
 
 #include "common/DebugLog.hpp"
@@ -51,6 +53,12 @@ bool SelectionCoordinator::initialize(SelectionContext context)
         });
     editorEventSubID_.push_back(selectionDragID);
 
+    auto selectionStateID = EditorEventSubscriber::get().subscribe<SelectionStateRequestedEvent>([this](const SelectionStateRequestedEvent& event)
+        {
+            this->onSelectionStateRequested();
+        });
+    editorEventSubID_.push_back(selectionStateID);
+
     return true;
 }
 
@@ -84,6 +92,20 @@ void SelectionCoordinator::onSelectionModeChanged(SelectionMode mode)
     case SelectionMode::AnimationKey: break;
     default: break;
     }
+}
+
+void SelectionCoordinator::onSelectionStateRequested()
+{
+    const auto& selection = selection_.getAll();
+
+    SelectionStateProvidedEvent event;
+    event.selectionCount = static_cast<int>(selection_.count());
+    event.currentSelection = selection;
+
+    auto last = selection_.getLastSelected();
+    event.currentType = last ? last->getSelectableType() : Selection::SelectableType::Count;
+
+    EditorEventPublisher::get().publish(event);
 }
 
 void SelectionCoordinator::shutdown() 

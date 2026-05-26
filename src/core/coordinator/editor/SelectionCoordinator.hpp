@@ -8,6 +8,7 @@
 struct SelectionModeChangedEvent;
 struct SelectionRequestedEvent;
 struct SelectionDragRequestedEvent;
+struct SelectionStateRequestedEvent;
 class CameraCoordinator;
 class SceneObjectManager;
 class ObjectSelectionManager;
@@ -43,4 +44,5 @@ private:
     void onSelectionModeChanged(SelectionMode mode);
     void onSelectionRequested(const SelectionRequestedEvent& event);
     void onSelectionDragRequested(const SelectionDragRequestedEvent& event);
+    void onSelectionStateRequested();
 };
