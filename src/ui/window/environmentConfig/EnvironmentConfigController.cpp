@@ -15,6 +15,10 @@ using namespace std;
 
 namespace EnvConfig 
 {
+	EnvironmentConfigController::EnvironmentConfigController() : envSerializer_(make_unique<EnvironmentConfigSerializer>()) {}
+	EnvironmentConfigController::~EnvironmentConfigController() = default;
+
+
 	bool EnvironmentConfigController::initialize(const EnvironmentContext& context)
 	{
 		assert(context.lightManager && "LightManager가 비었습니다. 초기화 실패");
@@ -24,8 +28,8 @@ namespace EnvConfig
 		EnvConfig::EnvConfigContext envContext;
 		envContext.lightManager = lightManager_;
 
-		envSerializer_.initialize(envContext);
-		envSerializer_.deserialize(EnvPathConfig::defaultFilePath_);
+		envSerializer_->initialize(envContext);
+		envSerializer_->deserialize(EnvPathConfig::defaultFilePath_);
 		backupGlobalLight_ = lightManager_->backupCurrentGlobalLightData();
 
 
@@ -46,7 +50,7 @@ namespace EnvConfig
 		case EnvActionType::Save:
 		case EnvActionType::SaveAs:
 		{
-			bool result = envSerializer_.serialize(event.path);
+			bool result = envSerializer_->serialize(event.path);
 			if (result)
 			{
 				backupGlobalLight_ = lightManager_->backupCurrentGlobalLightData();
@@ -56,7 +60,7 @@ namespace EnvConfig
 		}
 		case EnvActionType::Load:
 		{
-			bool result = envSerializer_.deserialize(event.path);
+			bool result = envSerializer_->deserialize(event.path);
 			if (result) 
 			{
 				backupGlobalLight_ = lightManager_->backupCurrentGlobalLightData();
@@ -72,7 +76,7 @@ namespace EnvConfig
 		}
 		case EnvActionType::New:
 		{
-			bool result = envSerializer_.deserialize(EnvPathConfig::defaultFilePath_);
+			bool result = envSerializer_->deserialize(EnvPathConfig::defaultFilePath_);
 			if (result)
 			{
 				backupGlobalLight_ = lightManager_->backupCurrentGlobalLightData();

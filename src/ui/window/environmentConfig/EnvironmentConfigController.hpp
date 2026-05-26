@@ -21,12 +21,15 @@ namespace EnvConfig
     class EnvironmentConfigController
     {
     public:
+        EnvironmentConfigController();
+        ~EnvironmentConfigController();
+
         bool initialize(const EnvironmentContext& context);
 
     private:
         std::vector<AppEventSubscriptionID> appEventSubID_;
+        std::unique_ptr<EnvironmentConfigSerializer> envSerializer_ = nullptr;
         LightManager* lightManager_ = nullptr;
-        EnvConfig::EnvironmentConfigSerializer envSerializer_;
 
         GlobalLightConfig backupGlobalLight_;
 
