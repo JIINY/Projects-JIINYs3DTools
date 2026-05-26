@@ -14,7 +14,8 @@ using namespace DirectX;
 
 
 SceneObject::SceneObject(const string& name, ColliderType colType, SceneObjectType objType) 
-    : Render::RenderObject(), name_(name), colliderType_(colType), objType_(objType)
+    : Render::RenderObject(), Selection::Selectable(Selection::SelectableType::SceneObject), 
+    name_(name), colliderType_(colType), objType_(objType)
 {
     boundBox_.Center = Vec3(0.0f, 0.0f, 0.0f);
     boundBox_.Extents = Vec3(1.0f, 1.0f, 1.0f);

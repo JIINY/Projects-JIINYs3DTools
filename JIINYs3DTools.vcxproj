@@ -164,6 +164,7 @@
     <ClInclude Include="src\render\primitives\PrimitivesType.hpp" />
     <ClInclude Include="src\render\primitives\Sphere.hpp" />
     <ClInclude Include="src\selection\Selectable.hpp" />
+    <ClInclude Include="src\selection\SelectableType.hpp" />
     <ClInclude Include="src\selection\SelectionList.hpp" />
     <ClInclude Include="src\ui\window\create\CreatePanel.hpp" />
     <ClInclude Include="src\event\appEvent\ui\CreatePopupRequestedEvent.hpp" />

@@ -965,6 +965,9 @@
     <ClInclude Include="src\ui\window\material\MaterialContainer.hpp">
       <Filter>src\ui\window\material</Filter>
     </ClInclude>
+    <ClInclude Include="src\selection\SelectableType.hpp">
+      <Filter>src\selection</Filter>
+    </ClInclude>
     <ClInclude Include="src\event\editorEvent\selection\SelectionStateEvent.hpp">
       <Filter>src\event\editorEvent\selection</Filter>
     </ClInclude>

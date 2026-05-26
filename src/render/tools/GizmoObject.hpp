@@ -22,6 +22,7 @@ namespace Render::Tools
     class GizmoObject : public Render::RenderObject, public Selection::Selectable
     {
     public:
+        GizmoObject() : Selectable(Selection::SelectableType::ToolObject) {}
         virtual ~GizmoObject() = default;
 
         void initialize(GizmoObjectContext context, Math::Axis);

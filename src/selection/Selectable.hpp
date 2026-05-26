@@ -9,6 +9,9 @@ namespace Selection
     class Selectable : public ISelectable 
     {
     public:
+        explicit Selectable(SelectableType type) : selectableType_(type) {}
+        ~Selectable() = default;
+
         virtual bool isSelected() const override { return isSelected_; }
 
         virtual void onSelected() override 
@@ -23,6 +26,8 @@ namespace Selection
             isSelected_ = false;
             onDeselectImpl();
         }
+        
+        SelectableType getSelectableType() const override { return selectableType_; }
         virtual bool intersects(const Math::Vec3& rayOrigin, const Math::Vec3& rayDir, float& outDist) = 0;
 
 
@@ -32,6 +37,7 @@ namespace Selection
 
 
     private:
+        SelectableType selectableType_ = SelectableType::Count;
         bool isSelected_ = false;
     };
 }
