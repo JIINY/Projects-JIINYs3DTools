@@ -7,8 +7,9 @@ struct FloatingConfigData
 {
     bool showCreate = false;
     bool showEnvConfig = false;
-    bool showCameraInfo = false;
     bool showMaterialEditor = false;
+
+    bool showCameraInfo = false;
 };
 
 struct AppConfigData
@@ -27,6 +28,7 @@ public:
         data.floatingConfig.showCreate = GetPrivateProfileIntA("Window", "showCreate", 0, "./config.ini");
         data.floatingConfig.showEnvConfig = GetPrivateProfileIntA("Window", "ShowEnvConfig", 0, "./config.ini");
         data.floatingConfig.showMaterialEditor = GetPrivateProfileIntA("Window", "ShowMaterialEditor", 0, "./config.ini");
+
         data.floatingConfig.showCameraInfo = GetPrivateProfileIntA("Pref", "ShowCameraInfo", 0, "./config.ini");
 
         return data;
@@ -37,6 +39,7 @@ public:
         WritePrivateProfileStringA("Window", "showCreate", data.floatingConfig.showCreate ? "1" : "0", "./config.ini");
         WritePrivateProfileStringA("Window", "ShowEnvConfig", data.floatingConfig.showEnvConfig ? "1" : "0", "./config.ini");
         WritePrivateProfileStringA("Window", "ShowMaterialEditor", data.floatingConfig.showMaterialEditor ? "1" : "0", "./config.ini");
+
         WritePrivateProfileStringA("Pref", "ShowCameraInfo", data.floatingConfig.showCameraInfo ? "1" : "0", "./config.ini");
     }
 };

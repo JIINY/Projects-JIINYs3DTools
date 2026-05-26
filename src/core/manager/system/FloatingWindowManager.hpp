@@ -37,7 +37,7 @@ public:
 
 	FloatingConfigData getCurrentState() const 
 	{
-		return { isCreateVisible_, isEnvConfigVisible_, isCamInfoVisible_ };
+		return { isCreateVisible_, isEnvConfigVisible_, isMaterialVisible_, isCamInfoVisible_ };
 	}
 
 	void setCreateVisibility(bool isVisible);
