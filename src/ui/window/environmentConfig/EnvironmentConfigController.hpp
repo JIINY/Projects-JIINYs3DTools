@@ -28,7 +28,7 @@ namespace EnvConfig
 
     private:
         std::vector<AppEventSubscriptionID> appEventSubID_;
-        std::unique_ptr<EnvironmentConfigSerializer> envSerializer_ = nullptr;
+        std::unique_ptr<EnvironmentConfigSerializer> envSerializer_;
         LightManager* lightManager_ = nullptr;
 
         GlobalLightConfig backupGlobalLight_;
