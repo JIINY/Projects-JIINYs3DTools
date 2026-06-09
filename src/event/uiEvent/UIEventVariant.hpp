@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <variant>
 #include "material/MaterialTargetChangedEvent.hpp"
+#include "message/MessagePopupRequestedEvent.hpp"
 #include "viewport/GridChangedEvent.hpp"
 #include "viewport/GridRequestedEvent.hpp"
 #include "viewport/CameraInfoChangedEvent.hpp"
@@ -11,6 +12,7 @@
 
 using UIEventVariant = std::variant<
 	MaterialTargetChangedEvent,
+	MessagePopupRequestedEvent,
 	GridChangedEvent,
 	GridRequestedEvent,
 	CameraInfoChangedEvent,

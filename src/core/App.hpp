@@ -8,6 +8,7 @@
 struct SceneDataChangedEvent;
 class EnvironmentConfigController;
 class MainMenuBarUI;
+class MessagePopupController;
 
 class InputHandler;
 class InputEventEditorHandler;
@@ -61,6 +62,8 @@ private:
 	HWND hwnd_ = nullptr;
 	std::string currentSceneTitle_ = "";
 	std::vector<AppEventSubscriptionID> appEventSubID_;
+
+	std::unique_ptr<MessagePopupController> msgPopupController_;
 	std::unique_ptr<EnvConfig::EnvironmentConfigController> envConfigController_;
 	std::unique_ptr<InputHandler> inputHandler_;
 	std::unique_ptr<InputEventEditorHandler> inputEditorHandler_;

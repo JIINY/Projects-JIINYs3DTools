@@ -34,6 +34,7 @@ App::App() :
 	inputEditorHandler_(make_unique<InputEventEditorHandler>()),
 	sceneObjActionHandler_(make_unique<SceneObjectActionHandler>()),
 	envConfigController_(make_unique<EnvConfig::EnvironmentConfigController>()),
+	msgPopupController_(make_unique<MessagePopupController>()),
 
 	appUIManager_(make_unique<AppUIManager>()),
 	shortcutManager_(make_unique<ShortcutManager>()),
@@ -92,6 +93,11 @@ bool App::initialize(void* hwnd)
 	ImGui_ImplDX11_CreateDeviceObjects();
 
 	//초기화 호출
+	assert(msgPopupController_ && "없음, 초기화 실패");
+	if (msgPopupController_)
+	{
+		msgPopupController_->initialize();
+	}
 	assert(shortcutManager_ && "없음, 초기화 실패");
 	if (shortcutManager_)
 	{
@@ -303,12 +309,14 @@ void App::update(float deltaTime)
 
 void App::draw() 
 {
+	//ImGui 순서: Background->일반창->Popup/Modal->Foreground (DrawList에 순서대로 command를 기록하고 한번에 렌더링)
 	appUIManager_->draw(); //공통UI 구성
 	cameraCoordinator_->draw();
 	viewStateCoordinator_->draw();
 	mainMenuBarUI_->draw();
 	floatingWindowManager_->draw();
 	renderCoordinator_->drawImGui();
+	msgPopupController_->draw();
 }
 
 void App::render()
