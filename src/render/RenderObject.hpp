@@ -37,9 +37,6 @@ namespace Render
         std::shared_ptr<Material> getMaterial(size_t index = 0) const;
         size_t getMaterialCount() const { return elements_.size(); }
 
-        void setDynamic(bool isDynamic) { isDynamic_ = isDynamic; }
-        bool isDynamic() const { return isDynamic_; }
-
 
     protected:
         void createConstantBuffer(ID3D11Device* device);
@@ -49,9 +46,5 @@ namespace Render
     private:
         std::vector<RenderElement> elements_;
         std::shared_ptr<ConstantBuffer> worldMatBuffer_ = nullptr;
-
-        bool isVisible_ = true;
-        bool isDynamic_ = false;
-        int renderQueue_ = 2000;
     };
 }
