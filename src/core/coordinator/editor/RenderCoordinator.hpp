@@ -3,6 +3,7 @@
 #include "common/Mode.hpp"
 #include "common/Math.hpp"
 #include "render/lights/LightType.hpp"
+#include "render/RenderCommandQueue.hpp"
 
 struct AppModeChangedEvent;
 class DX11Renderer;
@@ -12,7 +13,6 @@ class PassiveObjectCoordinator;
 class ResourceCoordinator;
 class LightManager;
 class ToolObjectManager;
-namespace Render{ class RenderCommandQueue; }
 
 
 struct SceneGlobalData

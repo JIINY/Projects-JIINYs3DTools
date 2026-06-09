@@ -70,3 +70,9 @@ void SceneObjectManager::removeObject(std::shared_ptr<SceneObject> obj)
     }
     isDirty_ = true;
 }
+
+void SceneObjectManager::removeAllObjects()
+{
+    if (passiveCoord_) { passiveCoord_->removeAllObjects(); }
+    isDirty_ = true;
+}

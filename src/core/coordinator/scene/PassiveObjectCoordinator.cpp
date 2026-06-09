@@ -69,3 +69,8 @@ void PassiveObjectCoordinator::updateTransforms()
 {
     baseManager_->updateTransforms();
 }
+
+void PassiveObjectCoordinator::removeAllObjects()
+{
+    if (baseManager_) { baseManager_->removeAllObjects(); }
+}

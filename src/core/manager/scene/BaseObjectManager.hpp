@@ -31,6 +31,7 @@ public:
 
 	void addObject(std::shared_ptr<SceneObject> obj);
 	void removeObject(std::shared_ptr<SceneObject> obj);
+	void removeAllObjects();
 	void updateTransforms();
 
 	const std::vector<std::shared_ptr<SceneObject>>& getStaticObjects() const { return staticObjects_; }

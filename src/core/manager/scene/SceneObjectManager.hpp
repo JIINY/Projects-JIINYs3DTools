@@ -25,7 +25,7 @@ public:
     void update(float deltaTime);
 
     void removeObject(std::shared_ptr<SceneObject> obj);
-
+    void removeAllObjects();
 
     const std::vector<std::shared_ptr<SceneObject>>& getAllSceneObjects() const;
     PassiveObjectCoordinator* getPassiveCoordinator() const { return passiveCoord_.get(); }

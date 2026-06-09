@@ -8,10 +8,7 @@ class Renderer;
 class SceneObject;
 class MaterialManager;
 class BaseObjectManager;
-namespace Render 
-{ 
-    class PixelShader;
-}
+class Render::PixelShader;
 
 
 class PassiveObjectCoordinator 
@@ -31,6 +28,7 @@ public:
     std::shared_ptr<SceneObject> createPrimitive(const Render::Primitives::PrimitiveData& data);
     void addObject(std::shared_ptr<SceneObject> obj);
     void removeObject(std::shared_ptr<SceneObject> obj);
+    void removeAllObjects();
     void updateTransforms();
 
 private:

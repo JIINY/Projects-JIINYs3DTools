@@ -179,6 +179,19 @@ void BaseObjectManager::removeObject(std::shared_ptr<SceneObject> obj)
 	AppEventPublisher::get().publish(SceneObjectChangedEvent{});
 }
 
+void BaseObjectManager::removeAllObjects()
+{
+	for (const auto& o : staticObjects_)
+	{
+		if (o && o->isSelected())
+		{
+			EditorEventPublisher::get().publish(SelectionRequestedEvent{ o, false, true });
+		}
+	}
+	staticObjects_.clear();
+	AppEventPublisher::get().publish(SceneObjectChangedEvent{});
+}
+
 void BaseObjectManager::setDynamicState(std::shared_ptr<SceneObject> obj, bool makeDynamic) 
 {
 	if (!obj || obj->isDynamic() == makeDynamic) { return; }
