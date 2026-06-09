@@ -35,7 +35,8 @@ bool FloatingWindowManager::initialize(const FloatingWindowContext& context, con
 	assert(context.lightManager && "비었습니다. 초기화 실패");
 	assert(context.cameraManager && "비었습니다. 초기화 실패");
 	assert(context.passiveObjCoordinator && "비었습니다. 초기화 실패");
-	if (!context.lightManager || !context.cameraManager || !context.passiveObjCoordinator)
+	assert(context.materialManager && "비었습니다. 초기화 실패");
+	if (!context.lightManager || !context.cameraManager || !context.passiveObjCoordinator || !context.materialManager)
 	{ 
 		return false; 
 	}
@@ -49,7 +50,7 @@ bool FloatingWindowManager::initialize(const FloatingWindowContext& context, con
 
 	if (!create_->initialize(context.passiveObjCoordinator)) { return false; }
 	if (!envConfig_->initialize(context.lightManager)) { return false; };
-	if (!material_->initialize()) { return false; }
+	if (!material_->initialize(context.materialManager)) { return false; }
 	cameraInfoUI_->initialize(camManager_);
 
 

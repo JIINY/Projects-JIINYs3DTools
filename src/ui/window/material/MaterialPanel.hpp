@@ -4,6 +4,7 @@
 
 struct SelectionChangedEvent;
 struct SelectionStateProvidedEvent;
+class MaterialManager;
 class SceneObject;
 namespace MaterialEditor
 {
@@ -20,7 +21,7 @@ namespace MaterialEditor
         MaterialPanel();
         ~MaterialPanel();
 
-        bool initialize();
+        bool initialize(MaterialManager* matManager);
         void draw(bool isVisible);
 
         std::shared_ptr<SceneObject> convertSceneObject(const std::shared_ptr<Selection::Selectable>& sel) const;

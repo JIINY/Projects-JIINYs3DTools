@@ -10,6 +10,7 @@ struct EnvironmentConfigPopupChangedEvent;
 struct MaterialPopupChangedEvent;
 struct CameraInfoChangedEvent;
 
+class MaterialManager;
 class LightManager;
 class ViewportCameraManager;
 class PassiveObjectCoordinator;
@@ -22,6 +23,7 @@ namespace MaterialEditor { class MaterialPanel; }
 struct FloatingWindowContext 
 {
 	LightManager* lightManager = nullptr;
+	MaterialManager* materialManager = nullptr;
 	ViewportCameraManager* cameraManager = nullptr;
 	PassiveObjectCoordinator* passiveObjCoordinator = nullptr;
 };
@@ -44,6 +46,8 @@ public:
 	void setEnvironmentConfigVisibility(bool isVisible);
 	void setMaterialVisibility(bool isVisible);
 	void setCameraInfoVisibility(bool isVisible);
+
+	EnvConfig::EnvironmentConfig* getEnvironmentConfig() const { return envConfig_.get(); }
 
 	void toggleCameraInfo();
 	bool isCamInfoVisible() const { return isCamInfoVisible_; }

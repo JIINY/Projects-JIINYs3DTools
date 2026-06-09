@@ -22,10 +22,10 @@ namespace MaterialEditor
     MaterialPanel::MaterialPanel() : matContainer_(make_unique<MaterialContainer>()), matConfig_(make_unique<MaterialConfig>()) {}
     MaterialPanel::~MaterialPanel() = default;
 
-    bool MaterialPanel::initialize()
+    bool MaterialPanel::initialize(MaterialManager* matManager)
     {
         if (!matContainer_->initialize()) { return false; }
-        if (!matConfig_->initialize()) { return false; }
+        if (!matConfig_->initialize(matManager)) { return false; }
 
         auto selChangedID = EditorEventSubscriber::get().subscribe<SelectionChangedEvent>([this](const SelectionChangedEvent& event)
             {
@@ -52,6 +52,7 @@ namespace MaterialEditor
         if (ImGui::Begin("Material", &isOpen, window_flags))
         {
             matContainer_->draw();
+            ImGui::Separator();
             matConfig_->draw();
         }
         ImGui::End();
