@@ -1,6 +1,7 @@
 ﻿#include "ShortcutManager.hpp"
 #include "command/CommandStack.hpp"
 #include "event/appEvent/AppEventPublisher.hpp"
+#include "event/appEvent/flow/SceneDataRequestedEvent.hpp"
 #include "event/appEvent/state/AppModeCycleRequestedEvent.hpp"
 #include "event/editorEvent/EditorEventPublisher.hpp"
 #include "event/editorEvent/io/KeyboardEvent.hpp"
@@ -22,7 +23,7 @@ void ShortcutManager::onKeyDowned(const KeyDownEditorEvent& event)
 {
 	if (!event.isCtrl && !event.isAlt && !event.isShift)
 	{
-		switch (event.keyCode)
+		switch (event.keyCode) //단일 키
 		{
 		case static_cast<int>(ImGuiKey_Tab):
 		{
@@ -53,6 +54,11 @@ void ShortcutManager::onKeyDowned(const KeyDownEditorEvent& event)
 	{
 		switch (event.keyCode)
 		{
+		case static_cast<int>(ImGuiKey_S):
+		{
+			AppEventPublisher::get().publish(SceneDataRequestedEvent{ SceneActionType::Save, "" });
+			break;
+		}
 		case static_cast<int>(ImGuiKey_Z):
 		{
 			CommandStack::get().undo();
@@ -61,6 +67,20 @@ void ShortcutManager::onKeyDowned(const KeyDownEditorEvent& event)
 		case static_cast<int>(ImGuiKey_Y):
 		{
 			CommandStack::get().redo();
+			break;
+		}
+		default:
+			break;
+		}
+	}
+
+	if (event.isCtrl && event.isShift && !event.isAlt) //Ctrl + Shift
+	{
+		switch (event.keyCode)
+		{
+		case static_cast<int>(ImGuiKey_S):
+		{
+			AppEventPublisher::get().publish(SceneDataRequestedEvent{ SceneActionType::SaveAs, "" });
 			break;
 		}
 		default:

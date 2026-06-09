@@ -22,6 +22,7 @@
 
 #include "imgui.h"
 #include "common/DebugLog.hpp"
+using namespace std;
 
 
 void MainMenuBarUI::initialize() 
@@ -132,9 +133,23 @@ void MainMenuBarUI::fileMenu()
 {
 	if (ImGui::BeginMenu("File"))
 	{
-		if (ImGui::MenuItem("New File", "Ctrl + N")) {}
-		if (ImGui::MenuItem("Open File", "Ctrl + O")) {}
-		if (ImGui::MenuItem("Save File", "Ctrl + S")) {}
+		if (ImGui::MenuItem("New", "Ctrl + N"))
+		{
+			AppEventPublisher::get().publish(SceneDataRequestedEvent{ SceneActionType::New, "" });
+		}
+		if (ImGui::MenuItem("Open", "Ctrl + O"))
+		{
+			AppEventPublisher::get().publish(SceneDataRequestedEvent{ SceneActionType::Load, "" });
+
+		}
+		if (ImGui::MenuItem("Save", "Ctrl + S")) 
+		{
+			AppEventPublisher::get().publish(SceneDataRequestedEvent{ SceneActionType::Save, "" });
+		}
+		if (ImGui::MenuItem("Save As", "Ctrl + Shift + S")) 
+		{
+			AppEventPublisher::get().publish(SceneDataRequestedEvent{ SceneActionType::SaveAs, "" });
+		}
 		ImGui::Separator();
 		if (ImGui::MenuItem("Exit", "Ctrl + Q")) { exit(0); }
 		ImGui::EndMenu();
