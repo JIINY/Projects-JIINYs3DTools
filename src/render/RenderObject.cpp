@@ -3,6 +3,7 @@
 #include <memory>
 #include "Mesh.hpp"
 #include "Material.hpp"
+#include "Renderable.hpp"
 #include "structures/WorldMatConstantBufferData.hpp"
 
 #include "common/DebugLog.hpp"

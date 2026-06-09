@@ -29,15 +29,18 @@ namespace Render
         virtual uint32_t getLayer() const override { return layer_; }
         void setCullable(bool enable) { isCullable_ = enable; }
         bool isCullable() const { return isCullable_; }
+        void setDynamic(bool enable) { isDynamic_ = enable; }
+        bool isDynamic() const { return isDynamic_; }
 
-    private:
+
+    protected:
         bool isVisible_ = true;
         bool isDynamic_ = false;
         bool castShadow_ = true;
         bool receiveShadow_ = true;
         bool isCullable_ = true;
 
-        int renderQueue_ = static_cast<int>(RenderQueue::Geometry);
+        int renderQueue_ = static_cast<int>(RenderQueue::Geometry); //TO_DO: 오브젝트에서 저장할지, Elements에서 저장할지, Material에서 저장할지 결정 후 Save에도 반영
         uint32_t layer_ = 1;
     };
 }
