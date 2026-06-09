@@ -38,7 +38,7 @@ namespace Render::Tools
     private:
         GizmoData data_;
         DirectX::BoundingBox boundingBox_;
-        Math::Mat4 worldMatForCollider_;
+        Math::Mat4 worldMatForCollider_ = {};
         Math::Axis axis_ = Math::Axis::Count;
         float halfLength_ = 0.0f;
         MaterialManager* materialManager_ = nullptr;
