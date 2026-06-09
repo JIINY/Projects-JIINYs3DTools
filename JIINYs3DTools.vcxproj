@@ -257,6 +257,7 @@
     <ClInclude Include="src\ui\window\environmentConfig\EnvironmentConfig.hpp" />
     <ClInclude Include="src\ui\window\environmentConfig\LightConfig.hpp" />
     <ClInclude Include="src\utils\FontUtils.hpp" />
+    <ClInclude Include="src\utils\IDGenerator.hpp" />
     <ClInclude Include="src\utils\NameGenerator.hpp" />
     <ClInclude Include="src\viewport\camera\ArmCameraController.hpp" />
     <ClInclude Include="src\viewport\camera\Camera.hpp" />
