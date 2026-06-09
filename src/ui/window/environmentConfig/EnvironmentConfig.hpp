@@ -22,6 +22,10 @@ namespace EnvConfig
         LightConfig* getLightConfig() { return lightConfig_.get(); }
         std::string getFileName(const std::string& path);
 
+        const std::string& getCurrentEnvConfigFileName() { return currentFileName_; }
+        const std::string& getCurrentEnvConfigFilePath() { return currentFilePath_; }
+
+
     private:
         std::vector<AppEventSubscriptionID> appEventSubID_;
         std::unique_ptr<LightConfig> lightConfig_;
