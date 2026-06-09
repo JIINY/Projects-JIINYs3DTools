@@ -53,6 +53,7 @@
     <ClCompile Include="src\event\appEvent\AppEventSubscriber.cpp" />
     <ClCompile Include="src\event\editorEvent\EditorEventPublisher.cpp" />
     <ClCompile Include="src\event\editorEvent\EditorEventSubscriber.cpp" />
+    <ClCompile Include="src\ui\messagePopup\MessagePopupController.cpp" />
     <ClCompile Include="src\event\uiEvent\UIEventPublisher.cpp" />
     <ClCompile Include="src\event\uiEvent\UIEventSubscriber.cpp" />
     <ClCompile Include="src\io\InputEventEditorHandler.cpp" />
@@ -76,6 +77,8 @@
     <ClCompile Include="src\render\RenderObject.cpp" />
     <ClCompile Include="src\render\ShaderInclude.cpp" />
     <ClCompile Include="src\render\tools\GizmoObject.cpp" />
+    <ClCompile Include="src\event\uiEvent\message\MessagePopupRequestedEvent.hpp" />
+    <ClCompile Include="src\ui\WidgetData.cpp" />
     <ClCompile Include="src\ui\window\material\MaterialConfig.cpp" />
     <ClCompile Include="src\ui\window\material\MaterialContainer.cpp" />
     <ClCompile Include="src\ui\window\material\MaterialPanel.cpp" />
@@ -152,6 +155,7 @@
     <ClInclude Include="src\object\SceneObject.hpp" />
     <ClInclude Include="src\render\IRenderable.hpp" />
     <ClInclude Include="src\render\lights\LightType.hpp" />
+    <ClInclude Include="src\ui\messagePopup\MessagePopupController.hpp" />
     <ClInclude Include="src\ui\WidgetData.hpp" />
     <ClInclude Include="src\render\primitives\PrimitivesInclude.hpp" />
     <ClInclude Include="src\render\primitives\Torus.hpp" />

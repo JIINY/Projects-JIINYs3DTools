@@ -226,6 +226,12 @@
     <Filter Include="src\event\uiEvent\material">
       <UniqueIdentifier>{f57385e1-7a03-4a04-81ce-fb2015a3b2fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ui\messagePopup">
+      <UniqueIdentifier>{aa5f4161-0278-4afb-8e26-48d622065caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\event\uiEvent\message">
+      <UniqueIdentifier>{a0dd0081-88d6-4f43-afb1-db44a91e21cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -491,6 +497,12 @@
     </ClCompile>
     <ClCompile Include="src\command\CommandStack.cpp">
       <Filter>src\command</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\uiEvent\message\MessagePopupRequestedEvent.hpp">
+      <Filter>src\event\uiEvent\message</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\messagePopup\MessagePopupController.cpp">
+      <Filter>src\ui\messagePopup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -988,6 +1000,9 @@
     </ClInclude>
     <ClInclude Include="src\event\appEvent\flow\SceneDataChangedEvent.hpp">
       <Filter>src\event\appEvent\flow</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\messagePopup\MessagePopupController.hpp">
+      <Filter>src\ui\messagePopup</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
