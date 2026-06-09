@@ -1,6 +1,11 @@
 ﻿#pragma once
 #include <memory>
+#include <Windows.h>
+#include <string>
+#include <vector>
+#include "event/appEvent/AppEventSubscriber.hpp"
 
+struct SceneDataChangedEvent;
 class EnvironmentConfigController;
 class MainMenuBarUI;
 
@@ -53,6 +58,9 @@ private:
 	int width_ = 1280;
 	int height_ = 800;
 
+	HWND hwnd_ = nullptr;
+	std::string currentSceneTitle_ = "";
+	std::vector<AppEventSubscriptionID> appEventSubID_;
 	std::unique_ptr<EnvConfig::EnvironmentConfigController> envConfigController_;
 	std::unique_ptr<InputHandler> inputHandler_;
 	std::unique_ptr<InputEventEditorHandler> inputEditorHandler_;
@@ -70,6 +78,7 @@ private:
 	std::unique_ptr<ResourceCoordinator> resourceCoordinator_;
 
 	std::unique_ptr<MainMenuBarUI> mainMenuBarUI_;
-	//std::unique_ptr<Scene::SceneSerializer> sceneSerializer_;
 	std::unique_ptr<DX11Renderer> renderer_;
+
+	void onSceneDataChanged(const SceneDataChangedEvent& event);
 };

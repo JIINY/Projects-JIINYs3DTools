@@ -37,6 +37,8 @@ public:
         }
     }
 
+    bool emitsDataChanged() const override { return true; }
+
 
 private:
     PassiveObjectCoordinator* passiveObjCoord_ = nullptr;

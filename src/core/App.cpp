@@ -2,6 +2,7 @@
 #include "App.hpp"
 #include <chrono>
 #include <cassert>
+#include <vector>
 #include "common/ElementID.hpp"
 #include "common/Fonts.hpp"
 #include "AppConfig.hpp"
@@ -14,8 +15,8 @@
 #include "coordinator/CoordinatorInclude.hpp"
 #include "ui/UIInclude.hpp"
 #include "event/EventInclude.hpp"
+#include "event/appEvent/flow/SceneDataChangedEvent.hpp"
 
-//#include "scene/SceneSerializer.hpp"
 #include "ui/window/environmentConfig/EnvironmentConfigController.hpp"
 #include "renderer/Renderer.hpp"
 #include "renderer/dx11/DX11Renderer.hpp"
@@ -29,7 +30,6 @@ using namespace std;
 
 
 App::App() : 
-	//sceneSerializer_(std::make_unique<Scene::SceneSerializer>()),
 	inputHandler_(make_unique<InputHandler>()),
 	inputEditorHandler_(make_unique<InputEventEditorHandler>()),
 	sceneObjActionHandler_(make_unique<SceneObjectActionHandler>()),
@@ -56,6 +56,7 @@ bool App::initialize(void* hwnd)
 {
 	AppConfigData appData = AppConfig::load();
 
+	hwnd_ = static_cast<HWND>(hwnd);
 	if (!renderer_->initialize(hwnd)) { return false; }
 
 	ImGui::CreateContext();
@@ -194,6 +195,12 @@ bool App::initialize(void* hwnd)
 
 		this->onScreenResize(width, height);
 	}
+
+	auto sceneChangeID = AppEventSubscriber::get().subscribe<SceneDataChangedEvent>([this](const SceneDataChangedEvent& event)
+		{
+			onSceneDataChanged(event);
+		});
+	appEventSubID_.push_back(sceneChangeID);
 
 	return true;
 }
@@ -338,4 +345,32 @@ void App::onScreenResize(int width, int height)
 	height_ = height;
 
 	AppEventPublisher::get().publish(WindowSizeChangedEvent{ width, height });
+}
+
+void App::onSceneDataChanged(const SceneDataChangedEvent& event)
+{
+	switch (event.type)
+	{
+	case SceneDataType::DataChanged:
+	{
+		if (currentSceneTitle_.empty() || currentSceneTitle_.back() != '*') { currentSceneTitle_ += "*"; }
+		break;
+	}
+	case SceneDataType::FileSaved:
+	{
+		currentSceneTitle_ = filesystem::path(event.path).filename().string();
+		break;
+	}
+	case SceneDataType::FileLoaded:
+	{
+		currentSceneTitle_ = event.path.empty() ? "" : filesystem::path(event.path).filename().string();
+		break;
+	}
+	default:
+		break;
+	}
+
+	std::string title = "JIINY's 3DTools";
+	if (!currentSceneTitle_.empty()) { title += " - " + currentSceneTitle_; }
+	SetWindowTextA(hwnd_, title.c_str());
 }

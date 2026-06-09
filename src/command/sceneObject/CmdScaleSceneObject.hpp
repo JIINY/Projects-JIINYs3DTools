@@ -25,6 +25,8 @@ public:
         target_->setScale(beginScale_);
     }
 
+    bool emitsDataChanged() const override { return true; }
+
 
 private:
     std::shared_ptr<SceneObject> target_ = nullptr;

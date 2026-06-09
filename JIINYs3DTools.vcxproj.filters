@@ -498,6 +498,12 @@
     <ClCompile Include="src\ui\window\material\MaterialContainer.cpp">
       <Filter>src\ui\window\material</Filter>
     </ClCompile>
+    <ClCompile Include="src\ui\WidgetData.cpp">
+      <Filter>src\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\command\CommandStack.cpp">
+      <Filter>src\command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\renderer\Renderer.hpp">
@@ -979,6 +985,18 @@
     </ClInclude>
     <ClInclude Include="src\event\uiEvent\material\MaterialTargetChangedEvent.hpp">
       <Filter>src\event\uiEvent\material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\WidgetData.hpp">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\IDGenerator.hpp">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\flow\SceneDataRequestedEvent.hpp">
+      <Filter>src\event\appEvent\flow</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\appEvent\flow\SceneDataChangedEvent.hpp">
+      <Filter>src\event\appEvent\flow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

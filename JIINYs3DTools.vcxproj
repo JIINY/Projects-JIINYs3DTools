@@ -31,6 +31,7 @@
     <ClCompile Include="shaders\Lit_HalfLambert\HalfLambertMaterial.cpp" />
     <ClCompile Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.cpp" />
     <ClCompile Include="shaders\Unlit_MaterialColor\MaterialColorMaterial.cpp" />
+    <ClCompile Include="src\command\CommandStack.cpp" />
     <ClCompile Include="src\common\DebugLog.cpp" />
     <ClCompile Include="src\common\Fonts.cpp" />
     <ClCompile Include="src\common\Math.cpp" />
@@ -113,6 +114,8 @@
   <ItemGroup>
     <ClInclude Include="shaders\Lit_HalfLambert\HalfLambertMaterial.hpp" />
     <ClInclude Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.hpp" />
+    <ClInclude Include="src\event\appEvent\flow\SceneDataChangedEvent.hpp" />
+    <ClInclude Include="src\event\appEvent\flow\SceneDataRequestedEvent.hpp" />
     <ClInclude Include="src\event\appEvent\ui\MaterialPopupChangedEvent.hpp" />
     <ClInclude Include="src\event\appEvent\ui\MaterialPopupRequestedEvent.hpp" />
     <ClInclude Include="src\event\editorEvent\io\KeyboardEvent.hpp" />
@@ -149,6 +152,7 @@
     <ClInclude Include="src\object\SceneObject.hpp" />
     <ClInclude Include="src\render\IRenderable.hpp" />
     <ClInclude Include="src\render\lights\LightType.hpp" />
+    <ClInclude Include="src\ui\WidgetData.hpp" />
     <ClInclude Include="src\render\primitives\PrimitivesInclude.hpp" />
     <ClInclude Include="src\render\primitives\Torus.hpp" />
     <ClInclude Include="src\render\Renderable.hpp" />

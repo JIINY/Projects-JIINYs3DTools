@@ -1,54 +1,31 @@
 ﻿#pragma once
 #include <vector>
 #include <memory>
+#include <mutex>
+#include <limits>
 #include "ICommand.hpp"
 
-#include "common/DebugLog.hpp"
 
 class CommandStack 
 {
 public:
-    static CommandStack& get() 
-    {
-        static CommandStack instance;
-        return instance;
-    }
+    static CommandStack& get();
 
-    void execute(std::shared_ptr<ICommand> cmd) 
-    {
-        if (currentCmdIndex_ < cmdStack_.size()) //Undo 여러 번 후 미래 기록들을 삭제
-        {
-            cmdStack_.resize(currentCmdIndex_);
-        }
+    void execute(std::shared_ptr<ICommand> cmd);
+    void undo();
+    void redo();
 
-        cmd->execute();
-
-        cmdStack_.push_back(std::move(cmd));
-        currentCmdIndex_++;
-    }
-
-    void undo() 
-    {
-        if (currentCmdIndex_ > 0) 
-        {
-            currentCmdIndex_--;
-            cmdStack_[currentCmdIndex_]->undo();
-        }
-    }
-
-    void redo() 
-    {
-        if (currentCmdIndex_ < cmdStack_.size()) 
-        {
-            cmdStack_[currentCmdIndex_]->execute();
-            currentCmdIndex_++;
-        }
-    }
+    void markSaved();
+    bool isDirty() const;
+    void clear();
 
 
 private:
+    static constexpr size_t INVALID_SAVE_INDEX = SIZE_MAX;
+
     std::vector<std::shared_ptr<ICommand>> cmdStack_;
     size_t currentCmdIndex_ = 0;
+    size_t savedCmdIndex_ = 0;
     mutable std::mutex mutex_;
 
     CommandStack() = default;

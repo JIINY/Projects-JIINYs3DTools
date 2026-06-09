@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include <variant>
+#include "flow/SceneDataChangedEvent.hpp"
+#include "flow/SceneDataRequestedEvent.hpp"
 #include "state/AppModeChangedEvent.hpp"
 #include "state/AppModeCycleRequestedEvent.hpp"
 #include "state/AppModeSetRequestedEvent.hpp"
@@ -18,7 +20,8 @@
 
 using AppEventVariant = std::variant<
 	//Flow
-//	SceneLoadStartEvent,
+	SceneDataRequestedEvent,
+	SceneDataChangedEvent,
 //	AppShutdownEvent,
 
 	//State
