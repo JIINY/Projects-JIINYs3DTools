@@ -1,6 +1,8 @@
 ﻿#include "MaterialManager.hpp"
 #include <cassert>
+#include "../shaders/ShaderInclude.hpp"
 #include "ShaderManager.hpp"
+#include "render/Material.hpp"
 using namespace std;
 
 
@@ -19,4 +21,33 @@ void MaterialManager::shutdown()
 {
 	device_ = nullptr;
 	shaderManager_ = nullptr;
+}
+
+shared_ptr<Render::Material> MaterialManager::createMaterial(const wstring& preset)
+{
+	auto it = presetMap.find(preset);
+	if (it == presetMap.end())
+	{
+		assert(0 && "presetMap에 없음");
+		return nullptr;
+	}
+
+	auto newMat = std::make_shared<Render::Material>();
+	newMat->initialize(device_);
+	
+	it->second(*newMat); //프리셋 함수 적용
+	newMat->setPreset(preset);
+
+	auto vs = shaderManager_->getVertexShader(newMat->getVSPath(), newMat->getVSEntry());
+	auto ps = shaderManager_->getPixelShader(newMat->getPSPath(), newMat->getPSEntry());
+
+	if (vs) { newMat->setVertexShader(vs); } //fallback처리를 위한 방어코드
+	if (ps) { newMat->setPixelShader(ps); }
+
+	if (!newMat->getBufferData().empty())
+	{
+		newMat->createBuffer(device_);
+	}
+
+	return newMat;
 }
