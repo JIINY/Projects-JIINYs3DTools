@@ -342,9 +342,6 @@
     <ClCompile Include="src\render\tools\GridMesh.cpp">
       <Filter>src\render\tools</Filter>
     </ClCompile>
-    <ClCompile Include="shaders\Unlit_MaterialColor\MaterialColorMaterial.cpp">
-      <Filter>shaders\Unlit_MaterialColor</Filter>
-    </ClCompile>
     <ClCompile Include="src\object\Entity.cpp">
       <Filter>src\object</Filter>
     </ClCompile>
@@ -371,9 +368,6 @@
     </ClCompile>
     <ClCompile Include="src\core\manager\scene\LightManager.cpp">
       <Filter>src\core\manager\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="shaders\Lit_BlinnPhong\BlinnPhongMaterial.cpp">
-      <Filter>shaders\Lit_BlinnPhong</Filter>
     </ClCompile>
     <ClCompile Include="src\render\ShaderInclude.cpp">
       <Filter>src\render</Filter>
@@ -477,14 +471,8 @@
     <ClCompile Include="src\object\action\SceneObjectActionHandler.cpp">
       <Filter>src\object\action</Filter>
     </ClCompile>
-    <ClCompile Include="shaders\Lit_HalfLambert\HalfLambertMaterial.cpp">
-      <Filter>shaders\Lit_HalfLambert</Filter>
-    </ClCompile>
     <ClCompile Include="src\io\InputEventEditorHandler.cpp">
       <Filter>src\io</Filter>
-    </ClCompile>
-    <ClCompile Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.cpp">
-      <Filter>shaders\Lit_PhysicallyBasedRendering</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\window\material\MaterialPanel.cpp">
       <Filter>src\ui\window\material</Filter>
@@ -677,12 +665,6 @@
     <ClInclude Include="src\render\tools\GridMesh.hpp">
       <Filter>src\render\tools</Filter>
     </ClInclude>
-    <ClInclude Include="shaders\Unlit_VertexColor\VertexColorMaterial.hpp">
-      <Filter>shaders\Unlit_VertexColor</Filter>
-    </ClInclude>
-    <ClInclude Include="shaders\Unlit_MaterialColor\MaterialColorMaterial.hpp">
-      <Filter>shaders\Unlit_MaterialColor</Filter>
-    </ClInclude>
     <ClInclude Include="src\event\appEvent\state\WindowSizeChangedEvent.hpp">
       <Filter>src\event\appEvent\state</Filter>
     </ClInclude>
@@ -703,9 +685,6 @@
     </ClInclude>
     <ClInclude Include="src\render\lights\SpotLight.hpp">
       <Filter>src\render\lights</Filter>
-    </ClInclude>
-    <ClInclude Include="shaders\Lit_BlinnPhong\BlinnPhongMaterial.hpp">
-      <Filter>shaders\Lit_BlinnPhong</Filter>
     </ClInclude>
     <ClInclude Include="src\core\manager\system\AppUIManager.hpp">
       <Filter>src\core\manager\system</Filter>
@@ -956,12 +935,6 @@
     <ClInclude Include="src\io\InputEventEditorHandler.hpp">
       <Filter>src\io</Filter>
     </ClInclude>
-    <ClInclude Include="shaders\Lit_HalfLambert\HalfLambertMaterial.hpp">
-      <Filter>shaders\Lit_HalfLambert</Filter>
-    </ClInclude>
-    <ClInclude Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.hpp">
-      <Filter>shaders\Lit_PhysicallyBasedRendering</Filter>
-    </ClInclude>
     <ClInclude Include="src\ui\window\material\MaterialPanel.hpp">
       <Filter>src\ui\window\material</Filter>
     </ClInclude>
@@ -985,6 +958,24 @@
     </ClInclude>
     <ClInclude Include="src\event\uiEvent\material\MaterialTargetChangedEvent.hpp">
       <Filter>src\event\uiEvent\material</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Unlit_VertexColor\Unlit_Preset_VertexColor.hpp">
+      <Filter>shaders\Unlit_VertexColor</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Unlit_MaterialColor\Unlit_Preset_MaterialColor.hpp">
+      <Filter>shaders\Unlit_MaterialColor</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Lit_PhysicallyBasedRendering\Lit_Preset_PBR.hpp">
+      <Filter>shaders\Lit_PhysicallyBasedRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Lit_HalfLambert\Lit_Preset_HalfLambert.hpp">
+      <Filter>shaders\Lit_HalfLambert</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Lit_BlinnPhong\Lit_Preset_BlinnPhong.hpp">
+      <Filter>shaders\Lit_BlinnPhong</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\ShaderInclude.hpp">
+      <Filter>shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\WidgetData.hpp">
       <Filter>src\render</Filter>

@@ -36,31 +36,31 @@ float4 psMain(PixelInput input) : SV_TARGET
         float3 toLight;
         float attenuation; //감쇠
         
-        if (light.type == LIGHT_DIRECTIONAL)
+        if (light.LightType == LIGHT_DIRECTIONAL)
         {
-            toLight = normalize(light.direction);
+            toLight = normalize(light.Direction);
             attenuation = 1.0f;
         }
         else //거리 감쇠
         {
-            float3 toLightV = light.pos - input.posW;
+            float3 toLightV = light.Pos - input.posW;
             float dist = length(toLightV);
             toLight = toLightV / max(dist, 0.0001f);
             
-            float d = saturate(1.0f - (dist / max(light.range, 0.0001f)));
+            float d = saturate(1.0f - (dist / max(light.Range, 0.0001f)));
             attenuation = d * d;
 
-            if (light.type == LIGHT_SPOT) //추가로 원뿔 감쇠
+            if (light.LightType == LIGHT_SPOT) //추가로 원뿔 감쇠
             {
-                float cosAngle = dot(normalize(light.direction), -toLight);
-                float cosCutoff = cos(radians(light.spotAngle));
+                float cosAngle = dot(normalize(light.Direction), -toLight);
+                float cosCutoff = cos(radians(light.SpotAngle));
                 float coneAttenuation = saturate((cosAngle - cosCutoff) / (1.0f - cosCutoff));
                 
                 attenuation *= coneAttenuation;
             }
         }
         
-        float3 radiance = light.color * light.intensity * attenuation;
+        float3 radiance = light.Color * light.Intensity * attenuation;
         result += CalcPBR(normal, toEye, albedo, metallic, roughness, toLight, radiance);
     }
 

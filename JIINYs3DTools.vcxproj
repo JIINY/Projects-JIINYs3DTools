@@ -27,10 +27,6 @@
     <ClCompile Include="lib\imgui\imgui_tables.cpp" />
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="lib\imgui\misc\freetype\imgui_freetype.cpp" />
-    <ClCompile Include="shaders\Lit_BlinnPhong\BlinnPhongMaterial.cpp" />
-    <ClCompile Include="shaders\Lit_HalfLambert\HalfLambertMaterial.cpp" />
-    <ClCompile Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.cpp" />
-    <ClCompile Include="shaders\Unlit_MaterialColor\MaterialColorMaterial.cpp" />
     <ClCompile Include="src\command\CommandStack.cpp" />
     <ClCompile Include="src\common\DebugLog.cpp" />
     <ClCompile Include="src\common\Fonts.cpp" />
@@ -112,8 +108,12 @@
     <ClCompile Include="src\viewport\ui\WorldPivotUI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="shaders\Lit_HalfLambert\HalfLambertMaterial.hpp" />
-    <ClInclude Include="shaders\Lit_PhysicallyBasedRendering\PBRMaterial.hpp" />
+    <ClInclude Include="shaders\Lit_BlinnPhong\Lit_Preset_BlinnPhong.hpp" />
+    <ClInclude Include="shaders\Lit_HalfLambert\Lit_Preset_HalfLambert.hpp" />
+    <ClInclude Include="shaders\Lit_PhysicallyBasedRendering\Lit_Preset_PBR.hpp" />
+    <ClInclude Include="shaders\ShaderInclude.hpp" />
+    <ClInclude Include="shaders\Unlit_MaterialColor\Unlit_Preset_MaterialColor.hpp" />
+    <ClInclude Include="shaders\Unlit_VertexColor\Unlit_Preset_VertexColor.hpp" />
     <ClInclude Include="src\event\appEvent\flow\SceneDataChangedEvent.hpp" />
     <ClInclude Include="src\event\appEvent\flow\SceneDataRequestedEvent.hpp" />
     <ClInclude Include="src\event\appEvent\ui\MaterialPopupChangedEvent.hpp" />
@@ -179,9 +179,6 @@
     <ClInclude Include="src\ui\window\material\MaterialPanel.hpp" />
     <ClInclude Include="src\utils\FileDialogUtils.hpp" />
     <ClInclude Include="lib\imgui\imgui.h" />
-    <ClInclude Include="shaders\Lit_BlinnPhong\BlinnPhongMaterial.hpp" />
-    <ClInclude Include="shaders\Unlit_MaterialColor\MaterialColorMaterial.hpp" />
-    <ClInclude Include="shaders\Unlit_VertexColor\VertexColorMaterial.hpp" />
     <ClInclude Include="src\common\DebugLog.hpp" />
     <ClInclude Include="src\common\Fonts.hpp" />
     <ClInclude Include="src\common\Math.hpp" />

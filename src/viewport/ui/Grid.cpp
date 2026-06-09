@@ -4,7 +4,7 @@
 #include "core/manager/resources/MaterialManager.hpp"
 #include "render/tools/GridMesh.hpp"
 #include "render/RenderCommandQueue.hpp"
-#include "../shaders/Unlit_VertexColor/VertexColorMaterial.hpp"
+#include "../shaders/Unlit_VertexColor/Unlit_Preset_VertexColor.hpp"
 
 #include "common/DebugLog.hpp"
 using namespace std;
@@ -26,7 +26,7 @@ namespace Render::Tools
 		mesh->rebuild(device_, size_, spacing_);
 
 		//매티리얼 생성
-		auto material = materialManager_->createMaterial<Materials::VertexColorMaterial>();
+		auto material = materialManager_->createMaterial(L"Unlit_VertexColor");
 
 		//부모(RenderObject)에 조립 요청
 		RenderObject::initialize(device_, mesh, material);

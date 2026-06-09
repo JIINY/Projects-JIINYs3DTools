@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <DirectXCollision.h>
 #include "core/manager/resources/MaterialManager.hpp"
-#include "../shaders/Unlit_MaterialColor/MaterialColorMaterial.hpp"
+#include "../shaders/Unlit_MaterialColor/Unlit_Preset_MaterialColor.hpp"
 #include "common/Math.hpp"
 #include "GizmoMesh.hpp"
 #include "../RenderObject.hpp"
@@ -25,8 +25,8 @@ namespace Render::Tools
         auto mesh = std::make_shared<GizmoMesh>();
         mesh->initialize(context.device, context.data);
 
-        auto material = context.matManager->createMaterial<Render::Materials::MaterialColorMaterial>();
-        material->setBaseColor(AxisInfo::GetColor(axis));
+        auto material = context.matManager->createMaterial(L"Unlit_MaterialColor");
+        material->setColor("MaterialColor", AxisInfo::GetColor(axis));
         
         RenderObject::initialize(context.device, mesh, material);
         setRenderQueue(static_cast<int>(Render::RenderQueue::Overlay));

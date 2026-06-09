@@ -1,6 +1,7 @@
 ﻿#include "Material.hpp"
 #include <iostream>
 #include <cassert>
+#include "ui/UIInclude.hpp"
 using namespace std;
 
 
@@ -82,6 +83,7 @@ namespace Render
 
         bufferData_.clear();
         propertyMap_.clear();
+        uiPropertyMap_.clear();
         isDirty_ = false;
     }
 
@@ -148,5 +150,11 @@ namespace Render
         }
 
         isDirty_ = false;
+    }
+
+    void Material::useProperty(const string& name, UI::WidgetData dataType, UI::WidgetType widget, UI::WidgetSettings settings)
+    {
+        assert(UI::isValidWidgetSettings(widget, settings) && "위젯 타입과 설정이 맞지 않습니다.");
+        uiPropertyMap_[name] = UIPropData{ dataType, widget, settings };
     }
 }

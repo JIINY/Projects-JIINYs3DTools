@@ -13,8 +13,7 @@
 #include "utils/NameGenerator.hpp"
 
 #include "../resources/MaterialManager.hpp"
-#include "../shaders/Unlit_VertexColor/VertexColorMaterial.hpp"
-#include "../shaders/Lit_BlinnPhong/BlinnPhongMaterial.hpp"
+#include "../shaders/Lit_BlinnPhong/Lit_Preset_BlinnPhong.hpp"
 
 #include "event/appEvent/AppEventPublisher.hpp"
 #include "event/editorEvent/EditorEventPublisher.hpp"
@@ -108,7 +107,7 @@ shared_ptr<SceneObject> BaseObjectManager::createPrimitive(const Primitives::Pri
 		mesh->initialize(device_);
 	}
 
-	auto material = materialManager_->createMaterial<Render::Materials::BlinnPhongMaterial>();
+	auto material = materialManager_->createMaterial(L"Lit_BlinnPhong");
 
 	auto newObj = std::make_shared<SceneObject>(name, colType, SceneObjectType::BaseObject);
 	newObj->setPrimitiveType(pType);
