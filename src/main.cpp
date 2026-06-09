@@ -87,7 +87,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 	int posY = (screenRect.bottom - height) * 0.5;
 
 	App app;
-	HWND hwnd = CreateWindow(wc.lpszClassName, _T("JIINY's 3D Tools"),
+	HWND hwnd = CreateWindow(wc.lpszClassName, _T("JIINY's 3DTools"),
 				WS_OVERLAPPEDWINDOW, posX, posY, width, height,
 				nullptr, nullptr, hInstance, &app);
 
