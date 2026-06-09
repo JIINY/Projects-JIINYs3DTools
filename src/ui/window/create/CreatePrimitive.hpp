@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <memory>
 #include <map>
-#include "render/primitives/PrimitivesType.hpp"
-#include "core/coordinator/scene/PassiveObjectCoordinator.hpp"
+
+class PassiveObjectCoordinator;
 
 
 namespace Create
@@ -16,8 +16,6 @@ namespace Create
 
     private:
         PassiveObjectCoordinator* passiveObjCoord_ = nullptr;
-
-        Render::Primitives::PrimitiveData setDefaultData(Render::Primitives::PrimitiveType type);
 
         //void drawCubeSettings();
         //void drawCylinderSettings();

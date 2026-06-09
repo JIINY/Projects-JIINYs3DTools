@@ -61,46 +61,6 @@ namespace Create
         }
     }
 
-    PrimitiveData CreatePrimitive::setDefaultData(PrimitiveType type)
-    {
-        PrimitiveData data = {};
-        data.type = type;
-
-        switch (type)
-        {
-        case PrimitiveType::Cube:
-        {
-            data.width = 1.0f; data.depth = 1.0f; data.height = 1.0f;
-            data.segmentsX = 1; data.segmentsY = 1; data.segmentsZ = 1;
-            return data;
-        }
-        case PrimitiveType::Cylinder:
-        {
-            data.radiusTop = 0.5f; data.radiusBot = 0.5f; data.height = 2.0f;
-            data.segmentsX = 8; data.segmentsY = 1;
-            return data;
-        }
-        case PrimitiveType::Plane:
-        {
-            data.width = 5.0f; data.depth = 5.0f;
-            data.segmentsX = 1; data.segmentsY = 1;
-            return data;
-        }
-        case PrimitiveType::Sphere:
-        {
-            data.radius = 1.0f; data.segmentsX = 16; data.segmentsY = 8;
-            return data;
-        }
-        case PrimitiveType::Capsule:
-        {
-            data.radius = 0.5f; data.height = 2.0f; data.heightHemi = 0.5f;
-            data.segmentsX = 8; data.segmentsY = 1; data.segmentsHemi = 3;
-            return data;
-        }
-        default:
-            return data;
-        }
-    }
 
 
 
