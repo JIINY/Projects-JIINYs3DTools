@@ -235,7 +235,6 @@ namespace EnvConfig
 
         if (!filePath.empty())
         {
-            filesystem::path absPath(filePath);
             AppEventPublisher::get().publish(EnvironmentDataRequestedEvent{ EnvActionType::SaveAs, filePath });
         }
     }
