@@ -95,6 +95,7 @@ namespace Math
 	using Vec3 = DirectX::XMFLOAT3;
 	using Vec4 = DirectX::XMFLOAT4;
 	using Mat4 = DirectX::XMFLOAT4X4;
+	using Int2 = DirectX::XMINT2;
 
 	extern const DirectX::XMVECTOR FORWARD;
 	extern const DirectX::XMVECTOR BACKWARD;
