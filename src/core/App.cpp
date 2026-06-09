@@ -39,6 +39,7 @@ App::App() :
 	appUIManager_(make_unique<AppUIManager>()),
 	shortcutManager_(make_unique<ShortcutManager>()),
 	floatingWindowManager_(make_unique<FloatingWindowManager>()),
+	sceneFileManager_(make_unique<SceneFileManager>()),
 	sceneObjManager_(make_unique<SceneObjectManager>()),
 
 	cameraCoordinator_(make_unique<CameraCoordinator>()),
@@ -161,6 +162,7 @@ bool App::initialize(void* hwnd)
 		context.lightManager = renderCoordinator_->getLightManager();
 		context.cameraManager = cameraCoordinator_->getViewportCameraManager();
 		context.passiveObjCoordinator = sceneObjManager_->getPassiveCoordinator();
+		context.materialManager = resourceCoordinator_->getMaterialManager();
 
 		FloatingConfigData floatingData;
 		floatingData = appData.floatingConfig;
@@ -180,6 +182,16 @@ bool App::initialize(void* hwnd)
 		context.selectionCoord = selectionCoordinator_.get();
 
 		sceneObjActionHandler_->initialize(context);
+	}
+	assert(sceneFileManager_ && "sceneFileManager 없음, 초기화 실패");
+	if (sceneFileManager_)
+	{
+		SceneFileContext context;
+		context.envConfig = floatingWindowManager_->getEnvironmentConfig();
+		context.sceneObjManager = sceneObjManager_.get();
+		context.matManager = resourceCoordinator_->getMaterialManager();
+
+		sceneFileManager_->initialize(context);
 	}
 	assert(mainMenuBarUI_ && "mainMenuBarUI 없음, 초기화 실패");
 	if (mainMenuBarUI_)

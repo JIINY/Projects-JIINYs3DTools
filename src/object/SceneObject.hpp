@@ -28,14 +28,17 @@ public:
 
     void setBoundingBox(const DirectX::BoundingBox& box) { boundBox_ = box; }
     const DirectX::BoundingBox& getBoundingBox() const { return boundBox_; }
+    const ColliderType& getColliderType() const { return colliderType_; }
     void setColliderMesh(std::shared_ptr<ColliderMesh> mesh) { colliderMesh_ = mesh; }
 
+    void setName(const std::string& name) { name_ = name; }
     virtual std::string getName() const override { return name_; }
     virtual bool intersects(const Math::Vec3& rayOrigin, const Math::Vec3& rayDir, float& outDist) override;
 
-    SceneObjectType getObjectType() const { return objType_; }
     void setObjectType(SceneObjectType newType) { objType_ = newType; }
+    SceneObjectType getObjectType() const { return objType_; }
     void setPrimitiveType(Render::Primitives::PrimitiveType type) { primitive_ = type; }
+    const Render::Primitives::PrimitiveType& getPrimitiveType() const { return primitive_; }
 
 protected:
     virtual void onSelectImpl() override;
@@ -49,7 +52,7 @@ private:
     SceneObjectType objType_ = SceneObjectType::Count;
     ColliderType colliderType_ = ColliderType::Count;
     DirectX::BoundingBox boundBox_;
-    std::shared_ptr<ColliderMesh> colliderMesh_ = nullptr;
+    std::shared_ptr<ColliderMesh> colliderMesh_ = nullptr; //TO_DO: CustomCollider도입시 저장에도 추가
 
     bool intersectMesh(const Math::Vec3& rayOrigin, const Math::Vec3& rayDir, float& outDist);
     bool intersectPrimitive(const Math::Vec3& localOrigin, const Math::Vec3& localDir, float& outDist);

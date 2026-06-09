@@ -17,6 +17,7 @@ class SceneObjectActionHandler;
 class AppUIManager;
 class ShortcutManager;
 class FloatingWindowManager;
+class SceneFileManager;
 class SceneObjectManager;
 
 class CameraCoordinator;
@@ -72,6 +73,7 @@ private:
 	std::unique_ptr<AppUIManager> appUIManager_;
 	std::unique_ptr<ShortcutManager> shortcutManager_;
 	std::unique_ptr<FloatingWindowManager> floatingWindowManager_;
+	std::unique_ptr<SceneFileManager> sceneFileManager_;
 	std::unique_ptr<SceneObjectManager> sceneObjManager_;
 
 	std::unique_ptr<CameraCoordinator> cameraCoordinator_;

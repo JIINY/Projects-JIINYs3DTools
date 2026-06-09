@@ -39,6 +39,7 @@
     <ClCompile Include="src\core\coordinator\scene\PassiveObjectCoordinator.cpp" />
     <ClCompile Include="src\core\manager\editor\ObjectSelectionManager.cpp" />
     <ClCompile Include="src\core\manager\scene\LightManager.cpp" />
+    <ClCompile Include="src\core\manager\scene\SceneFileManager.cpp" />
     <ClCompile Include="src\core\manager\scene\SceneObjectManager.cpp" />
     <ClCompile Include="src\core\manager\system\AppUIManager.cpp" />
     <ClCompile Include="src\core\manager\resources\MaterialManager.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="shaders\ShaderInclude.hpp" />
     <ClInclude Include="shaders\Unlit_MaterialColor\Unlit_Preset_MaterialColor.hpp" />
     <ClInclude Include="shaders\Unlit_VertexColor\Unlit_Preset_VertexColor.hpp" />
+    <ClInclude Include="src\core\manager\scene\SceneFileManager.hpp" />
     <ClInclude Include="src\event\appEvent\flow\SceneDataChangedEvent.hpp" />
     <ClInclude Include="src\event\appEvent\flow\SceneDataRequestedEvent.hpp" />
     <ClInclude Include="src\event\appEvent\ui\MaterialPopupChangedEvent.hpp" />
