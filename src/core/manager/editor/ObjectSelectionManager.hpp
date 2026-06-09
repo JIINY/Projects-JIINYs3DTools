@@ -9,12 +9,12 @@ class SceneObject;
 class CameraCoordinator;
 class ObjectSelectionController;
 
+
 struct ObjectSelectionContext
 {
     CameraCoordinator* camCoord = nullptr;
     std::function<const std::vector<std::shared_ptr<SceneObject>>& ()> getCandidates;
 };
-
 
 class ObjectSelectionManager
 {

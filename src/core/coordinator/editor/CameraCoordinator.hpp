@@ -7,6 +7,7 @@
 class AppEventSubscriber;
 class ViewportCameraManager;
 
+
 class CameraCoordinator 
 {
 public:

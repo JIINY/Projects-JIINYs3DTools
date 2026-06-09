@@ -8,12 +8,12 @@ class SceneObject;
 class PassiveObjectCoordinator;
 class MaterialManager;
 
+
 struct SceneObjectContext
 {
     DX11Renderer* renderer = nullptr;
     MaterialManager* matManager = nullptr;
 };
-
 
 class SceneObjectManager 
 {

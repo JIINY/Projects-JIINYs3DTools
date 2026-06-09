@@ -10,7 +10,7 @@ struct GridChangedEvent;
 namespace Render 
 { 
     class RenderCommandQueue;
-    class RenderObject; 
+    class RenderObject;
 }
 namespace Render::Tools { class Grid; }
 class Renderer;
@@ -18,6 +18,7 @@ class WorldPivotUI;
 class ViewportCameraManager;
 class MaterialManager;
 class GizmoController;
+
 
 struct ToolObjectContext
 {

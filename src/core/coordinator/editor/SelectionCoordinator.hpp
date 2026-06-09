@@ -13,12 +13,12 @@ class CameraCoordinator;
 class SceneObjectManager;
 class ObjectSelectionManager;
 
+
 struct SelectionContext 
 {
     CameraCoordinator* camCoord = nullptr;
     SceneObjectManager* sceneObjManager = nullptr;
 };
-
 
 class SelectionCoordinator 
 {

@@ -11,6 +11,7 @@ namespace Render
 	class PixelShader;
 }
 
+
 class ShaderManager 
 {
 public:
