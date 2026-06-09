@@ -1,5 +1,6 @@
 ﻿#include "Entity.hpp"
 #include <algorithm>
+#include "utils/IDGenerator.hpp"
 
 #include "common/DebugLog.hpp"
 using namespace std;
@@ -8,7 +9,7 @@ using namespace DirectX;
 
 namespace Objects 
 {
-    Entity::Entity() : position_(0.0f, 0.0f, 0.0f), rotation_(0.0f, 0.0f, 0.0f), scale_(1.0f, 1.0f, 1.0f), isDirty_(true)
+    Entity::Entity() : position_(0.0f, 0.0f, 0.0f), rotation_(0.0f, 0.0f, 0.0f), scale_(1.0f, 1.0f, 1.0f), isDirty_(true), id_(IDGenerator::generate())
     {
         updateWorldMatrix();
     }

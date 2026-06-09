@@ -1,8 +1,9 @@
 ﻿#pragma once
-#include "../common/Math.hpp"
+#include <cstdint>
 #include <DirectXMath.h>
 #include <memory>
 #include <vector>
+#include "../common/Math.hpp"
 
 
 namespace Objects
@@ -21,6 +22,9 @@ namespace Objects
         const Math::Vec3& getRotation() const { return rotation_; }
         const Math::Vec3& getScale() const { return scale_; }
 
+        void setID(uint64_t id) { id_ = id; };
+        const uint64_t& getID() const { return id_; }
+
         const Math::Mat4& getWorldMatForShader() const { return worldMatForShader_; }
         const Math::Mat4& getWorldMatForCollider() const { return worldMatForCollider_; }
 
@@ -33,6 +37,7 @@ namespace Objects
 
 
     protected:
+        uint64_t id_ = 0;
         Math::Vec3 position_ = {};
         Math::Vec3 rotation_ = {};
         Math::Vec3 scale_ = {};
@@ -44,6 +49,7 @@ namespace Objects
         bool isDirty_ = true;
 
         //TO_DO: 부모-자식 실제 도입시, 리스트에 등록할 단위(루트만 vs 부모/자식 등록+정렬) 결정 필요
+        //TO_DO: 부모-자식 도입시 저장/로드에도 반영
         void markDirty();
         void updateWorldMatrix();
     };
