@@ -9,6 +9,7 @@ class SceneObject;
 class CameraCoordinator;
 class ViewportCameraManager;
 
+
 struct PickContext 
 {
     POINT pos = { 0, 0 };
@@ -17,7 +18,6 @@ struct PickContext
     bool isShift = false;
     bool isAlt = false;
 };
-
 
 class ObjectSelectionController
 {
