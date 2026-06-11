@@ -21,16 +21,6 @@ SceneObject::SceneObject(const string& name, ColliderType colType, SceneObjectTy
     boundBox_.Extents = Vec3(1.0f, 1.0f, 1.0f);
 }
 
-void SceneObject::onSelectImpl() 
-{
-    //선택됐을 때 시각적 처리
-}
-
-void SceneObject::onDeselectImpl() 
-{
-    //해제됐을 때 시각적 처리
-}
-
 bool SceneObject::intersects(const Math::Vec3& rayOrigin, const Math::Vec3& rayDir, float& outDist)
 {
     if (colliderType_ == ColliderType::None || colliderType_ == ColliderType::Count) { return false; }

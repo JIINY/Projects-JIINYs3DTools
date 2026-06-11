@@ -40,10 +40,6 @@ public:
     void setPrimitiveType(Render::Primitives::PrimitiveType type) { primitive_ = type; }
     const Render::Primitives::PrimitiveType& getPrimitiveType() const { return primitive_; }
 
-protected:
-    virtual void onSelectImpl() override;
-    virtual void onDeselectImpl() override;
-
 
 private:
     std::string name_ = "";
