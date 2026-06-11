@@ -12,12 +12,14 @@ struct SelectionStateRequestedEvent;
 class CameraCoordinator;
 class SceneObjectManager;
 class ObjectSelectionManager;
+class ToolObjectManager;
 
 
 struct SelectionContext 
 {
     CameraCoordinator* camCoord = nullptr;
     SceneObjectManager* sceneObjManager = nullptr;
+    ToolObjectManager* toolObjManager = nullptr;
 };
 
 class SelectionCoordinator 

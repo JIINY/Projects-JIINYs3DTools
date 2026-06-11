@@ -4,8 +4,11 @@
 
 #include "core/manager/scene/SceneObjectManager.hpp"
 #include "core/manager/editor/ObjectSelectionManager.hpp"
+#include "core/manager/editor/ToolObjectManager.hpp"
 #include "object/SceneObject.hpp"
 
+#include "command/CommandStack.hpp"
+#include "command/selection/CmdChangeSelection.hpp"
 #include "event/editorEvent/EditorEventPublisher.hpp"
 #include "event/editorEvent/EditorEventSubscriber.hpp"
 #include "event/editorEvent/selection/SelectionModeEvent.hpp"
@@ -26,6 +29,7 @@ bool SelectionCoordinator::initialize(SelectionContext context)
 
     ObjectSelectionContext objContext;
     objContext.camCoord = context.camCoord;
+    objContext.gizmoCon = context.toolObjManager->getGizmoController();
 
     objContext.getCandidates = [sceneObj = context.sceneObjManager]() -> const vector<shared_ptr<SceneObject>>&
         {
@@ -121,41 +125,84 @@ void SelectionCoordinator::shutdown()
 
 void SelectionCoordinator::onSelectionRequested(const SelectionRequestedEvent& event) 
 {
+    auto before = selection_.getAll();
+    vector<shared_ptr<Selection::Selectable>> after;
+
     if (!event.target) //빈 곳 클릭
     {
         if (!event.isMultiSelect && !event.isSubtract) 
         {
-            selection_.clear();
+            CommandStack::get().execute(make_shared<CmdChangeSelection>(&selection_, before, vector<shared_ptr<Selection::Selectable>>{}));
         }
         return;
     }
 
-    if (event.isMultiSelect) { selection_.toggle(event.target); }
-    else if (event.isSubtract) { selection_.remove(event.target); }
+    if (event.isMultiSelect)
+    {
+        after = before;
+        auto it = find(after.begin(), after.end(), event.target);
+
+        if (it != after.end()) { after.erase(it); }
+        else { after.push_back(event.target); }
+    }
+    else if (event.isSubtract)
+    {
+        after = before;
+        auto it = find(after.begin(), after.end(), event.target);
+
+        if (it != after.end()) { after.erase(it); }
+    }
     else 
     {
-        selection_.select(event.target);
+        if (before.size() == 1 && before[0].get() == event.target.get())
+        {
+            after = {};
+        }
+        else
+        {
+            after = { event.target };
+        }
     }
+
+    CommandStack::get().execute(make_shared<CmdChangeSelection>(&selection_, move(before), move(after)));
 }
 
 void SelectionCoordinator::onSelectionDragRequested(const SelectionDragRequestedEvent& event) 
 {
+    auto before = selection_.getAll();
     vector<shared_ptr<Selection::Selectable>> targets(event.targets.begin(), event.targets.end());
+    vector<shared_ptr<Selection::Selectable>> after;
+
     if (event.isAlt) 
     {
-        selection_.removeRange(targets);
+        after = before;
+        for (const auto& item : targets)
+        {
+            auto it = find(after.begin(), after.end(), item);
+            if (it != after.end()) { after.erase(it); }
+        }
     }
     else if (event.isShift)
     {
-        selection_.appendRange(targets);
+        after = before;
+        for (const auto& item : targets)
+        {
+            if (find(after.begin(), after.end(), item) == after.end())
+            {
+                after.push_back(item);
+            }
+        }
     }
     else 
     {
-        selection_.selectRange(targets);
+        after = targets;
     }
+    CommandStack::get().execute(make_shared<CmdChangeSelection>(&selection_, move(before), move(after)));
 }
 
 void SelectionCoordinator::clearSelection()
 {
-    selection_.clear();
+    auto before = selection_.getAll();
+    if (before.empty()) { return; }
+    CommandStack::get().execute(make_shared<CmdChangeSelection>(&selection_, move(before), vector<shared_ptr<Selection::Selectable>>{}));
 }

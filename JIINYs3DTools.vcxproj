@@ -118,6 +118,7 @@
     <ClInclude Include="shaders\ShaderInclude.hpp" />
     <ClInclude Include="shaders\Unlit_MaterialColor\Unlit_Preset_MaterialColor.hpp" />
     <ClInclude Include="shaders\Unlit_VertexColor\Unlit_Preset_VertexColor.hpp" />
+    <ClInclude Include="src\command\selection\CmdChangeSelection.hpp" />
     <ClInclude Include="src\core\manager\scene\SceneFileManager.hpp" />
     <ClInclude Include="src\event\appEvent\flow\SceneDataChangedEvent.hpp" />
     <ClInclude Include="src\event\appEvent\flow\SceneDataRequestedEvent.hpp" />

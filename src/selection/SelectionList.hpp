@@ -22,6 +22,7 @@ namespace Selection
         void clear();
 
         bool contains(const Selectable* item) const;
+        void setAll(const std::vector<std::shared_ptr<Selectable>>& items);
         const std::vector<std::shared_ptr<Selectable>>& getAll() const { return selection_; }
         std::shared_ptr<Selectable> getLastSelected() const;
 

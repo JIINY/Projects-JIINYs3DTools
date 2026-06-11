@@ -152,6 +152,7 @@ bool App::initialize(void* hwnd)
 		SelectionContext context;
 		context.camCoord = cameraCoordinator_.get();
 		context.sceneObjManager = sceneObjManager_.get();
+		context.toolObjManager = renderCoordinator_->getToolObjectManager();
 
 		selectionCoordinator_->initialize(context);
 	}

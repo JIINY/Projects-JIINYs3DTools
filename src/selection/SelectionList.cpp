@@ -38,6 +38,7 @@ namespace Selection
         }
         else 
         { 
+            clear();
             pushInternal(item); 
         }
 
@@ -156,6 +157,20 @@ namespace Selection
         {
             (*it)->onDeselected();
             selection_.erase(it);
+        }
+    }
+
+    void SelectionList::setAll(const vector<shared_ptr<Selectable>>& items)
+    {
+        for (auto& o : selection_)
+        {
+            if (o) { o->onDeselected(); }
+        }
+        selection_.clear();
+
+        for (const auto& item : items)
+        {
+            pushInternal(item);
         }
     }
 }

@@ -232,6 +232,9 @@
     <Filter Include="src\event\uiEvent\message">
       <UniqueIdentifier>{a0dd0081-88d6-4f43-afb1-db44a91e21cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\command\selection">
+      <UniqueIdentifier>{b72083e6-16b9-4df1-bce9-a89316040d84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -1009,6 +1012,9 @@
     </ClInclude>
     <ClInclude Include="src\ui\messagePopup\MessagePopupController.hpp">
       <Filter>src\ui\messagePopup</Filter>
+    </ClInclude>
+    <ClInclude Include="src\command\selection\CmdChangeSelection.hpp">
+      <Filter>src\command\selection</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

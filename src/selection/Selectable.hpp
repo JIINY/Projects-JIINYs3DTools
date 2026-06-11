@@ -3,6 +3,8 @@
 #include "common/Math.hpp"
 #include "DirectXMath.h"
 
+#include "common/DebugLog.hpp"
+
 
 namespace Selection 
 {
