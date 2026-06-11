@@ -239,7 +239,14 @@ void BaseObjectManager::addToRenderQueue(RenderCommandQueue* queue, const XMMATR
 		}
 		else
 		{
-			queue->addCommand(o.get(), depth, type);
+			if (o->isSelected() && type == OverridePSType::Black)
+			{ 
+				queue->addCommand(o.get(), depth, OverridePSType::Red);
+			}
+			else
+			{
+				queue->addCommand(o.get(), depth, type);
+			}
 		}
 	}
 
@@ -259,7 +266,11 @@ void BaseObjectManager::addToRenderQueue(RenderCommandQueue* queue, const XMMATR
 		}
 		else
 		{
-			queue->addCommand(o.get(), depth, type);
+			if (o->isSelected() && type == OverridePSType::Black )
+			{
+				queue->addCommand(o.get(), depth, OverridePSType::Red);
+			}
+			else { queue->addCommand(o.get(), depth, type); }
 		}
 	}
 }
