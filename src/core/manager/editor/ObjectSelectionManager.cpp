@@ -5,6 +5,7 @@
 #include <type_traits>
 #include "core/coordinator/editor/CameraCoordinator.hpp"
 #include "selection/ObjectSelectionController.hpp"
+#include "viewport/ui/GizmoController.hpp"
 
 #include "event/editorEvent/EditorEventSubscriber.hpp"
 #include "event/editorEvent/io/MouseEvent.hpp"
@@ -17,6 +18,9 @@ ObjectSelectionManager::~ObjectSelectionManager() = default;
 
 bool ObjectSelectionManager::initialize(ObjectSelectionContext context)
 {
+    assert(context.gizmoCon && "없음. 초기화 실패");
+    gizmoCon_ = context.gizmoCon;
+
     if (!objController_->initialize(context.camCoord)) { return false; }
     getCandidates_ = context.getCandidates;
 
@@ -85,6 +89,11 @@ void ObjectSelectionManager::onMouseUp(const MouseUpEditorEvent& event)
 {
     if (event.button_ != 0) { return; }
     if (!isMouseDown_) { return; }
+    if (wasGizmoDragging_)
+    {
+        resetState();
+        return;
+    }
 
     bool isShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
     bool isAlt = (GetAsyncKeyState(VK_MENU) & 0x8000) != 0;
@@ -111,6 +120,11 @@ void ObjectSelectionManager::onMouseUp(const MouseUpEditorEvent& event)
 
 void ObjectSelectionManager::onMouseMove(const MouseMoveEditorEvent& event) 
 {
+    if (gizmoCon_)
+    {
+        wasGizmoDragging_ = gizmoCon_->isDragging();
+    }
+
     if (isMouseDown_ && !isDragging_) 
     {
         float dx = static_cast<float>(event.pos_.x - dragStartPos_.x);

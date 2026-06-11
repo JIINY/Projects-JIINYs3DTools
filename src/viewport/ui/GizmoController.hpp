@@ -26,6 +26,7 @@ public:
     void setMode(TransformMode mode);
     TransformMode getMode() { return gizmo_->getMode(); }
     Math::Axis getDragAxis() const { return dragAxis_; }
+    bool isDragging() const { return isDragging_; }
 
 
 private:

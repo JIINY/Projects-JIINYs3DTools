@@ -8,12 +8,14 @@
 class SceneObject;
 class CameraCoordinator;
 class ObjectSelectionController;
+class GizmoController;
 
 
 struct ObjectSelectionContext
 {
     CameraCoordinator* camCoord = nullptr;
     std::function<const std::vector<std::shared_ptr<SceneObject>>& ()> getCandidates;
+    GizmoController* gizmoCon = nullptr;
 };
 
 class ObjectSelectionManager
@@ -36,9 +38,11 @@ private:
     std::vector<EditorEventSubscriptionID> editorEventSubID_;
     std::unique_ptr<ObjectSelectionController> objController_;
     std::function<const std::vector<std::shared_ptr<SceneObject>>& ()> getCandidates_;
+    GizmoController* gizmoCon_ = nullptr;
 
     bool isMouseDown_ = false;
     bool isDragging_ = false;
+    bool wasGizmoDragging_ = false;
     POINT dragStartPos_ = { 0, 0 };
     const float DRAG_THRESHOLD = 5.0f;
 
