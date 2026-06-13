@@ -6,6 +6,7 @@
 #include "core/coordinator/editor/CameraCoordinator.hpp"
 #include "selection/ObjectSelectionController.hpp"
 #include "viewport/ui/GizmoController.hpp"
+#include "imgui.h"
 
 #include "event/editorEvent/EditorEventSubscriber.hpp"
 #include "event/editorEvent/io/MouseEvent.hpp"
@@ -106,6 +107,10 @@ void ObjectSelectionManager::onMouseUp(const MouseUpEditorEvent& event)
     context.pos = event.pos_;
     context.isShift = isShift;
     context.isAlt = isAlt;
+    ImVec2 vpSize = ImGui::GetMainViewport()->Size;
+    context.viewportWidth = vpSize.x;
+    context.viewportHeight = vpSize.y;
+
     if (isDragging_)
     {
         objController_->pickArea(context);
