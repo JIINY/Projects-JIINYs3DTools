@@ -49,7 +49,7 @@ namespace Create
 
             selectType("Sphere", PrimitiveType::Sphere); ImGui::SameLine();
             selectType("Capsule", PrimitiveType::Capsule); ImGui::SameLine();
-            if (ImGui::Button("Teapot", ImVec2(btnWidth3, btnHeight + 1))) 
+            if (ImGui::Button("Ring", ImVec2(btnWidth3, btnHeight + 1))) 
             {
                 //TO DO: OBJ Loader 연결
                 //테스트용 Torus 연결

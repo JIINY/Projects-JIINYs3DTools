@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <cmath>
+#include <algorithm>
 #include <DirectXMath.h>
 #include <utility>
 #include "Mode.hpp"
