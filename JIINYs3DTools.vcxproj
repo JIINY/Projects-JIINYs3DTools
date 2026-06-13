@@ -115,7 +115,7 @@
     <ClInclude Include="shaders\Lit_BlinnPhong\Lit_Preset_BlinnPhong.hpp" />
     <ClInclude Include="shaders\Lit_HalfLambert\Lit_Preset_HalfLambert.hpp" />
     <ClInclude Include="shaders\Lit_PhysicallyBasedRendering\Lit_Preset_PBR.hpp" />
-    <ClInclude Include="shaders\ShaderInclude.hpp" />
+    <ClInclude Include="shaders\PresetInclude.hpp" />
     <ClInclude Include="shaders\Unlit_MaterialColor\Unlit_Preset_MaterialColor.hpp" />
     <ClInclude Include="shaders\Unlit_VertexColor\Unlit_Preset_VertexColor.hpp" />
     <ClInclude Include="src\command\selection\CmdChangeSelection.hpp" />

@@ -992,7 +992,7 @@
     <ClInclude Include="shaders\Lit_BlinnPhong\Lit_Preset_BlinnPhong.hpp">
       <Filter>shaders\Lit_BlinnPhong</Filter>
     </ClInclude>
-    <ClInclude Include="shaders\ShaderInclude.hpp">
+    <ClInclude Include="shaders\PresetInclude.hpp">
       <Filter>shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\WidgetData.hpp">
