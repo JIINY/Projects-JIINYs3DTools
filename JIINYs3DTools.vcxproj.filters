@@ -863,9 +863,6 @@
     <ClInclude Include="src\core\manager\editor\ObjectSelectionManager.hpp">
       <Filter>src\core\manager\editor</Filter>
     </ClInclude>
-    <ClInclude Include="src\object\ColliderMesh.hpp">
-      <Filter>src\object</Filter>
-    </ClInclude>
     <ClInclude Include="src\core\coordinator\editor\SelectionCoordinator.hpp">
       <Filter>src\core\coordinator\editor</Filter>
     </ClInclude>

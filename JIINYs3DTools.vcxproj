@@ -156,7 +156,6 @@
     <ClInclude Include="src\event\EventInclude.hpp" />
     <ClInclude Include="src\io\InputEventEditorHandler.hpp" />
     <ClInclude Include="src\object\action\SceneObjectActionHandler.hpp" />
-    <ClInclude Include="src\object\ColliderMesh.hpp" />
     <ClInclude Include="src\object\SceneObject.hpp" />
     <ClInclude Include="src\render\IRenderable.hpp" />
     <ClInclude Include="src\render\lights\LightType.hpp" />
