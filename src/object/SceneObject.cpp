@@ -6,7 +6,7 @@
 #include <DirectXCollision.h>
 #include "common/Math.hpp"
 #include "SceneObjectType.hpp"
-#include "ColliderMesh.hpp"
+#include "ColliderObject.hpp"
 #include "render/RenderObject.hpp"
 using namespace std;
 using namespace Math;
@@ -45,18 +45,23 @@ bool SceneObject::intersects(const Math::Vec3& rayOrigin, const Math::Vec3& rayD
 
     //1단계 Box로 검사
     float boxDist = 0.0f;
-    if (!boundBox_.Intersects(vLocalRayOrigin, vLocalRayDir, boxDist)) 
+    BoundingBox worldBB;
+    boundBox_.Transform(worldBB, worldMatXM);
+    if (!worldBB.Intersects(XMLoadFloat3(&rayOrigin), XMLoadFloat3(&rayDir), boxDist))
     {
+        XMFLOAT3 lOrig, lDir;
+        XMStoreFloat3(&lOrig, vLocalRayOrigin);
+        XMStoreFloat3(&lDir, vLocalRayDir);
         return false;
     }
 
     //2단계 상세 검사: Box
-    if (colliderType_ == ColliderType::BoundingBox) 
+    if (colliderType_ == ColliderType::BoundingBox)
     {
         outDist = boxDist;
         return true;
     }
-    if (colliderType_ == ColliderType::Primitive) 
+    if (colliderType_ == ColliderType::Primitive)
     {
         if (primitive_ == Render::Primitives::PrimitiveType::Cube) 
         {
@@ -72,7 +77,7 @@ bool SceneObject::intersects(const Math::Vec3& rayOrigin, const Math::Vec3& rayD
     }
 
     //상세: 정밀
-    if (colliderType_ == ColliderType::Mesh || colliderType_ == ColliderType::CustomCollider) 
+    if (colliderType_ == ColliderType::Mesh) 
     {
         Math::Vec3 localOrigin, localDir;
         XMStoreFloat3(&localOrigin, vLocalRayOrigin);
@@ -88,56 +93,31 @@ bool SceneObject::intersectMesh(const Math::Vec3& localOrigin, const Math::Vec3&
     XMVECTOR vRayOrigin = XMLoadFloat3(&localOrigin);
     XMVECTOR vRayDir = XMLoadFloat3(&localDir);
     float minDist = FLT_MAX;
-
     bool isHit = false;
-    if (colliderType_ == ColliderType::CustomCollider)
+
+    shared_ptr<Render::Mesh> mesh = nullptr;
+    if (colliderObj_) { mesh = colliderObj_->getMesh(0); }
+    else { mesh = this->getMesh(0); }
+
+    if (!mesh) { return false; }
+
+    const auto& vertices = mesh->getVertices();
+    const auto& indices = mesh->getIndices();
+
+    for (size_t i = 0; i < indices.size(); i += 3) 
     {
-        if (!colliderMesh_) { return false; }
+        const auto [i0, i1, i2] = make_tuple(indices[i], indices[i + 1], indices[i + 2]);
+        XMVECTOR v0 = XMLoadFloat3(&vertices[i0].position);
+        XMVECTOR v1 = XMLoadFloat3(&vertices[i1].position);
+        XMVECTOR v2 = XMLoadFloat3(&vertices[i2].position);
 
-        const auto& vertices = colliderMesh_->getVertices();
-        const auto& indices = colliderMesh_->getIndices();
-
-        for (size_t i = 0; i < indices.size(); i += 3) 
+        float dist = 0.0f;
+        if (TriangleTests::Intersects(vRayOrigin, vRayDir, v0, v1, v2, dist))
         {
-            const auto [i0, i1, i2] = make_tuple(indices[i], indices[i + 1], indices[i + 2]);
-            XMVECTOR v0 = XMLoadFloat3(&vertices[i0]);
-            XMVECTOR v1 = XMLoadFloat3(&vertices[i1]);
-            XMVECTOR v2 = XMLoadFloat3(&vertices[i2]);
-
-            float dist = 0.0f;
-            if (TriangleTests::Intersects(vRayOrigin, vRayDir, v0, v1, v2, dist))
+            if (dist < minDist)
             {
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    isHit = true;
-                }
-            }
-        }
-    }
-    else //ColliderType::Mesh
-    {
-        auto mesh = this->getMesh();
-        if (!mesh) { return false; }
-
-        const auto& vertices = mesh->getVertices();
-        const auto& indices = mesh->getIndices();
-
-        for (size_t i = 0; i < indices.size(); i += 3) 
-        {
-            const auto [i0, i1, i2] = make_tuple(indices[i], indices[i + 1], indices[i + 2]);
-            XMVECTOR v0 = XMLoadFloat3(&vertices[i0].position);
-            XMVECTOR v1 = XMLoadFloat3(&vertices[i1].position);
-            XMVECTOR v2 = XMLoadFloat3(&vertices[i2].position);
-
-            float dist = 0.0f;
-            if (TriangleTests::Intersects(vRayOrigin, vRayDir, v0, v1, v2, dist))
-            {
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    isHit = true;
-                }
+                minDist = dist;
+                isHit = true;
             }
         }
     }
@@ -166,13 +146,20 @@ bool SceneObject::intersectPrimitive(const Math::Vec3& localOrigin, const Math::
     {
     case Render::Primitives::PrimitiveType::Sphere: 
     {
-        BoundingSphere sphere;
-        sphere.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
-        sphere.Radius = extentX;
+        float r = extentX;
+        float A = dir.x * dir.x + dir.y * dir.y + dir.z * dir.z;
+        float B = 2.0f * (origin.x * dir.x + origin.y * dir.y + origin.z * dir.z);
+        float C = (origin.x * origin.x + origin.y * origin.y + origin.z * origin.z) - (r * r);
+        float det = B * B - 4.0f * A * C;
 
-        if (sphere.Intersects(vOrigin, vDir, minDist)) 
+        if (det >= 0.0f)
         {
-            isHit = true;
+            float t = (-B - sqrtf(det)) / (2.0f * A);
+            if (t > 0.0f)
+            {
+                minDist = t;
+                isHit = true;
+            }
         }
         break;
     }

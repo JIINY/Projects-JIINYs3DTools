@@ -13,6 +13,7 @@ namespace Render
     std::shared_ptr<PixelShader> Material::errorVS_Green_ = nullptr;
     std::shared_ptr<PixelShader> Material::wireBlack_ = nullptr;
     std::shared_ptr<PixelShader> Material::wireRed_ = nullptr;
+    std::shared_ptr<PixelShader> Material::collider_ = nullptr;
     std::shared_ptr<PixelShader> Material::default_ = nullptr;
 
     bool Material::prepareDefaultShaders(ID3D11Device* device) 
@@ -61,6 +62,15 @@ namespace Render
         if (!isWireRed_Loaded)
         {
             MessageBoxA(nullptr, "CRITICAL: wireRed PS Load Failed!", "Engine Error", MB_OK);
+            return false;
+        }
+
+        collider_ = make_shared<PixelShader>();
+        bool isColliderGreen_Loaded = collider_->initialize(device, L"resources/Unlit_Common/Collider_PS_Green.hlsl", "psMain");
+        assert(isColliderGreen_Loaded && "디버그용 Collider셰이더 로드 실패");
+        if (!isColliderGreen_Loaded)
+        {
+            MessageBoxA(nullptr, "CRITICAL: Collider PS Load Failed!", "Engine Error", MB_OK);
             return false;
         }
 

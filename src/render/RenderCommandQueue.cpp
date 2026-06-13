@@ -96,6 +96,11 @@ namespace Render
 				ps = Render::Material::getWireRedPS();
 				break;
 			}
+			case OverridePSType::Collider:
+			{
+				ps = Render::Material::getColliderPS();
+				break;
+			}
 			case OverridePSType::Custom:
 			{
 				ps = cmd.customPS_;

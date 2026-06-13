@@ -65,6 +65,7 @@ private:
 	bool showSolid_ = true;
 	bool showWireframe_ = true;
 	bool showToolObjects_ = true;
+	bool showCollider_ = true;
 
 	DX11Renderer* renderer_ = nullptr;
 	CameraCoordinator* cameraCoordinator_ = nullptr;

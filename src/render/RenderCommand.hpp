@@ -13,6 +13,7 @@ namespace Render
 		None,
 		Black,
 		Red,
+		Collider,
 		Custom
 	};
 
@@ -27,6 +28,7 @@ namespace Render
 	enum class RenderQueue : int 
 	{
 		Background = 1000,
+		Collider = 1999,
 		Geometry = 2000,
 		AlphaTest = 2450,
 		Transparent = 3000,

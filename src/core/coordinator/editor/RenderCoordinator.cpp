@@ -108,6 +108,16 @@ void RenderCoordinator::render()
 		renderer_->setWireframeMode(true);
 		renderQueue_->execute(renderer_->getDeviceContext(), view, proj);
 	}
+	if (showCollider_)
+	{
+		renderer_->getDeviceContext()->ClearDepthStencilView(renderer_->getDepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+		renderQueue_->clear();
+		passiveObjCoordinator_->addToRenderQueue(renderQueue_.get(), viewMat, OverridePSType::Collider);
+
+		renderQueue_->sort();
+		renderer_->setWireframeMode(true);
+		renderQueue_->execute(renderer_->getDeviceContext(), view, proj);
+	}
 
 	if (currentMode_ == AppMode::Edit && showToolObjects_)
 	{

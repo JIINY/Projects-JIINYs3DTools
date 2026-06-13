@@ -138,6 +138,19 @@ shared_ptr<SceneObject> BaseObjectManager::createPrimitive(const Primitives::Pri
 		box.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
 		box.Extents = XMFLOAT3(data.radius, data.height * 0.5f, data.radius);
 		break;
+	case Primitives::PrimitiveType::Torus:
+	{
+		box.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		box.Extents = XMFLOAT3(data.radius + data.thickness, data.thickness, data.radius + data.thickness);
+
+		//Torus는 Collider를 따로 처리
+		newObj->setColliderType(ColliderType::Mesh);
+		auto colMesh = make_shared<Primitives::Torus>(data.radius, data.thickness, data.segmentsX, max(data.segmentsY + 4, 8));
+		auto colObj = make_shared<ColliderObject>(device_, colMesh);
+		newObj->setColliderObject(colObj);
+
+		break;
+	}
 	default:
 		box.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
 		box.Extents = XMFLOAT3(1.0f, 1.0f, 1.0f);
@@ -233,20 +246,26 @@ void BaseObjectManager::addToRenderQueue(RenderCommandQueue* queue, const XMMATR
 		XMVECTOR diff = XMVectorSubtract(oPos, camPos);
 		float depth = XMVectorGetX(XMVector3Length(diff));
 
-		if (type == OverridePSType::None)
+		switch (type)
 		{
+		case OverridePSType::None:
 			queue->addCommand(o.get(), depth);
-		}
-		else
+			break;
+		case OverridePSType::Collider:
 		{
-			if (o->isSelected() && type == OverridePSType::Black)
-			{ 
-				queue->addCommand(o.get(), depth, OverridePSType::Red);
-			}
-			else
-			{
-				queue->addCommand(o.get(), depth, type);
-			}
+			auto colliderObj = o->getColliderObject();
+			if (colliderObj) { queue->addCommand(colliderObj.get(), depth, OverridePSType::Collider); }
+			break;
+		}
+		case OverridePSType::Black:
+		{
+			if (o->isSelected()) { queue->addCommand(o.get(), depth, OverridePSType::Red); }
+			else { queue->addCommand(o.get(), depth, type); }
+			break;
+		}
+		default:
+			queue->addCommand(o.get(), depth);
+			break;
 		}
 	}
 
@@ -260,17 +279,26 @@ void BaseObjectManager::addToRenderQueue(RenderCommandQueue* queue, const XMMATR
 		XMVECTOR diff = XMVectorSubtract(oPos, camPos);
 		float depth = XMVectorGetX(XMVector3Length(diff));
 
-		if (type == OverridePSType::None)
+		switch (type)
 		{
+		case OverridePSType::None:
 			queue->addCommand(o.get(), depth);
-		}
-		else
+			break;
+		case OverridePSType::Collider:
 		{
-			if (o->isSelected() && type == OverridePSType::Black )
-			{
-				queue->addCommand(o.get(), depth, OverridePSType::Red);
-			}
+			auto colliderObj = o->getColliderObject();
+			if (colliderObj) { queue->addCommand(colliderObj.get(), depth, OverridePSType::Collider); }
+			break;
+		}
+		case OverridePSType::Black:
+		{
+			if (o->isSelected()) { queue->addCommand(o.get(), depth, OverridePSType::Red); }
 			else { queue->addCommand(o.get(), depth, type); }
+			break;
+		}
+		default:
+			queue->addCommand(o.get(), depth);
+			break;
 		}
 	}
 }
