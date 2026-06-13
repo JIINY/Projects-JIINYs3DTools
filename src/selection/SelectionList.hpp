@@ -12,7 +12,6 @@ namespace Selection
         ~SelectionList();
 
         void select(std::shared_ptr<Selectable> item);
-        void toggle(std::shared_ptr<Selectable> item);
         void remove(std::shared_ptr<Selectable> item);
 
         void selectRange(const std::vector<std::shared_ptr<Selectable>>& items);

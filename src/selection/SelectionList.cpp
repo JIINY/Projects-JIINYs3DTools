@@ -27,24 +27,6 @@ namespace Selection
         EditorEventPublisher::get().publish(SelectionChangedEvent{ selection_ });
     }
 
-    void SelectionList::toggle(shared_ptr<Selectable> item) 
-    {
-        if (!item) { return; }
-
-        auto it = find(selection_.begin(), selection_.end(), item);
-        if (it != selection_.end()) 
-        { 
-            eraseInternal(it); 
-        }
-        else 
-        { 
-            clear();
-            pushInternal(item); 
-        }
-
-        EditorEventPublisher::get().publish(SelectionChangedEvent{ selection_ });
-    }
-
     void SelectionList::selectRange(const vector<shared_ptr<Selectable>>& items) 
     {
         clear();
