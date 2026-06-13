@@ -383,17 +383,22 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
+    <WarningLevel>Level3</WarningLevel>
+    <FunctionLevelLinking>true</FunctionLevelLinking>
+    <IntrinsicFunctions>true</IntrinsicFunctions>
+    <SDLCheck>true</SDLCheck>
+    <PreprocessorDefinitions>NDEBUG;_CONSOLE;IMGUI_ENABLE_FREETYPE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    <ConformanceMode>true</ConformanceMode>
+    <AdditionalIncludeDirectories>$(ProjectDir)lib\imgui;$(ProjectDir)src;D:\Git\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    <AdditionalOptions>/wd4819 /wd4309 /wd4244 /wd4267 %(AdditionalOptions)</AdditionalOptions>
+    <LanguageStandard>stdcpp20</LanguageStandard>
+  </ClCompile>
+  <Link>
+    <SubSystem>Windows</SubSystem>
+    <GenerateDebugInformation>true</GenerateDebugInformation>
+    <AdditionalDependencies>d3d11.lib;dxgi.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    <AdditionalLibraryDirectories>D:\Git\vcpkg\installed\x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+  </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
