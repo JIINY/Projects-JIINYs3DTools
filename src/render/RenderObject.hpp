@@ -36,6 +36,7 @@ namespace Render
         std::shared_ptr<Mesh> getMesh(size_t index = 0) const;
         std::shared_ptr<Material> getMaterial(size_t index = 0) const;
         size_t getMaterialCount() const { return elements_.size(); }
+        std::shared_ptr<ConstantBuffer> getWorldMatBuffer() const { return worldMatBuffer_; }
 
 
     protected:

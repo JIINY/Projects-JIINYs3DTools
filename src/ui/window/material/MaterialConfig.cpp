@@ -7,6 +7,9 @@
 #include "../shaders/PresetInclude.hpp"
 #include "core/manager/resources/MaterialManager.hpp"
 
+#include "command/CommandStack.hpp"
+#include "command/material/CmdChangeShader.hpp"
+#include "command/material/CmdEditProperties.hpp"
 #include "event/uiEvent/UIEventSubscriber.hpp"
 #include "event/uiEvent/material/MaterialTargetChangedEvent.hpp"
 #include "imgui.h"
@@ -32,6 +35,7 @@ namespace MaterialEditor
 
     void MaterialConfig::draw()
     {
+        if (targetObj_) { targetMat_ = targetObj_->getMaterial(matIndex_); }
 
         const bool inactive = (targetMat_ == nullptr);
         ImGui::BeginDisabled(inactive);
@@ -76,9 +80,8 @@ namespace MaterialEditor
                     {
                         if (!isCurrent)
                         {
-                            auto newMat = matManager_->createMaterial(shaderName);
-                            targetObj_->setMaterial(0, newMat);
-                            targetMat_ = newMat;
+                            CommandStack::get().execute(make_shared<CmdChangeShader>(matManager_, targetObj_, matIndex_, targetMat_->getPreset(),
+                                targetMat_->getPropertyMap(), targetMat_->getUIPropertyMap(), targetMat_->getBufferData(), shaderName));
                         }
                     }
 
@@ -115,47 +118,118 @@ namespace MaterialEditor
 
                                 if constexpr (is_same_v<T, UI::FloatDragData>)
                                 {
+                                    bool activated = false;
+                                    bool deactivated = false;
                                     auto value = targetMat_->getProperty<float>(name);
-                                    if (UI::drawFloatDrag(name, value, settings, true))
+
+                                    if (UI::drawFloatDrag(name, value, settings, true, {}, &deactivated)) //드래그 중 시각 피드백
                                     {
                                         targetMat_->setProperty(name, value);
+                                    }
+                                    if (activated)
+                                    {
+                                        dragBeforeBufferData_ = targetMat_->getBufferData();
+                                    }
+                                    if (deactivated)
+                                    {
+                                        CommandStack::get().execute(make_shared<CmdEditProperties>(targetMat_, targetMat_->getPropertyMap(),
+                                            targetMat_->getUIPropertyMap(), dragBeforeBufferData_, targetMat_->getBufferData()));
                                     }
                                 }
                                 else if constexpr (is_same_v<T, UI::FloatSliderData>)
                                 {
+                                    bool activated = false;
+                                    bool deactivated = false;
                                     auto value = targetMat_->getProperty<float>(name);
-                                    if (UI::drawFloatSlider(name, value, settings, true))
+
+                                    if (UI::drawFloatSlider(name, value, settings, true, {}, &deactivated))
                                     {
                                         targetMat_->setProperty(name, value);
+                                    }
+                                    if (activated)
+                                    {
+                                        dragBeforeBufferData_ = targetMat_->getBufferData();
+                                    }
+                                    if (deactivated)
+                                    {
+                                        CommandStack::get().execute(make_shared<CmdEditProperties>(targetMat_, targetMat_->getPropertyMap(),
+                                            targetMat_->getUIPropertyMap(), dragBeforeBufferData_, targetMat_->getBufferData()));
                                     }
                                 }
                                 else if constexpr (is_same_v<T, UI::FloatDragnSliderData>)
                                 {
+                                    bool activated = false;
+                                    bool deactivated = false;
                                     auto value = targetMat_->getProperty<float>(name);
-                                    if (UI::drawFloatDragnSlider(name, value, settings, true))
+
+                                    if (UI::drawFloatDragnSlider(name, value, settings, true, {}, &deactivated))
                                     {
                                         targetMat_->setProperty(name, value);
+                                    }
+                                    if (activated)
+                                    {
+                                        dragBeforeBufferData_ = targetMat_->getBufferData();
+                                    }
+                                    if (deactivated)
+                                    {
+                                        CommandStack::get().execute(make_shared<CmdEditProperties>(targetMat_, targetMat_->getPropertyMap(),
+                                            targetMat_->getUIPropertyMap(), dragBeforeBufferData_, targetMat_->getBufferData()));
                                     }
                                 }
                                 else if constexpr (is_same_v<T, UI::Float3ColorData>)
                                 {
+                                    bool activated = false;
+                                    bool deactivated = false;
                                     auto value = targetMat_->getProperty<Math::Vec3>(name);
-                                    if (UI::drawFloat3Color(name, value, settings, true))
+
+                                    if (UI::drawFloat3Color(name, value, settings, true, &deactivated))
                                     {
                                         targetMat_->setProperty(name, value);
+                                    }
+                                    if (activated)
+                                    {
+                                        dragBeforeBufferData_ = targetMat_->getBufferData();
+                                    }
+                                    if (deactivated)
+                                    {
+                                        CommandStack::get().execute(make_shared<CmdEditProperties>(targetMat_, targetMat_->getPropertyMap(),
+                                            targetMat_->getUIPropertyMap(), dragBeforeBufferData_, targetMat_->getBufferData()));
                                     }
                                 }
                                 else if constexpr (is_same_v<T, UI::Float4ColorData>)
                                 {
+                                    bool activated = false;
+                                    bool deactivated = false;
                                     auto value = targetMat_->getProperty<Math::Vec4>(name);
-                                    if (UI::drawFloat4Color(name, value, settings, true))
+
+                                    if (UI::drawFloat4Color(name, value, settings, true, &deactivated))
                                     {
                                         targetMat_->setProperty(name, value);
+                                    }
+                                    if (activated)
+                                    {
+                                        dragBeforeBufferData_ = targetMat_->getBufferData();
+                                    }
+                                    if (deactivated)
+                                    {
+                                        CommandStack::get().execute(make_shared<CmdEditProperties>(targetMat_, targetMat_->getPropertyMap(),
+                                            targetMat_->getUIPropertyMap(), dragBeforeBufferData_, targetMat_->getBufferData()));
                                     }
                                 }
                             }, uiData.settings);
                     }
                     ImGui::EndTable();
+                    ImGui::Separator();
+
+                    float buttonWidth = 150.0f;
+                    ImGui::SetCursorPosX((ImGui::GetWindowWidth() - buttonWidth) * 0.5f);
+                    if (ImGui::Button(utf8("매티리얼 초기화"), ImVec2(buttonWidth, 0)))
+                    {
+                        auto beforeBufferData = targetMat_->getBufferData();
+                        auto defaultMat = matManager_->createMaterial(targetMat_->getPreset());
+                        CommandStack::get().execute(make_shared<CmdEditProperties>(targetMat_, targetMat_->getPropertyMap(), targetMat_->getUIPropertyMap(),
+                            beforeBufferData, defaultMat->getBufferData()));
+                    }
                 }
             }
         }

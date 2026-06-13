@@ -22,6 +22,8 @@ namespace MaterialEditor
         std::shared_ptr<SceneObject> targetObj_ = nullptr;
         std::shared_ptr<Render::Material> targetMat_ = nullptr;
         std::string targetName_;
+        size_t matIndex_ = 0;
+        std::vector<uint8_t> dragBeforeBufferData_ = {};
 
         MaterialManager* matManager_ = nullptr;
         

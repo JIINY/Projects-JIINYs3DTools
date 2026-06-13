@@ -118,6 +118,7 @@ namespace Render
 		}
 		void useProperty(const std::string& name, UI::WidgetData dataType, UI::WidgetType widget, UI::WidgetSettings settings);
 		const std::unordered_map<std::string, UIPropData>& getUIPropertyMap() const { return uiPropertyMap_; }
+		const std::unordered_map<std::string, MaterialPropData>& getPropertyMap() const { return propertyMap_; }
 		void createBuffer(ID3D11Device* device);
 
 

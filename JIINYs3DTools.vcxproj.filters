@@ -1016,6 +1016,12 @@
     <ClInclude Include="src\command\selection\CmdChangeSelection.hpp">
       <Filter>src\command\selection</Filter>
     </ClInclude>
+    <ClInclude Include="src\command\material\CmdChangeShader.hpp">
+      <Filter>src\command\material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\command\material\CmdEditProperties.hpp">
+      <Filter>src\command\material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\environments\test.json">
