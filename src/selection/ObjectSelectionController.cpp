@@ -32,7 +32,7 @@ void ObjectSelectionController::pickObjectAt(PickContext context)
 {
     if (!context.candidates) { return; }
 
-    Math::Ray ray = calculateRay(context.pos.x, context.pos.y);
+    Math::Ray ray = calculateRay(context);
 
     shared_ptr<SceneObject> picked = nullptr;
     float minDist = numeric_limits<float>::max();
@@ -63,8 +63,8 @@ void ObjectSelectionController::pickArea(PickContext context)
 
     XMMATRIX view = activeCam.getViewMatrixXM();
     XMMATRIX proj = activeCam.getProjectionMatrixXM();
-    float width = activeCam.getWidth();
-    float height = activeCam.getHeight();
+    float width = context.viewportWidth;
+    float height = context.viewportHeight;
 
     //드래그 영역 계산
     long left = min(context.dragStartPos.x, context.pos.x);
@@ -95,13 +95,15 @@ void ObjectSelectionController::pickArea(PickContext context)
     }
 }
 
-Math::Ray ObjectSelectionController::calculateRay(int screenX, int screenY) const
+Math::Ray ObjectSelectionController::calculateRay(const PickContext& context) const
 {
     Math::Ray ray;
     auto& activeCam = viewportManager_->getActiveCam();
 
-    float width = activeCam.getWidth();
-    float height = activeCam.getHeight();
+    float width = context.viewportWidth;
+    float height = context.viewportHeight;
+    int screenX = context.pos.x;
+    int screenY = context.pos.y;
     XMMATRIX view = activeCam.getViewMatrixXM();
     XMMATRIX proj = activeCam.getProjectionMatrixXM();
     XMMATRIX world = XMMatrixIdentity();

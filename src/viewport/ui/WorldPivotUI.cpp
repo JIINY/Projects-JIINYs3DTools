@@ -14,7 +14,7 @@ void WorldPivotUI::draw(CameraController* activeCamController, const ImVec2& vie
 {
     if (!activeCamController || !activeCamController->getCamera()) { return; }
 
-    ImVec2 windowPos = ImVec2(viewportPos.x - (axisSize_ * 1.6f), viewportPos.y + viewportSize.y + (axisSize_ * 1.2f));
+    ImVec2 windowPos = ImVec2(viewportPos.x + (axisSize_ * 0.12f), viewportPos.y + viewportSize.y - (axisSize_ * 0.8f));
 
     ImGui::SetNextWindowPos(windowPos);
     ImGui::SetNextWindowSize(ImVec2(axisSize_, axisSize_));
