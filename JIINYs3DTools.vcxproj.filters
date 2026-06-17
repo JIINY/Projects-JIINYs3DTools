@@ -1019,6 +1019,10 @@
     <ClInclude Include="src\command\material\CmdEditProperties.hpp">
       <Filter>src\command\material</Filter>
     </ClInclude>
+    <ClInclude Include="src\object\ColliderObject.hpp" />
+    <ClInclude Include="src\core\manager\system\FloatingWindowConfig.hpp">
+      <Filter>src\core\manager\system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\environments\test.json">
@@ -1027,5 +1031,6 @@
     <None Include="src\defaults\DefaultEnvironmentConfig.json">
       <Filter>src\defaults</Filter>
     </None>
+    <None Include="src\defaults\DefaultScene.json" />
   </ItemGroup>
 </Project>

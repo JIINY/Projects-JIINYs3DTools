@@ -348,7 +348,7 @@ void App::shutdown()
 {
 	AppConfigData data;
 
-	if (floatingWindowManager_) { data.floatingConfig = floatingWindowManager_->getCurrentState(); }
+	if (floatingWindowManager_) { data.floatingConfig.floatingInfo = floatingWindowManager_->getCurrentState(); }
 
 	AppConfig::save(data);
 

@@ -1,20 +1,13 @@
 ﻿#pragma once
 #include <string>
 #include <Windows.h>
+#include "manager/system/FloatingWindowConfig.hpp"
 
-
-struct FloatingConfigData 
-{
-    bool showCreate = false;
-    bool showEnvConfig = false;
-    bool showMaterialEditor = false;
-
-    bool showCameraInfo = false;
-};
 
 struct AppConfigData
 {
     FloatingConfigData floatingConfig;
+    std::string configPath = "./config.ini";
 };
 
 
@@ -24,22 +17,21 @@ public:
     static AppConfigData load() 
     {
         AppConfigData data;
+        data.floatingConfig = makeDefaultFloatingConfigData();
 
-        data.floatingConfig.showCreate = GetPrivateProfileIntA("Window", "showCreate", 0, "./config.ini");
-        data.floatingConfig.showEnvConfig = GetPrivateProfileIntA("Window", "ShowEnvConfig", 0, "./config.ini");
-        data.floatingConfig.showMaterialEditor = GetPrivateProfileIntA("Window", "ShowMaterialEditor", 0, "./config.ini");
-
-        data.floatingConfig.showCameraInfo = GetPrivateProfileIntA("Pref", "ShowCameraInfo", 0, "./config.ini");
+        for (auto& w : data.floatingConfig.floatingInfo)
+        {
+            w.isVisible = GetPrivateProfileIntA(w.group.c_str(), w.configKey.c_str(), 0, data.configPath.c_str());
+        }
 
         return data;
     }
 
     static void save(const AppConfigData& data) 
     {
-        WritePrivateProfileStringA("Window", "showCreate", data.floatingConfig.showCreate ? "1" : "0", "./config.ini");
-        WritePrivateProfileStringA("Window", "ShowEnvConfig", data.floatingConfig.showEnvConfig ? "1" : "0", "./config.ini");
-        WritePrivateProfileStringA("Window", "ShowMaterialEditor", data.floatingConfig.showMaterialEditor ? "1" : "0", "./config.ini");
-
-        WritePrivateProfileStringA("Pref", "ShowCameraInfo", data.floatingConfig.showCameraInfo ? "1" : "0", "./config.ini");
+        for (const auto& w : data.floatingConfig.floatingInfo)
+        {
+            WritePrivateProfileStringA(w.group.c_str(), w.configKey.c_str(), w.isVisible ? "1" : "0", data.configPath.c_str());
+        }
     }
 };

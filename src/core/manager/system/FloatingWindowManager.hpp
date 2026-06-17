@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <memory>
 #include <vector>
+#include <functional>
+#include <unordered_map>
 #include "core/AppConfig.hpp"
 #include "event/appEvent/AppEventSubscriber.hpp"
 #include "event/uiEvent/UIEventSubscriber.hpp"
@@ -37,10 +39,8 @@ public:
 	bool initialize(const FloatingWindowContext& context, const FloatingConfigData& data);
 	void draw();
 
-	FloatingConfigData getCurrentState() const 
-	{
-		return { isCreateVisible_, isEnvConfigVisible_, isMaterialVisible_, isCamInfoVisible_ };
-	}
+	std::vector<FloatingWindowInfo> getCurrentState() { return floatingInfo_; }
+	FloatingWindowInfo* findWindowInfo(const std::string& configKey);
 
 	void setCreateVisibility(bool isVisible);
 	void setEnvironmentConfigVisibility(bool isVisible);
@@ -50,25 +50,28 @@ public:
 	EnvConfig::EnvironmentConfig* getEnvironmentConfig() const { return envConfig_.get(); }
 
 	void toggleCameraInfo();
-	bool isCamInfoVisible() const { return isCamInfoVisible_; }
+	bool isCamInfoVisible();
 
 
 private:
 	std::vector<AppEventSubscriptionID> appEventSubID_;
 	std::unique_ptr<Create::CreatePanel> create_;
-	bool isCreateVisible_ = false;
 	std::unique_ptr<EnvConfig::EnvironmentConfig> envConfig_;
-	bool isEnvConfigVisible_ = false;
 	std::unique_ptr<MaterialEditor::MaterialPanel> material_;
-	bool isMaterialVisible_ = false;
 
 	std::vector<UIEventSubscriptionID> uiEventSubID_;
 	std::unique_ptr<CameraInfoUI> cameraInfoUI_;
-	bool isCamInfoVisible_ = false;
+
+	std::vector<FloatingWindowInfo> floatingInfo_;
+	std::unordered_map<std::string, std::function<void(bool&)>> drawMap_;
+	float prevWidth_ = 0.0f;
+	float prevHeight_ = 0.0f;
 	ViewportCameraManager* camManager_ = nullptr;
 
 	void onCreatePopupChanged(const CreatePopupChangedEvent& event);
 	void onEnvironmentConfigPopupChanged(const EnvironmentConfigPopupChangedEvent& event);
 	void onMaterialPopupChanged(const MaterialPopupChangedEvent& event);
 	void onCameraInfoChanged(const CameraInfoChangedEvent& event);
+
+	void onWindowSizeChanged(int width, int height);
 };
