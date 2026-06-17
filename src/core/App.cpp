@@ -365,6 +365,7 @@ void App::onScreenResize(int width, int height)
 	width_ = width;
 	height_ = height;
 
+	renderer_->onResize(width, height);
 	AppEventPublisher::get().publish(WindowSizeChangedEvent{ width, height });
 }
 

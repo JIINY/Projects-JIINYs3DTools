@@ -330,3 +330,53 @@ void DX11Renderer::updateLightConstants(const Render::LightBufferData& data)
 	lightBuffer_->update(pd3dDeviceContext_.Get(), data);
 	lightBuffer_->bindPS(pd3dDeviceContext_.Get(), 3); //cbuffer b3
 }
+
+void DX11Renderer::onResize(int width, int height)
+{
+	if (!pSwapChain_) { return; }
+
+	//바인딩 해제
+	pd3dDeviceContext_->OMSetRenderTargets(0, nullptr, nullptr);
+
+	//RenderTarget / DepthStencil 해제
+	mainRenderTargetView_.Reset();
+	depthStencilView_.Reset();
+	depthStencilBuffer_.Reset();
+
+	//SwapChain 버퍼 리사이즈
+	HRESULT hr = pSwapChain_->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
+	assert(SUCCEEDED(hr) && "SwapChain ResizeBuffers 실패");
+
+	//RenderTarget 재생성
+	createRenderTarget();
+
+	//DepthStencil 버퍼 재생성
+	D3D11_TEXTURE2D_DESC depthBufferDesc;
+	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
+	depthBufferDesc.Width = width;
+	depthBufferDesc.Height = height;
+	depthBufferDesc.MipLevels = 1;
+	depthBufferDesc.ArraySize = 1;
+	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthBufferDesc.SampleDesc.Count = 1;
+	depthBufferDesc.SampleDesc.Quality = 0;
+	depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+	hr = pd3dDevice_->CreateTexture2D(&depthBufferDesc, nullptr, depthStencilBuffer_.GetAddressOf());
+	assert(SUCCEEDED(hr) && "DepthStencil 버퍼 재생성 실패");
+
+	//DepthStencil View 재생성
+	D3D11_DEPTH_STENCIL_VIEW_DESC depthViewDesc;
+	ZeroMemory(&depthViewDesc, sizeof(depthViewDesc));
+	depthViewDesc.Format = depthBufferDesc.Format;
+	depthViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	depthViewDesc.Texture2D.MipSlice = 0;
+
+	hr = pd3dDevice_->CreateDepthStencilView(depthStencilBuffer_.Get(), &depthViewDesc, depthStencilView_.GetAddressOf());
+	assert(SUCCEEDED(hr) && "DepthStencil View 재생성 실패");
+
+	//재바인딩
+	pd3dDeviceContext_->OMSetRenderTargets(1, mainRenderTargetView_.GetAddressOf(), depthStencilView_.Get());
+	pd3dDeviceContext_->OMSetDepthStencilState(depthStencilStateOn_.Get(), 1);
+}

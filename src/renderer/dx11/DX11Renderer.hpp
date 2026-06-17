@@ -23,6 +23,7 @@ public:
 	ID3D11DepthStencilState* getDepthStencilStateOff() const { return depthStencilStateOff_.Get(); }
 	ID3D11DepthStencilState* getDepthStencilStateAlways() const { return depthStencilStateAlways_.Get(); }
 
+	virtual void onResize(int width, int height) override;
 	void setDepthEnabled(bool enable);
 	void setWireframeMode(bool enable) override;
 

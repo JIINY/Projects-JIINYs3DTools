@@ -16,6 +16,7 @@ public:
 	virtual ID3D11Device* getDevice() = 0;
 	virtual ID3D11DeviceContext* getDeviceContext() = 0;
 
+	virtual void onResize(int width, int height) = 0;
 	virtual void updateSceneConstants(const Render::SceneConstantBufferData& data) = 0;
 	virtual void updateLightConstants(const Render::LightBufferData& data) = 0;
 	virtual void setWireframeMode(bool enable) = 0;
