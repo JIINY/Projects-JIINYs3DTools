@@ -72,8 +72,6 @@ void ToolObjectManager::drawImGui()
 	ImVec2 windowPos_ = ImGui::GetMainViewport()->Pos;
 	ImVec2 windowSize_ = ImGui::GetMainViewport()->Size;
 
-	DebugLog("ImGui: pos=[%.1f, %.1f] size=[%.1f, %.1f]", windowPos_.x, windowPos_.y, windowSize_.x, windowSize_.y);
-
 	auto* activeCamController = viewCamManager_->getActiveCamController();
 	if (activeCamController != nullptr)
 	{
