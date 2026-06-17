@@ -27,6 +27,37 @@ namespace UI
 		Count
 	};
 
+	struct DisplayFloatContext
+	{
+		float value = 0.0f;
+		float min = 0.0f;
+		float max = 0.0f;
+		std::string format = "%.1f";
+	};
+
+	struct DisplayFloatData
+	{
+		float min = 0.0f;
+		float max = 0.0f;
+		float step = 0.0f;
+		std::string format = "%.1f";
+	};
+
+	struct DisplayIntContext
+	{
+		int value = 0;
+		int min = 0;
+		int max = 0;
+		std::string format = "%d";
+	};
+
+	struct DisplayIntData
+	{
+		int min = 0;
+		int max = 0;
+		int step = 0;
+	};
+
 	struct FloatDragData
 	{
 		float resetValue = 0.0f;
@@ -34,6 +65,8 @@ namespace UI
 		float min = 0.0f;
 		float max = 1.0f;
 		std::string format = "%.1f";
+		bool useDisplayData = false;
+		DisplayFloatData displayData = {};
 	};
 
 	struct FloatSliderData
@@ -43,6 +76,8 @@ namespace UI
 		float max = 1.0f;
 		float step = 0.1f;
 		std::string format = "%.1f";
+		bool useDisplayData = false;
+		DisplayFloatData displayData = {};
 	};
 
 	struct FloatDragnSliderData
@@ -53,6 +88,8 @@ namespace UI
 		float max = 1.0f;
 		float step = 0.1f;
 		std::string format = "%.1f";
+		bool useDisplayData = false;
+		DisplayFloatData displayData = {};
 	};
 
 	struct Float3ColorData
@@ -66,9 +103,21 @@ namespace UI
 	};
 
 	using WidgetSettings = std::variant<
+		DisplayFloatData, DisplayIntData,
 		FloatDragData, FloatSliderData, FloatDragnSliderData,
 		Float3ColorData, Float4ColorData
 	>;
+
+	float toDisplayFloat(float origin, float inMin, float inMax, const DisplayFloatData& data);
+	float toOriginFloat(float display, float inMin, float inMax, const DisplayFloatData& data);
+	
+	void convertFloatContext(DisplayFloatContext& context, float value, const FloatDragData& settings);
+	void convertFloatContext(DisplayFloatContext& context, float value, const FloatSliderData& settings);
+	void convertFloatContext(DisplayFloatContext& context, float value, const FloatDragnSliderData& settings);
+	void restoreFloatContext(float& value, const DisplayFloatContext& context, const FloatDragData& settings);
+	void restoreFloatContext(float& value, const DisplayFloatContext& context, const FloatSliderData& settings);
+	void restoreFloatContext(float& value, const DisplayFloatContext& context, const FloatDragnSliderData& settings);
+
 
 	//assert 방어코드 추가할 것 + 타입 추가시 Cmd처리도 함께(e.g. CmdChangeShader, CmdEditProperties)
 	bool isValidWidgetSettings(WidgetType widget, const WidgetSettings& settings);

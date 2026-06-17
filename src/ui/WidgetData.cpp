@@ -26,32 +26,45 @@ namespace UI
 		}
 	}
 
-	bool drawFloatDrag(const string& label, float& value, const FloatDragData& settings, bool hideLabel, std::string format, bool* outActivated, bool* outDeactivated)
+	bool drawFloatDrag(const string& label, float& value, const FloatDragData& settings, bool hideLabel, bool* outActivated, bool* outDeactivated)
 	{
 		std::string l = hideLabel ? ("##" + label) : label;
+		bool changed = false;
+		DisplayFloatContext context;
+		UI::convertFloatContext(context, value, settings);
 
-		bool changed = ImGui::DragFloat(l.c_str(), &value, settings.speed, settings.min, settings.max, settings.format.c_str());
+		changed = ImGui::DragFloat(l.c_str(), &context.value, settings.speed, context.min, context.max, context.format.c_str());
+		if (changed)
+		{
+			restoreFloatContext(value, context, settings);
+		}
 		if (outActivated) { *outActivated = ImGui::IsItemActivated(); }
 		if (outDeactivated) { *outDeactivated = ImGui::IsItemDeactivatedAfterEdit(); }
 
 		return changed;
 	}
 
-	bool drawFloatSlider(const string& label, float& value, const FloatSliderData& settings, bool hideLabel, std::string format, bool* outActivated, bool* outDeactivated)
+	bool drawFloatSlider(const string& label, float& value, const FloatSliderData& settings, bool hideLabel, bool* outActivated, bool* outDeactivated)
 	{
 		std::string l = hideLabel ? ("##" + label) : label;
+		bool changed = false;
+		DisplayFloatContext context;
+		UI::convertFloatContext(context, value, settings);
 
-		bool changed = ImGui::SliderFloat(l.c_str(), &value, settings.min, settings.max, settings.format.c_str());
+		changed = ImGui::SliderFloat(l.c_str(), &context.value, context.min, context.max, context.format.c_str());
 
-		if (changed && settings.step > 0.0f) { value = round(value / settings.step) * settings.step; }
+		if (changed)
+		{
+			restoreFloatContext(value, context, settings);
+		}
 		if (outActivated) { *outActivated = ImGui::IsItemActivated(); }
 		if (outDeactivated) { *outDeactivated = ImGui::IsItemDeactivatedAfterEdit(); }
 
 		return changed;
 	}
 
-	bool drawFloatDragnSlider(const string& label, float& value, const FloatDragnSliderData& settings, bool hideLabel, 
-		std::string format, bool* outActivated, bool* outDeactivated)
+	bool drawFloatDragnSlider(const string& label, float& value, const FloatDragnSliderData& settings, bool hideLabel,
+		bool* outActivated, bool* outDeactivated)
 	{
 		std::string l = hideLabel ? "##" : "";
 		bool changed = false;
@@ -61,22 +74,28 @@ namespace UI
 		float dragWidth = 45.0f;
 		float sliderWidth = availWidth - dragWidth - spacing;
 
+		DisplayFloatContext context;
+		UI::convertFloatContext(context, value, settings);
+
 		ImGui::SetNextItemWidth(sliderWidth);
-		bool sliderChanged = ImGui::SliderFloat((l + label + "_slider").c_str(), &value, settings.min, settings.max, settings.format.c_str());
+		bool sliderChanged = ImGui::SliderFloat((l + label + "_slider").c_str(), &context.value, context.min, context.max, context.format.c_str());
 		bool sliderActivated = ImGui::IsItemActivated();
 		bool sliderDeactivatied = ImGui::IsItemDeactivatedAfterEdit();
 
 		ImGui::SameLine();
 		ImGui::SetNextItemWidth(dragWidth);
-		bool dragChanged = ImGui::DragFloat((l + label + "_drag").c_str(), &value, settings.speed, settings.min, settings.max, settings.format.c_str());
+		bool dragChanged = ImGui::DragFloat((l + label + "_drag").c_str(), &context.value, settings.speed, context.min, context.max, context.format.c_str());
 		bool dragActivated = ImGui::IsItemActivated();
 		bool dragDeactivated = ImGui::IsItemDeactivatedAfterEdit();
 
 		changed = sliderChanged || dragChanged;
-		if (changed && settings.step > 0.0f) { value = round(value / settings.step) * settings.step; }
+		if (changed)
+		{
+			restoreFloatContext(value, context, settings);
+		}
 		if (outActivated) { *outActivated = sliderActivated || dragActivated; }
 		if (outDeactivated) { *outDeactivated = sliderDeactivatied || dragDeactivated; }
-		
+
 		return changed;
 	}
 
@@ -99,5 +118,121 @@ namespace UI
 		if (outDeactivated) { *outDeactivated = ImGui::IsItemDeactivatedAfterEdit(); }
 
 		return changed;
+	}
+
+	float toDisplayFloat(float origin, float inMin, float inMax, const DisplayFloatData& display)
+	{
+		if (inMax - inMin == 0.0f) { return display.min; }
+
+		float t = (origin - inMin) / (inMax - inMin);
+		return display.min + t * (display.max - display.min);
+	}
+
+	float toOriginFloat(float dValue, float inMin, float inMax, const DisplayFloatData& display)
+	{
+		float dRange = display.max - display.min;
+		if (dRange == 0.0f) { return inMin; }
+
+		float t = (dValue - display.min) / (display.max - display.min);
+		return inMin + t * (inMax - inMin);
+	}
+
+	void convertFloatContext(DisplayFloatContext& context, float value, const FloatDragData& settings)
+	{
+		if (settings.useDisplayData)
+		{
+			context.value = toDisplayFloat(value, settings.min, settings.max, settings.displayData);
+			context.min = settings.displayData.min;
+			context.max = settings.displayData.max;
+			context.format = settings.displayData.format.c_str();
+		}
+		else
+		{
+			context.value = value;
+			context.min = settings.min;
+			context.max = settings.max;
+			context.format = settings.format.c_str();
+		}
+	}
+
+	void convertFloatContext(DisplayFloatContext& context, float value, const FloatSliderData& settings)
+	{
+		if (settings.useDisplayData)
+		{
+			context.value = toDisplayFloat(value, settings.min, settings.max, settings.displayData);
+			context.min = settings.displayData.min;
+			context.max = settings.displayData.max;
+			context.format = settings.displayData.format.c_str();
+		}
+		else
+		{
+			context.value = value;
+			context.min = settings.min;
+			context.max = settings.max;
+			context.format = settings.format.c_str();
+		}
+	}
+
+	void convertFloatContext(DisplayFloatContext& context, float value, const FloatDragnSliderData& settings)
+	{
+		if (settings.useDisplayData)
+		{
+			context.value = toDisplayFloat(value, settings.min, settings.max, settings.displayData);
+			context.min = settings.displayData.min;
+			context.max = settings.displayData.max;
+			context.format = settings.displayData.format.c_str();
+		}
+		else
+		{
+			context.value = value;
+			context.min = settings.min;
+			context.max = settings.max;
+			context.format = settings.format.c_str();
+		}
+	}
+
+	void restoreFloatContext(float& value, const DisplayFloatContext& context, const FloatDragData& settings)
+	{
+		if (settings.useDisplayData)
+		{
+			value = toOriginFloat(context.value, settings.min, settings.max, settings.displayData);
+		}
+		else { value = context.value; }
+	}
+
+	void restoreFloatContext(float& value, const DisplayFloatContext& context, const FloatSliderData& settings)
+	{
+		float snapped = context.value;
+		if (settings.useDisplayData)
+		{
+			if (settings.displayData.step > 0.0f)
+			{
+				snapped = round(snapped / settings.displayData.step) * settings.displayData.step;
+			}
+			value = toOriginFloat(snapped, settings.min, settings.max, settings.displayData);
+		}
+		else
+		{
+			if (settings.step > 0.0f) { snapped = round(snapped / settings.step) * settings.step; }
+			value = snapped;
+		}
+	}
+
+	void restoreFloatContext(float& value, const DisplayFloatContext& context, const FloatDragnSliderData& settings)
+	{
+		float snapped = context.value;
+		if (settings.useDisplayData)
+		{
+			if (settings.displayData.step > 0.0f)
+			{
+				snapped = round(snapped / settings.displayData.step) * settings.displayData.step;
+			}
+			value = toOriginFloat(snapped, settings.min, settings.max, settings.displayData);
+		}
+		else
+		{
+			if (settings.step > 0.0f) { snapped = round(snapped / settings.step) * settings.step; }
+			value = snapped;
+		}
 	}
 }

@@ -6,6 +6,7 @@
 #include "object/SceneObject.hpp"
 #include "../shaders/PresetInclude.hpp"
 #include "core/manager/resources/MaterialManager.hpp"
+#include "utils/FontUtils.hpp"
 
 #include "command/CommandStack.hpp"
 #include "command/material/CmdChangeShader.hpp"
@@ -122,7 +123,7 @@ namespace MaterialEditor
                                     bool deactivated = false;
                                     auto value = targetMat_->getProperty<float>(name);
 
-                                    if (UI::drawFloatDrag(name, value, settings, true, {}, &deactivated)) //드래그 중 시각 피드백
+                                    if (UI::drawFloatDrag(name, value, settings, true, &activated, &deactivated)) //드래그 중 시각 피드백
                                     {
                                         targetMat_->setProperty(name, value);
                                     }
@@ -142,7 +143,7 @@ namespace MaterialEditor
                                     bool deactivated = false;
                                     auto value = targetMat_->getProperty<float>(name);
 
-                                    if (UI::drawFloatSlider(name, value, settings, true, {}, &deactivated))
+                                    if (UI::drawFloatSlider(name, value, settings, true, &activated, &deactivated))
                                     {
                                         targetMat_->setProperty(name, value);
                                     }
@@ -162,7 +163,7 @@ namespace MaterialEditor
                                     bool deactivated = false;
                                     auto value = targetMat_->getProperty<float>(name);
 
-                                    if (UI::drawFloatDragnSlider(name, value, settings, true, {}, &deactivated))
+                                    if (UI::drawFloatDragnSlider(name, value, settings, true, &activated, &deactivated))
                                     {
                                         targetMat_->setProperty(name, value);
                                     }
@@ -182,7 +183,7 @@ namespace MaterialEditor
                                     bool deactivated = false;
                                     auto value = targetMat_->getProperty<Math::Vec3>(name);
 
-                                    if (UI::drawFloat3Color(name, value, settings, true, &deactivated))
+                                    if (UI::drawFloat3Color(name, value, settings, true, &activated, &deactivated))
                                     {
                                         targetMat_->setProperty(name, value);
                                     }
@@ -202,7 +203,7 @@ namespace MaterialEditor
                                     bool deactivated = false;
                                     auto value = targetMat_->getProperty<Math::Vec4>(name);
 
-                                    if (UI::drawFloat4Color(name, value, settings, true, &deactivated))
+                                    if (UI::drawFloat4Color(name, value, settings, true, &activated, &deactivated))
                                     {
                                         targetMat_->setProperty(name, value);
                                     }
@@ -219,7 +220,7 @@ namespace MaterialEditor
                             }, uiData.settings);
                     }
                     ImGui::EndTable();
-                    ImGui::Separator();
+                    ImGui::Dummy(ImVec2(0.1f, 0.2f));
 
                     float buttonWidth = 150.0f;
                     ImGui::SetCursorPosX((ImGui::GetWindowWidth() - buttonWidth) * 0.5f);

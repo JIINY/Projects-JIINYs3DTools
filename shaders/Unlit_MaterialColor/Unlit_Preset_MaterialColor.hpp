@@ -14,7 +14,6 @@ namespace Render::Materials
         mat.addProperty<float>("Metallic", 0.0f);
         mat.addProperty<DirectX::XMFLOAT2>("Padding", DirectX::XMFLOAT2(0, 0));
 
-        mat.useProperty("MaterialColor", UI::WidgetData::Float4, UI::WidgetType::Float4Color,
-            UI::Float4ColorData{Math::Vec4{1.0f, 1.0f, 1.0f, 1.0f}});
+        mat.useProperty("MaterialColor", UI::WidgetData::Float4, UI::WidgetType::Float4Color, UI::Float4ColorData{Math::Vec4{1.0f, 1.0f, 1.0f, 1.0f}});
     }
 }
