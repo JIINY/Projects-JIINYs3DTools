@@ -74,11 +74,11 @@ namespace UI
 	bool isValidWidgetSettings(WidgetType widget, const WidgetSettings& settings);
 	
 	bool drawFloatDrag(const std::string& label, float& value, const FloatDragData& settings, bool hideLabel = true, 
-		std::string format = "%.1f", bool* outActivated = nullptr, bool* outDeactivated = nullptr);
+		bool* outActivated = nullptr, bool* outDeactivated = nullptr);
 	bool drawFloatSlider(const std::string& label, float& value, const FloatSliderData& settings, bool hideLabel = true, 
-		std::string format = "%.1f", bool* outActivated = nullptr, bool* outDeactivated = nullptr);
+		bool* outActivated = nullptr, bool* outDeactivated = nullptr);
 	bool drawFloatDragnSlider(const std::string& label, float& value, const FloatDragnSliderData& settings, bool hideLabel = true, 
-		std::string format = "%.1f", bool* outActivated = nullptr, bool* outDeactivated = nullptr);
+		bool* outActivated = nullptr, bool* outDeactivated = nullptr);
 	bool drawFloat3Color(const std::string& label, Math::Vec3& value, const Float3ColorData& settings, bool hideLabel = true, 
 		bool* outActivated = nullptr, bool* outDeactivated = nullptr);
 	bool drawFloat4Color(const std::string& label, Math::Vec4& value, const Float4ColorData& settings, bool hideLabel = true, 
