@@ -97,35 +97,6 @@ namespace Render
         isDirty_ = false;
     }
 
-    void Material::loadVertexShader(ID3D11Device* device, wstring_view filepath, string_view entryPoint) 
-    {
-        auto newVS = std::make_shared<VertexShader>();
-        if (newVS->initialize(device, filepath, entryPoint)) 
-        {
-            vertexShader_ = newVS;
-        }
-        else 
-        {
-            cout << "[ERROR] VS Load Failed. using Green VS ErrorColor." << endl;
-            vertexShader_ = fallbackVS_;
-            pixelShader_ = errorVS_Green_;
-        }
-    }
-
-    void Material::loadPixelShader(ID3D11Device* device, wstring_view filepath, string_view entryPoint) 
-    {
-        auto newPS = std::make_shared<PixelShader>();
-        if (newPS->initialize(device, filepath, entryPoint))
-        {
-            pixelShader_ = newPS;
-        }
-        else
-        {
-            cout << "[ERROR] PS Load Failed. using Pink PS ErrorColor." << endl;
-            pixelShader_ = errorPS_Pink_;
-        }
-    }
-
     void Material::bind(ID3D11DeviceContext* context) 
     {
         if (vertexShader_) { vertexShader_->bind(context); }

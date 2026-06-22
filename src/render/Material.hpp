@@ -36,10 +36,6 @@ namespace Render
 		virtual void initialize(ID3D11Device* device);
 		void bind(ID3D11DeviceContext* context) override;
 
-		//로드 실패시 비상용 형광연두(VS)/핑크(PS) 연결
-		void loadVertexShader(ID3D11Device* device, std::wstring_view filepath, std::string_view entryPoint = "vsMain");
-		void loadPixelShader(ID3D11Device* device, std::wstring_view filepath, std::string_view entryPoint = "psMain");
-
 		//수동 교체
 		void setPreset(const std::wstring& preset) { preset_ = preset; }
 		void setVertexShader(std::shared_ptr<VertexShader> vs) { vertexShader_ = vs; }
