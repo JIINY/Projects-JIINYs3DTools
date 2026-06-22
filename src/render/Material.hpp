@@ -58,6 +58,9 @@ namespace Render
 		static std::shared_ptr<PixelShader> getWireRedPS() { return wireRed_; }
 		static std::shared_ptr<PixelShader> getDefaultPS() { return default_; }
 		static std::shared_ptr<PixelShader> getColliderPS() { return collider_; }
+		static std::shared_ptr<VertexShader> getFallbackVS() { return fallbackVS_; }
+		static std::shared_ptr<PixelShader> getErrorVS() { return errorVS_Green_; }
+		static std::shared_ptr<PixelShader> getErrorPS() { return errorPS_Pink_; }
 		static bool prepareDefaultShaders(ID3D11Device* device);
 
 

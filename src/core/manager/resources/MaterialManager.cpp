@@ -42,6 +42,7 @@ shared_ptr<Render::Material> MaterialManager::createMaterial(const wstring& pres
 	auto ps = shaderManager_->getPixelShader(newMat->getPSPath(), newMat->getPSEntry());
 
 	if (vs) { newMat->setVertexShader(vs); } //fallback처리를 위한 방어코드
+	else { newMat->setPixelShader(Render::Material::getErrorVS()); }
 	if (ps) { newMat->setPixelShader(ps); }
 
 	if (!newMat->getBufferData().empty()) { newMat->createBuffer(device_); }
