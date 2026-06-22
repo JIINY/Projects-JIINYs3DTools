@@ -40,7 +40,6 @@ shared_ptr<Render::VertexShader> ShaderManager::getVertexShader(const wstring& p
 	auto newShader = make_shared<VertexShader>();
 	if (!newShader->initialize(device_, path, entryPoint))
 	{
-		assert(0 && "VertexShader 로드 실패");
 		vsCache_[cacheKey] = nullptr; //실패시 nullptr를 캐시에 저장해서 중복로드X
 		return nullptr;
 	}
@@ -61,7 +60,6 @@ shared_ptr<Render::PixelShader> ShaderManager::getPixelShader(const wstring& pat
 	auto newShader = make_shared<PixelShader>();
 	if (!newShader->initialize(device_, path, entryPoint))
 	{
-		assert(0 && "PixelShader 로드 실패");
 		psCache_[cacheKey] = nullptr;
 		return nullptr;
 	}
