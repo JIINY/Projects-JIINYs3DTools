@@ -56,6 +56,7 @@ App::~App() = default;
 
 bool App::initialize(void* hwnd) 
 {
+	Path::rootPath() = std::filesystem::current_path().string() + "/";
 	AppConfigData appData = AppConfig::load();
 
 	hwnd_ = static_cast<HWND>(hwnd);
