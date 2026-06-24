@@ -30,6 +30,8 @@ namespace EnvConfig
         Math::Vec3 sunDir = sun->getDirection();
         Math::Vec3 sunColor = sun->getColor();
 
+        savefile["FileType"] = "EnvironmentConfig";
+
         savefile["SunLight"] =
         {
             { "SunDirection", {
@@ -107,6 +109,11 @@ namespace EnvConfig
             return false;
         }
         fin.close();
+
+        if (!loadfile.contains("FileType") || loadfile["FileType"] != "EnvironmentConfig")
+        {
+            return false;
+        }
 
         if (loadfile.contains("SunLight"))
         {
