@@ -44,9 +44,13 @@ namespace Scene
     {
         json root;
 
+        root["FileType"] = "Scene";
+
         json environment;
         environment["envConfig"]["fileName"] = envConfig_->getCurrentEnvConfigFileName();
-        environment["envConfig"]["filePath"] = envConfig_->getCurrentEnvConfigFilePath();
+        filesystem::path abs = envConfig_->getCurrentEnvConfigFilePath();
+        filesystem::path rel = filesystem::relative(abs, Path::assetPath());
+        environment["envConfig"]["filePath"] = rel.string();
 
         root["environment"] = environment;
 
@@ -157,6 +161,11 @@ namespace Scene
         try { root = json::parse(file); }
         catch (...) { return false; }
 
+        if (!root.contains("FileType") || root["FileType"] != "Scene")
+        {
+            return false;
+        }
+
         sceneObjectManager_->removeAllObjects();
         CommandStack::get().clear();
 
@@ -186,7 +195,7 @@ namespace Scene
         if (!envJson.contains("envConfig")) { return; }
         const auto& env = envJson["envConfig"];
 
-        string filePath = env.value("filePath", "");
+        string filePath = Path::assetPath() + env.value("filePath", "");
         string fileName = env.value("fileName", "");
         if (filePath.empty() && fileName.empty())
         {
